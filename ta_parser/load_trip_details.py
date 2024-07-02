@@ -1,0 +1,76 @@
+
+## Финальное получение деталей по ta после обработки данных из метода match_data_ya_and_ta_search
+## используется файл match_ta_ya.xlsx
+
+
+import pandas as pd
+import numpy as np
+import os
+import json
+import ta_parser.load_data as load_data
+import importlib
+importlib.reload(load_data)
+import common.dict_city as dict_city
+from tqdm import tqdm
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
+#print(os.path.abspath(''))
+import logging
+
+
+
+def replace_str(text):
+    try:
+        if type(text) != str or text is None or str(text) == str(np.nan): 
+            return text
+        return ILLEGAL_CHARACTERS_RE.sub(r'',text)
+    except Exception as ex:
+        print(text)
+        raise(ex)
+    
+
+def update_all(row):
+    if row['ta_status'] not in ['new','new_by_fix']:
+        return row
+    if row['ta_status_m'] == 'all_not_match': return row
+
+    if row['ta_status'] == 'new_by_fix':
+        # если идем по фиксированной ссылке, то нужно получить location_id из этой страницы
+        row['ta_location_id'] = load_data.get_location_id_from_url(row['ta_link'])
+
+    location_id = row['ta_location_id']
+    if location_id is None or str(location_id) == str(np.nan): return row
+
+    city_name = row['location_nm_rus']
+    city_line = dict_city.get_line_by_city_name(city_name)
+    city = city_line['city']
+    full_name = load_data.get_full_name_by_details_json(city_line['city'],location_id)
+    if not os.path.isfile(full_name):
+        full_url = f"https://www.tripadvisor.ru/{row['ta_link'].strip('/')}"
+        load_data.get_html_details_and_parse(city, full_url, location_id,replace_json=False)
+    try:
+        row_new = load_data.parse_page_details_from_json(full_name, int(location_id))
+    except Exception as ex:
+        print(full_name, location_id)
+        raise(ex)
+
+    for key in row_new:
+        row[key] = row_new[key]
+    return row
+
+def start(df_result:pd.DataFrame) -> pd.DataFrame:
+    tqdm.pandas()
+    logging.debug('start')
+    logging.info(f'{df_result.shape=}')
+
+    #t = tqdm(total= len(df_result))
+    df_result = df_result.progress_apply(update_all,axis=1)
+    #t.close()
+    df_result = pd.DataFrame(df_result)
+
+    for col,typ in zip(df_result.columns, df_result.dtypes):
+        if typ =='object':
+            df_result[col] = df_result[col].apply(replace_str)
+
+    logging.info(f'{df_result.shape=}')
+
+    return df_result
