@@ -36,7 +36,7 @@ async def get_random_second():
 
 async def get_gallery_html_by_org(url, city_name, ya_id):
   city_line = dict_city.get_line_by_city_name(city_name)
-  city_code = city_line['city']
+  city_code = city_line.city
   path = load_ya_raiting.get_folder(city_code,'gallery_html')
   full_name = f'{path}\\{ya_id}.html'
   result_html = ''
@@ -72,7 +72,7 @@ async def get_full_json_from_gallery(html_str):
 
 async def get_param_from_gallery(url,city_name, ya_id):
   city_line = dict_city.get_line_by_city_name(city_name)
-  city_code = city_line['city']
+  city_code = city_line.city
   path = load_ya_raiting.get_folder(city_code,'gallery_param_json')
   full_name = f'{path}\\{ya_id}.json'
   json_result = None
@@ -170,7 +170,7 @@ async def load_param_image_by_id(city_name, ya_id):
   logging.debug(f'start {city_name=} {ya_id=}')
 
   city_line = dict_city.get_line_by_city_name(city_name)
-  city_code = city_line['city']
+  city_code = city_line.city
   path = load_ya_raiting.get_folder(city_code,'gallery_json')
   full_name = f'{path}\\{ya_id}.json'
   json_result = None

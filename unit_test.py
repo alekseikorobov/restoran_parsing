@@ -1,7 +1,6 @@
 
 
 import unittest
-from VerificationResult import VerificationResult
 import common.common as common
 from common import my_language_ru_pack
 import zoon_parser.parse_data as parse_data
@@ -9,6 +8,9 @@ import zoon_parser.select_best_zoon_search as select_best_zoon_search
 import ta_parser.load_data as ta_load_data
 import pandas as pd
 import ya_parser.load_ya_raiting as load_ya_raiting
+from params import Params
+from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
+import json
 
 class MyTest(unittest.TestCase):
 
@@ -23,8 +25,13 @@ class MyTest(unittest.TestCase):
             ('Авиаторов, 19, цокольный этаж; гостиница Сибирь, Москва','авиаторов 19'),
             ('Пискунова, 8, цокольный этаж, Москва','пискунова 8'),
         ]
+        param = Params()
+        with open('params.json','r',encoding='UTF-8') as f:
+            param = json.load(f, object_hook=lambda d: Params(**d))
+            print(type(param))
+
         for test_case in test_list:
-            self.assertEqual(common.replace_address_by_city('Москва',test_case[0]),test_case[1])
+            self.assertEqual(common.replace_address_by_city('Москва',test_case[0],param.city_list),test_case[1])
     
     def test_normalize_transaction_name(self):
         
@@ -99,8 +106,8 @@ class MyTest(unittest.TestCase):
             'z_similarity_title':0,
             'z_similarity_address':0,
         }]
-
-        res = select_best_zoon_search.get_best_from_result(pd.DataFrame(json_result_list))
+        sbz = select_best_zoon_search.SelectBestZoonSearch({})
+        res = sbz.get_best_from_result(pd.DataFrame(json_result_list))
         if res is not None:
             self.assertEquals(1,len(res[res['id'] == '1']))
 
@@ -243,6 +250,76 @@ class MyTest(unittest.TestCase):
         for url,result in urls:
             self.assertEqual(common.normalize_z_source_url(url), result)
 
+    def test_zoon_parse_data_owner_id_from_html(self):
+        
+        full_name = r'data_unit_test\zoon\ekb\pages\pages\kafe_na_pervomajskoj'
+        html_str = ''
+        with open(full_name,'r',encoding='utf-8') as f:
+            html_str = f.read()
+        soup = BeautifulSoup(html_str,"html.parser")
+
+        result_id = parse_data.parset_html_details_get_data_owner_id(soup)
+        assert result_id == '54f54665a46cba6f2b8b4572'
+    
+    
+    def test_parset_html_details_get_rating_value(self):
+        params = [
+            ('5,0',r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old'),
+            ('5,0',r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new'),
+        ]
+        for expect_value, full_name in params:
+            html_str = ''
+            with open(full_name,'r',encoding='utf-8') as f:
+                html_str = f.read()
+            soup = BeautifulSoup(html_str,"html.parser")
+
+            rating_value = parse_data.parset_html_details_get_rating_value(soup)
+            assert rating_value == expect_value,f'{rating_value=} != {expect_value=} by {full_name=}'
+    
+    
+    def test_parset_html_details_get_rest_param(self):
+        params = [
+            (r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
+            'кафе,кофейня,пекарня,шашлычная,банкетный зал,гриль-бар,стейк-хаус,фастфуд',
+            'домашняя кухня,восточная кухня,авторская кухня,грузинская кухня',
+            'кухня,рестораны,тип,тип заведения,кавказская кухня,фастфуд,доставка еды,безалкогольный бар,дополнительные опции меню,доставка кавказской еды,доставка фастфуда,особенности заведения,ресторан'            
+            ),
+            (r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
+            'кафе,кофейня,пекарня,шашлычная,банкетный зал,гриль-бар,стейк-хаус,фастфуд',
+            'домашняя кухня,восточная кухня,авторская кухня,грузинская кухня',
+            'кухня,рестораны,тип,тип заведения,кавказская кухня,фастфуд,доставка еды,безалкогольный бар,дополнительные опции меню,доставка кавказской еды,доставка фастфуда,особенности заведения,ресторан'            
+            ),
+        ]
+        for full_name,z_type_organization_expect,z_kitchens_expect,z_all_param_expect  in params:
+            html_str = ''
+            with open(full_name,'r',encoding='utf-8') as f:
+                html_str = f.read()
+            soup = BeautifulSoup(html_str,"html.parser")
+
+            description_block = parse_data.parset_html_details_get_description_element(soup)
+
+            z_type_organization,z_kitchens,z_all_param  = parse_data.parset_html_details_get_rest_param(description_block)
+            assert z_type_organization == z_type_organization_expect,f'{z_type_organization=} != {z_type_organization_expect=} by {full_name=}'
+            assert z_kitchens == z_kitchens_expect,f'{z_kitchens=} != {z_kitchens_expect=} by {full_name=}'
+            assert z_all_param == z_all_param_expect,f'{z_all_param=} != {z_all_param_expect=} by {full_name=}'
+
+    def test_zoon_parse_description_element(self):
+        
+        params = [
+            r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
+            r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
+        ]
+        for full_name in params:
+            html_str = ''
+            with open(full_name,'r',encoding='utf-8') as f:
+                html_str = f.read()
+            soup = BeautifulSoup(html_str,"html.parser")
+
+            description_element = parse_data.parset_html_details_get_description_element(soup)
+            assert description_element is not None,f'not found description by {full_name=}'
+        
+
+
     def test_ya_raiting_parse_html_get_json(self):
 
         with open(r"data_unit_test\yandex_r\ekb\html\1305638501.html",'r',encoding='UTF-8') as f:
@@ -258,72 +335,6 @@ class MyTest(unittest.TestCase):
             self.assertFalse(json_res['ya_stars_count'] == '')
             self.assertFalse(json_res['ya_rating'] == '')
             self.assertFalse(json_res['ya_link_org'] == '')
-
-    def test_verification_check_skiping_prace(self):
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean1","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'от 2 500 ₽ до 5 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 0)
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean1","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'от 10 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 1)
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean1","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            {'location_nm_rus':'Питер',"transaction_info":"erwin rekamoreokean2","price_all":'от 10 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 0)
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean1","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            {'location_nm_rus':'Питер',"transaction_info":"erwin rekamoreokean2","price_all":'от 10 000 ₽'},
-            {'location_nm_rus':'Питер',"transaction_info":"erwin rekamoreokean3","price_all":'от 10 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 0)
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean3","price_all":'от 5 000 ₽ до 10 000 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean4","price_all":'от 10 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 2)
-
-        v = VerificationResult()
-        df = pd.DataFrame([            
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean3","price_all":'от 5 000 ₽ до 10 000 ₽'},
-            {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean4","price_all":'от 10 000 ₽'},
-
-            {'location_nm_rus':'Питер',"transaction_info":"erwin rekamoreokean","price_all":'до 2 500 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean2","price_all":'от 2 500 ₽ до 5 000 ₽'},
-            # {'location_nm_rus':'Москва',"transaction_info":"erwin rekamoreokean3","price_all":'от 5 000 ₽ до 10 000 ₽'},
-            {'location_nm_rus':'Питер',"transaction_info":"erwin rekamoreokean4","price_all":'от 10 000 ₽'},
-        ])
-        v.check_skiping_prace(df)
-        self.assertEqual(len(v.result_messages), 4)
-
 
 # if __name__ == '__main__':
 #     unittest.main()

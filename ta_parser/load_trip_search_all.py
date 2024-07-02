@@ -55,7 +55,7 @@ def collect_all_file_to_one_db():
 
                     row['ta_location_id'] = int(row['ta_location_id'])
                     row['ta_address'] = load_trip_search.revert_address(row['ta_address'])
-                    row['ta_address_n'] = common.replace_address_by_city_code(city_code, row['ta_address'])
+                    row['ta_address_n'] = common.replace_address_by_city_code(city_code, row['ta_address'], self.params.city_list)
                     json_list_result.append(row.copy())
         
     df_result = pd.DataFrame(json_list_result)

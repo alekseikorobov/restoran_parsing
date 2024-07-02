@@ -50,8 +50,8 @@ def load_image(row):
 
   logging.debug(f"{city_name=},{ya_id=}")
 
-  city_line = dict_city.get_line_by_city_name(city_name)
-  path = load_ya_raiting.get_folder(city_line['city'],f'gallery_images/{tag_id}')
+  city_line = dict_city.get_line_by_city_name(city_name,[])
+  path = load_ya_raiting.get_folder(city_line.city,f'gallery_images/{tag_id}')
   full_name = f'{path}\\{ya_id}_{image_id}.jpg'
   
   row['path_image'] = full_name

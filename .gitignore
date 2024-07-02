@@ -1,4 +1,7 @@
 .vscode
 __pycache__
+data_old
 data
 logs
+tables
+test.ipynb

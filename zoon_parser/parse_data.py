@@ -37,9 +37,13 @@ def get_normal_text_from_element(element:PageElement)->str:
     text_p = ''.join(res_text)
     return text_p
 
-def get_dd_param_values(param_element):
+def get_dd_param_values(dl_element):
     result_list = []
-    dd_elememt = param_element.find(class_ = 'first-p expanding-description')
+    dd_elememt = dl_element.find(class_ = 'first-p expanding-description')
+    
+    if dd_elememt is None:
+        dd_elememt = dl_element.find('dd')
+
     if dd_elememt is not None:
         a_list_elements = dd_elememt.find_all('a')
         if a_list_elements is not None:
@@ -106,6 +110,74 @@ def parse_url_from_zoon(url):
             return url_new_decode
     return url
 
+def parset_html_details_get_data_owner_id(soup):
+    div_reviews_element = soup.find("div", {"data-owner-id" : True})
+    if div_reviews_element is not None:
+        data_owner_id_text = div_reviews_element.attrs['data-owner-id']
+        return data_owner_id_text
+    return ''
+
+def parset_html_details_get_rating_value(soup):
+    rating_value_element = soup.find(class_="rating-value")
+    if rating_value_element is not None:
+        return get_normal_text_from_element(rating_value_element)
+    
+    div_stars_count_element = soup.find("div", {"data-uitest" : 'stars-count'})
+    if div_stars_count_element is not None:
+        return get_normal_text_from_element(div_stars_count_element)
+        
+    return ''
+
+def parset_html_details_get_rest_param(description_block):
+
+    z_type_organization,z_kitchens_str,z_all_param = '','',''
+
+    service_description_block = description_block.find(class_='service-description-block')
+    if service_description_block is not None:
+        dl_list_elements = service_description_block.find_all('dl')
+        if dl_list_elements is not None:
+            all_param_text_list = [] # на всякий случай лучше собрать все разделы, чтобы знать какие есть.
+            #на случай если слово 'Кухня' изменится или будет другой похожий раздел
+            z_kitchens = []
+            for dl_element in dl_list_elements:
+                #если это новая разметка страницы:
+                dt_element = dl_element.find('dt',{'data-value':True})
+                if dt_element is None:
+                   #иначе это старая разметка страницы
+                    dt_element = dl_element.find('dt',class_='z-text--13 z-text--dark-gray')
+                if dt_element is not None:
+                    dt_element_text = get_normal_text_from_element(dt_element)
+                    dt_element_text = dt_element_text.lower()
+                    if dt_element_text == 'тип заведения':
+                        list_values = get_dd_param_values(dl_element)
+                        z_type_organization = ','.join(list_values)
+                    elif dt_element_text == 'кухня':                        
+                        list_values = get_dd_param_values(dl_element)
+                        if len(list_values) > 0:
+                            z_kitchens.extend(list_values)
+                    if dt_element_text in z_kitchens:
+                        list_values = get_dd_param_values(dl_element)
+                        if len(list_values) > 0:
+                            z_kitchens = [z_kitchen for z_kitchen in z_kitchens if z_kitchen != dt_element_text]
+                            z_kitchens.extend(list_values)
+                    z_kitchens_str = ','.join(z_kitchens)
+
+                    all_param_text_list.append(dt_element_text)
+            z_all_param = ','.join(all_param_text_list)
+        else:
+            logging.warning('class params-list not found')    
+    else:
+        logging.warning('class service-description-block not found')
+
+    return z_type_organization,z_kitchens_str,z_all_param
+
+
+def parset_html_details_get_description_element(soup):
+    element = soup.find(id = 'description')
+    if element is None:
+        element = soup.find(id = 'info')
+    return element
+
 def parse_html_details(full_name, is_debug_log = False):
     result_data = {
         'z_name':'',
@@ -126,7 +198,7 @@ def parse_html_details(full_name, is_debug_log = False):
     }
     
     if is_debug_log: print(f'{full_name=}')
-    if not os.path.isfile(full_name):
+    if not common.isfile(full_name):
         raise(Exception(f'not found file {full_name=}'))
     logging.debug(f'parse html {full_name}')
     if is_debug_log: print(f'parse html  {full_name}')
@@ -149,72 +221,25 @@ def parse_html_details(full_name, is_debug_log = False):
             result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
             #<meta property="og:url" content="https://ekb.zoon.ru/restaurants/restoran_krevetki_i_burgery_na_ulitse_malysheva/">
 
-    div_reviews_element = soup.find("div", {"id" : "reviews"})
-    if div_reviews_element is not None:
-        if len(div_reviews_element.contents)>0:
-            div_inner_reviews_element = div_reviews_element.contents[0]
-            if div_inner_reviews_element is not None and div_inner_reviews_element.attrs is not None:
-                if 'data-owner-id' in div_inner_reviews_element.attrs:
-                    data_owner_id_text = div_inner_reviews_element.attrs['data-owner-id']
-                    result_data['z_id'] = data_owner_id_text
-                
-        result_data['z_name'] = get_normal_text_from_element(name_element)
+    result_data['z_id'] = parset_html_details_get_data_owner_id(soup)
+    
+    result_data['z_rating_value_2'] = parset_html_details_get_rating_value(soup)
+
+    
         
-    rating_value_element = soup.find(class_="rating-value")
-    if rating_value_element is not None:
-        result_data['z_rating_value_2'] = get_normal_text_from_element(rating_value_element)
-        
-    description_block = soup.find(id = 'description')
+    description_block = parset_html_details_get_description_element(soup)
     if description_block is None:
         logging.warning('id description element not found ' + full_name)
         return result_data
-    
-    # описание ресторана решили не брать
-    # description_element = description_block.find('dd',{'data-track-text-action':'description'})
-    # if description_element is not None:
-    #     result_data['z_description'] = replace_description(get_normal_text_from_element(description_element))
-    # else:
-    #     logging.warning('description not found' + full_name)
 
-    # if result_data['z_description'] == '' or result_data['z_description'] is None:
-    #     descriptiontext_element = description_block.find(class_ = 'description-text')
-    #     if descriptiontext_element is not None:
-    #         raise(Exception(f'Description found but empty - {city=}, {full_url=}'))
-        
-    
+
     #LEFT BLOCK
-    service_description_block = description_block.find(class_='service-description-block')
-    if service_description_block is not None:
-        dl_list_elements = service_description_block.find_all('dl')
-        if dl_list_elements is not None:
-            all_param_text_list = [] # на всякий случай лучше собрать все разделы, чтобы знать какие есть.
-            #на случай если слово 'Кухня' изменится или будет другой похожий раздел
-            z_kitchens = None
-            for dl_element in dl_list_elements:
-                dt_element = dl_element.find('dt',class_='z-text--13 z-text--dark-gray')
-                if dt_element is not None:
-                    dt_element_text = get_normal_text_from_element(dt_element)
-                    dt_element_text = dt_element_text.lower()
-                    if dt_element_text == 'тип заведения':
-                        list_values = get_dd_param_values(dl_element)
-                        result_data['z_type_organization'] = ','.join(list_values)
-                    elif dt_element_text == 'кухня':                        
-                        z_kitchens = get_dd_param_values(dl_element)
-                        result_data['z_kitchens'] = ','.join(z_kitchens)
-                    
-                    if z_kitchens is not None and dt_element_text in z_kitchens:
-                        list_values = get_dd_param_values(dl_element)
-                        if len(list_values) > 0:
-                            z_kitchens = [z_kitchen for z_kitchen in z_kitchens if z_kitchen != dt_element_text]
-                            z_kitchens.extend(list_values)
-                            result_data['z_kitchens'] = ','.join(z_kitchens)                        
+    z_type_organization,z_kitchens,z_all_param = parset_html_details_get_rest_param(description_block)
 
-                    all_param_text_list.append(dt_element_text)
-            result_data['z_all_param'] = ','.join(all_param_text_list)
-        else:
-            logging.warning('class params-list not found')    
-    else:
-        logging.warning('class service-description-block not found')
+    result_data['z_type_organization'] = z_type_organization
+    result_data['z_kitchens'] = z_kitchens
+    result_data['z_all_param'] = z_all_param
+    
     
     #RIGHT BLOCK
     
@@ -286,7 +311,7 @@ def get_details_json(city,full_url,replace=False,is_debug_log = False):
     path_json = common.get_folder(base_folder, city, 'pages_json')
     full_name_json = f'{path_json}/{page_name}.json'
     if is_debug_log: print(f'{full_name_json=}')
-    if not replace and os.path.isfile(full_name_json):
+    if not replace and common.isfile(full_name_json):
         with open(full_name_json, 'r', encoding='utf-8') as f:
             result_data = json.load(f)
             result_data = {replace_key(key):result_data[key] for key in result_data }
@@ -375,7 +400,7 @@ def get_data_from_item(item_element):
     
     object_result['z_features'] =  ';'.join(features)
 
-    rating_value_element = item_element.find(class_ = 'rating-value')
+    rating_value_element = item_element.find(class_ = ' ')
     if rating_value_element is not None:
         object_result['z_rating_value'] = rating_value_element.text
 

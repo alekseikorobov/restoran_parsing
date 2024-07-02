@@ -20,41 +20,29 @@ import ta_parser.load_trip_details as load_trip_details
 import ta_parser.load_trip_search as load_trip_search
 import zoon_parser.load_zoon_details as load_zoon_details
 import zoon_parser.load_zoon_search as load_zoon_search
-from dataclasses import dataclass
+
 import os
 import pandas as pd
 import sys
 import numpy as np
-
-
-@dataclass
-class Params:
-    
-    #входной фал для поиска
-    yandex_data_file: str = 'tables\\tran_yandex_data.xlsx'
-    temp_zoon_search_file: str = 'tables\\zoon_search.hd'
-    temp_select_best_zoon_search_file: str = 'tables\\zoon_select_best.hd'
-    zoon_details_file: str = 'tables\\zoon_details.xlsx'
-    trip_search_file: str = 'tables\\trip_search.hd'
-    temp_select_best_trip_search_file: str = 'tables\\trip_select_best.hd'
-    trip_details_file: str = 'tables\\trip_details.xlsx'
-    validate_map_rest_file: str = 'dict\\validate_map_rest.xlsx'
-    
-    all_trip_search_file: str = 'tables\\all_trip_search.hd'
-    all_trip_details_file: str = 'tables\\all_trip_details.hd'
-    all_zoon_details_file: str = 'tables\\all_zoon_details.hd'
-    all_zoon_search_file: str = 'tables\\all_zoon_search.hd'
-    using_all_db = True
-
-    logs_path: str = 'logs/all_logs_20240124.log'
-    
-    # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
-    zoon_details_replace_json = False
-
+import json
+from params import Params
+import datetime
+from string import Template
 
 class LoadData:
     def __init__(self, params: Params) -> None:
         self.params = params
+
+
+        self.select_best_zoon_search = select_best_zoon_search.SelectBestZoonSearch(self.params)
+        self.select_best_trip_search = select_best_trip_search.SelectBestTripSearch(self.params)
+        self.load_trip_details = load_trip_details.LoadTripDetails(self.params)
+        self.load_trip_search = load_trip_search.LoadTripSearch(self.params)
+        self.load_zoon_details = load_zoon_details.LoadZoonDetails(self.params)
+        self.load_zoon_search = load_zoon_search.LoadZoonSearch(self.params)
+
+
         self.config_logging()
 
         self.all_source = {
@@ -71,7 +59,7 @@ class LoadData:
         }
 
         for key_file in self.all_source_file:
-            if os.path.isfile(self.all_source_file[key_file]):
+            if common.isfile(self.all_source_file[key_file]):
                 self.all_source[key_file] = pd.read_hdf(self.all_source_file[key_file], 'DATA')
 
         self.columns_ya_for_zoon_search = [
@@ -86,7 +74,9 @@ class LoadData:
         ]
 
     def config_logging(self):
-        
+        self.params.logs_path = Template(self.params.logs_path).substitute({
+            'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
+        })
         folder,file_name = os.path.split(self.params.logs_path)
 
         if not os.path.isdir(folder):
@@ -102,13 +92,6 @@ class LoadData:
             ]
         )
 
-    def verify_df_valid(self, df_valid):
-        df_valid['v_ta_id'] = df_valid['v_ta_id'].apply(np.round).astype('Int64')
-        df_valid_d = df_valid[df_valid[['city_nm', 'restaurant_nm']].duplicated()]
-        if len(df_valid_d) > 0:
-            message = f'Excists dublicate! {df_valid_d[["city_nm","restaurant_nm"]]}'
-            raise (Exception(message))
-
     def save_to_df_source(self, df_trip_search: pd.DataFrame, key_source: str, check_duble_field=None):
         df_all = pd.concat(
             [df_trip_search, self.all_source[key_source]], ignore_index=True)
@@ -122,6 +105,9 @@ class LoadData:
                 ls = v[v > 1].index
                 raise (
                     Exception(f'Exists duplicate by filed {check_duble_field} values - {ls}'))
+        
+        print(df_all.info())
+
         df_all.to_hdf(self.all_source_file[key_source], 'DATA')
         logging.debug(f'save to {self.all_source_file[key_source]}')
 
@@ -169,7 +155,7 @@ class LoadData:
         logging.debug(f'{df_to_load.shape=}')
         df_trip_details_new = pd.DataFrame()
         if len(df_to_load) > 0:
-            df_trip_details_new = load_trip_details.start(df_to_load)
+            df_trip_details_new = self.load_trip_details.start(df_to_load)
             cols = [
                 'ta_similarity_title_with_tran2', 'ta_similarity_title_with_tran', 'ta_similarity_title2', 'ta_similarity_title', 
                 'ta_similarity_address', 'ta_status', 'ta_status_m', 'ta_name_n', 'ta_query', 'ta_path_source'
@@ -191,7 +177,7 @@ class LoadData:
         logging.debug(f'{df_trip_details["source_id"].nunique()=}')
         return df_trip_details
 
-    def get_df_zoon_details_by_db(self, df_selected: pd.DataFrame, control_count: int, zoon_details_replace_json):
+    def get_df_zoon_details_by_db(self, df_selected: pd.DataFrame):
         # выяснилось что в качестве ключа использовать z_id использовать нельзя, так как есть дубликаты
         # поэтому в качестве уникального ключа используем ссылку on=['z_source_url']
 
@@ -210,7 +196,7 @@ class LoadData:
         logging.debug(f'{df_to_load.shape=}')
         df_zoon_details_new = pd.DataFrame()
         if len(df_to_load) > 0:
-            df_zoon_details_new = load_zoon_details.start(df_to_load, control_count, replace_json=zoon_details_replace_json, is_debug_log=False)
+            df_zoon_details_new = self.load_zoon_details.start(df_to_load)
             # print(f'{df_zoon_details_new.columns=}')
             cols_to_save = [
                 'z_name',
@@ -253,22 +239,18 @@ class LoadData:
                 lambda url: ta_load_data.get_location_id_from_url(url))
             df_yandex_data = df_yandex_data[df_yandex_data['url_ta'].isna()]
 
-        df_trip_search_old = self.get_from_df_source(
-            df_yandex_data[self.columns_ya_for_trip_search], 'df_trip_all_search', on=['ta_query'])
+        df_trip_search_old = self.get_from_df_source(df_yandex_data[self.columns_ya_for_trip_search], 'df_trip_all_search', on=['ta_query'])
 
-        df_to_load = df_trip_search_old[df_trip_search_old['_merge']
-                                        == 'left_only']
+        df_to_load = df_trip_search_old[df_trip_search_old['_merge'] == 'left_only']
         df_to_load.drop(columns='_merge', inplace=True)
 
-        is_not_ya_status = df_to_load['ya_status'].isin(
-            ['not_match_a', 'not_match_cat', 'not_match_n05', 'not_match_other'])
+        is_not_ya_status = df_to_load['ya_status'].isin(['not_match_a', 'not_match_cat', 'not_match_n05', 'not_match_other'])
         is_match_address = df_to_load['ya_is_match_address'] == False
         is_not_cnt_category_match = df_to_load['ya_cnt_category_match'] == 0
         # is_ya_not_address = df_to_load['ta_status'] == 'ya_not_address'
         # is_by_url_ta = df_to_load['url_ta'].notna()
 
-        df_all_not_match = df_to_load[is_not_ya_status |
-                                      is_match_address | is_not_cnt_category_match]
+        df_all_not_match = df_to_load[is_not_ya_status | is_match_address | is_not_cnt_category_match]
         df_all_not_match['ta_status'] = 'not_match'
         df_to_load = df_to_load[~df_to_load.index.isin(df_all_not_match.index)]
         logging.debug(f'{df_to_load.shape=}')
@@ -276,22 +258,20 @@ class LoadData:
         if len(df_to_load) > 0:
             columnWs_save = ['ta_location_id', 'ta_status', 'ta_name', 'ta_link',
                              'ta_type_org', 'ta_address', 'ta_address_n', 'ta_query']
-            df_trip_search_new = load_trip_search.start(df_to_load)
+            df_trip_search_new = self.load_trip_search.start(df_to_load)
             logging.debug(f'{df_trip_search_new.shape=}')
-            self.save_to_df_source(
-                df_trip_search_new[columnWs_save].drop_duplicates(), 'df_trip_all_search')
+            self.save_to_df_source(df_trip_search_new[columnWs_save].drop_duplicates(), 'df_trip_all_search')
         df_trip_search = pd.concat([df_trip_search_old[df_trip_search_old['_merge']
                                    == 'both'], df_trip_search_new, df_all_not_match, df_by_url])
         df_trip_search.drop(columns='_merge', inplace=True)
-        logging.debug(
-            f'{df_trip_search.shape=}, {df_trip_search["source_id"].nunique()=}')
+        logging.debug(f'{df_trip_search.shape=}, {df_trip_search["source_id"].nunique()=}')
         return df_trip_search
 
     def get_df_zoon_search_by_db(self, df_yandex_data: pd.DataFrame):
         '''оптимизация для получения данных из zoon, если есть общий файл всего скаченного, то выбирается только то что нужно скачать 
         '''
         df_yandex_data['z_query'] = df_yandex_data.apply(
-            lambda row: load_zoon_search.get_z_query(row['location_nm_rus'], row['ya_point']), axis=1)
+            lambda row: self.load_zoon_search.get_z_query(row['location_nm_rus'], row['ya_point']), axis=1)
         df_by_url = df_yandex_data[self.columns_ya_for_zoon_search][df_yandex_data['url_zoon'].notna()].drop_duplicates()
         if len(df_by_url) > 0:
             df_by_url['z_status'] = 'new_by_fix'
@@ -327,7 +307,7 @@ class LoadData:
                             'z_lat', 'z_id', 'z_object_id', 'z_ev_label', 'z_features',
                             'z_rating_value', 'z_worktimes', 'z_address', 'z_phone',
                             'z_path_source', 'z_address_n', 'z_count_search', 'z_dist', 'z_query']
-            df_zoon_search_new = load_zoon_search.start(df_to_load)
+            df_zoon_search_new = self.load_zoon_search.start(df_to_load)
             logging.debug(f'{df_zoon_search_new.shape=}')
             self.save_to_df_source(
                 df_zoon_search_new[columns_save].drop_duplicates(), 'df_zoon_all_search')
@@ -350,123 +330,141 @@ class LoadData:
             lambda row: common.str_similarity2(row['ya_company_name_norm'], row['z_company_name_norm']), axis=1)
         return df_zoon_details
 
-    def start_load(self, is_replace_file=False):
-        # описание размерности (на вход) [записей, полей] -> (на выход) [записей, полей]
-
+    def get_or_action(self, path_file:str, action, *args):
+        _,ext = os.path.splitext(path_file)
+        if common.isfile(path_file):
+            if ext == '.pik':
+                return pd.read_pickle(path_file)
+            elif ext == '.hd':
+                return pd.read_hdf(path_file,'DATA')
+            elif ext == '.xlsx':
+                return pd.read_excel(path_file)
+            else:
+                raise(Exception(f'not support extention {ext}'))
+        #print(type(args))
+        df = action(*args)
+        if ext == '.pik':
+            df.to_pickle(path_file)
+        elif ext == '.xlsx':
+            df.to_excel(path_file,index=False)
+        elif ext == '.hd':
+            df.to_hdf(path_file,'DATA')
+        else:
+            raise(Exception(f'not support extention {ext}'))
+        return df
+    
+    def start_load(self):
+        '''Глобальный перехват ошибок, перехватываются все ошибки, логируются и вызывается raise с той же ошибкой
+        '''
+        try:
+            self.__start_load__()
+        except BaseException as ex:
+            logging.error(ex)
+            raise ex
+    
+    def __start_load__(self):
         start_all = time.time()
-        if is_replace_file:
+        if self.params.is_replace_file:
             for path in [
                 self.params.temp_zoon_search_file,
+                self.params.temp_trip_search_file,
                 self.params.temp_select_best_zoon_search_file,
-                self.params.zoon_details_file,
-                self.params.trip_search_file,
                 self.params.temp_select_best_trip_search_file,
+                self.params.zoon_details_file,
                 self.params.trip_details_file,
             ]:
-                if os.path.isfile(path):
+                if common.isfile(path):
                     os.remove(path)
 
-        df_valid = pd.read_excel(self.params.validate_map_rest_file, sheet_name='Sheet1')
-        logging.debug(f'get validate table {df_valid.shape=}')
-        self.verify_df_valid(df_valid)
-
-        
-        df_yandex_data = None
         df_zoon_search = None
         df_trip_search = None
         
-
         is_delete_temp_file = False
 
-        #df_yandex_data = pd.read_hdf(self.params.yandex_data_file, 'DATA')
-        df_yandex_data = pd.read_excel(self.params.yandex_data_file)
+        df_yandex_data = pd.read_parquet(self.params.yandex_data_file)
         df_yandex_data['transaction_info_norm'] = df_yandex_data['transaction_info_new'].apply(common.normalize_company_name)
         df_yandex_data['ya_company_name_norm'] = df_yandex_data['ya_company_name_norm'].apply(common.normalize_company_name)
+        df_yandex_data['z_query'] = ''
+        df_yandex_data['ta_query'] = ''
+        
         logging.debug(f'get df_yandex_data table {df_yandex_data.shape=}')
 
         control_count = df_yandex_data['source_id'].nunique()
 
-        if os.path.isfile(self.params.temp_zoon_search_file):
+        if not common.isfile(self.params.temp_zoon_search_file):
+            start = time.time()
+            if self.params.using_all_db:
+                df_zoon_search = self.get_df_zoon_search_by_db(df_yandex_data)
+            else:                    
+                df_zoon_search = self.load_zoon_search.start(df_yandex_data[self.columns_ya_for_zoon_search])
+            df_zoon_search.to_hdf(self.params.temp_zoon_search_file, 'DATA')
+            end = time.time()
+            logging.info(f'load_zoon_search - {end - start}')
+        else:
             df_zoon_search = pd.read_hdf(self.params.temp_zoon_search_file, 'DATA')
 
-        if not os.path.isfile(self.params.zoon_details_file):
-            if not os.path.isfile(self.params.temp_zoon_search_file):
-                start = time.time()
-
-                if self.params.using_all_db:
-                    df_zoon_search = self.get_df_zoon_search_by_db(df_yandex_data)
-                else:
-                    df_yandex_data['z_query'] = ''
-                    df_zoon_search = load_zoon_search.start(df_yandex_data[self.columns_ya_for_zoon_search])
-                df_zoon_search.to_hdf(self.params.temp_zoon_search_file, 'DATA')
-                end = time.time()
-                logging.info(f'load_zoon_search - {end - start}')
-
+        if not common.isfile(self.params.zoon_details_file):
             start = time.time()
 
-            df_selected = None
-            if os.path.isfile(self.params.temp_select_best_zoon_search_file):
-                df_selected = pd.read_hdf(self.params.temp_select_best_zoon_search_file, 'DATA')
-            else:
-                df_selected = select_best_zoon_search.start(df_zoon_search, control_count)
-                df_selected.to_hdf(self.params.temp_select_best_zoon_search_file, 'DATA')
+            df_selected = self.get_or_action(self.params.temp_select_best_zoon_search_file,
+                                             self.select_best_zoon_search.start,
+                                             df_zoon_search)
 
             if type(df_selected) != pd.DataFrame:
                 raise (Exception(f'df_selected is not df'))
 
             df_zoon_details = None
             if self.params.using_all_db:
-                df_zoon_details = self.get_df_zoon_details_by_db(df_selected, control_count, self.params.zoon_details_replace_json)
+                df_zoon_details = self.get_df_zoon_details_by_db(df_selected)
             else:
-                df_zoon_details = load_zoon_details.start(df_selected, control_count, self.params.zoon_details_replace_json)
+                df_zoon_details = self.load_zoon_details.start(df_selected)
 
             df_zoon_details = self.add_info_for_zoon_details(df_zoon_details)
 
             logging.debug(
                 f'{df_zoon_details.shape=}, {df_zoon_details["source_id"].nunique()=}, {df_zoon_details[["ya_id","source_id"]].drop_duplicates().shape=}')
-            df_zoon_details.to_excel(self.params.zoon_details_file,index=False)
+            df_zoon_details.to_parquet(self.params.zoon_details_file)
             end = time.time()
             logging.info(f'load_zoon_details - {end - start}')
 
             if is_delete_temp_file:
                 os.remove(self.params.temp_zoon_search_file)
 
-        if not os.path.isfile(self.params.trip_search_file):
-            start = time.time()
-            if self.params.using_all_db:
-                df_trip_search = self.get_df_trip_search_by_db(df_yandex_data)
+        if self.params.load_from_trip:
+            if not common.isfile(self.params.temp_trip_search_file):
+                start = time.time()
+                if self.params.using_all_db:
+                    df_trip_search = self.get_df_trip_search_by_db(df_yandex_data)
+                else:
+                    df_trip_search = self.load_trip_search.start(df_yandex_data[self.columns_ya_for_trip_search])
+
+                df_trip_search.to_hdf(self.params.temp_trip_search_file, 'DATA')
+
+                end = time.time()
+                logging.info(f'load_trip_search - {end - start}')
             else:
-                df_yandex_data['ta_query'] = ''
-                df_trip_search = load_trip_search.start(df_yandex_data[self.columns_ya_for_trip_search])
-
-            df_trip_search.to_hdf(self.params.trip_search_file, 'DATA')
-
-            end = time.time()
-            logging.info(f'load_trip_search - {end - start}')
-        else:
-            df_trip_search = pd.read_hdf(self.params.trip_search_file, 'DATA')
+                df_trip_search = pd.read_hdf(self.params.temp_trip_search_file, 'DATA')
 
 
-        if not os.path.isfile(self.params.trip_details_file):
-            start = time.time()
+            if not common.isfile(self.params.trip_details_file):
+                start = time.time()
 
-            df_selected = None
-            if os.path.isfile(self.params.temp_select_best_trip_search_file):
-                df_selected = pd.read_hdf(self.params.temp_select_best_trip_search_file, 'DATA')
-            else:
-                df_selected = select_best_trip_search.start(df_trip_search)
-                df_selected.to_hdf(self.params.temp_select_best_trip_search_file, 'DATA')
-            
-            df_trip_details = None
-            if self.params.using_all_db:
-                df_trip_details = self.get_df_trip_details_by_db(df_selected)
-            else:
-                df_trip_details = load_trip_details.start(df_selected)
+                df_selected = self.get_or_action(self.params.temp_select_best_trip_search_file,
+                                                self.select_best_trip_search.start,
+                                                df_trip_search)
 
-            df_trip_details.to_excel(self.params.trip_details_file, index=False)
-                    
-            end = time.time()
-            logging.info(f'load_trip_details - {end - start}')
+                df_trip_details = None
+                if self.params.using_all_db:
+                    df_trip_details = self.get_df_trip_details_by_db(df_selected)
+                else:
+                    df_trip_details = self.load_trip_details.start(df_selected)
+
+                df_trip_details.to_parquet(self.params.trip_details_file, index=False)   
+                end = time.time()
+                logging.info(f'load_trip_details - {end - start}')
+                
+                if is_delete_temp_file:
+                    os.remove(self.params.temp_trip_search_file)
 
         logging.debug(f'DONE')
 
@@ -474,11 +472,16 @@ class LoadData:
         logging.info(f'all time - {end_all - start_all}')
 
 if __name__ == '__main__':
-    ld = LoadData(Params())
     print(sys.argv)
+    param = Params()
+    with open('params.json','r',encoding='UTF-8') as f:
+        param = json.load(f, object_hook=lambda d: Params(**d))
+        print(type(param))
+    
     if len(sys.argv) == 1:
-        is_replace_file = False
+        param.is_replace_file = False
     else:
-        is_replace_file = True if sys.argv[1] == '1' else False
-    print(f'{is_replace_file=}')
-    ld.start_load(is_replace_file)
+        param.is_replace_file = True if sys.argv[1] == '1' else False
+    ld = LoadData(param)
+    
+    ld.start_load()

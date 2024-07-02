@@ -68,6 +68,17 @@ def get_folder(base_folder, city: str, type: str, is_page: bool|None = True) -> 
         os.makedirs(path)
     return path
 
+def isfile(path):
+    '''бывают случаи что файл создается, потому выходит ошибка и он не удаляется.
+    По этому стоит проверить размер файла, если он пустой, тогда его можно удалить и считать что файла не было
+    '''
+    if os.path.isfile(path):
+        size_file = os.path.getsize(path)
+        if size_file == 0:
+            os.remove(path)
+
+    return os.path.isfile(path)
+
 def get_header_dict_from_txt(file):
     obj = {}
     with open(file,'r') as f:
@@ -84,9 +95,8 @@ delete_words = [
     #,'restaurant'
     #,'dostavka'
 ]
-replace_words = [
-    'restoran,restaurant,dostavka'
-]
+replace_words = 'restoran,restaurant,dostavka'
+
 def normalize_transaction_name(tran_name:str):
 
     tran_name = unicodedata.normalize('NFKD',tran_name).encode('1251','ignore').decode('1251')
@@ -176,7 +186,7 @@ def replace_address_by_city_line(city_line, address_text:str|None):
 
     address_text = address_text.lower()
     address_text = re.sub('(этаж \\d+)|(\\d+ этаж.*?,)|(цокольный этаж.*?,)','',address_text).replace('  ',' ')
-    for rep in city_line['replaces']:
+    for rep in city_line.replaces:
         address_text = address_text.replace(rep.lower(),'')
 
     address_text = address_text.replace(',',' ').replace(';',' ').replace('  ',' ')
@@ -186,14 +196,14 @@ def replace_address_by_city_line(city_line, address_text:str|None):
 
     return address_text.strip()
 
-def replace_address_by_city_code(city_code:str, address_text:str|None):
-    city_line = dict_city.get_line_by_city_code(city_code)
+def replace_address_by_city_code(city_code:str, address_text:str|None, city_list):
+    city_line = dict_city.get_line_by_city_code(city_code, city_list)
 
     return replace_address_by_city_line(city_line, address_text)
 
-def replace_address_by_city(city_name:str, address_text:str|None):
+def replace_address_by_city(city_name:str, address_text:str|None, city_list):
 
-    city_line = dict_city.get_line_by_city_name(city_name)
+    city_line = dict_city.get_line_by_city_name(city_name, city_list)
 
     return replace_address_by_city_line(city_line, address_text)
 

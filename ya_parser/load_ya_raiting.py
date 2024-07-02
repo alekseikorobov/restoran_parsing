@@ -1,5 +1,3 @@
-
-
 import pandas as pd
 from tqdm import tqdm
 import common.common as common
@@ -26,11 +24,11 @@ def get_folder(city: str, sub_folder: str) -> str:
 
 def get_raiting_html(city_name, id:str):
 
-  city_line = dict_city.get_line_by_city_name(city_name)
-  path = get_folder(city_line['city'],'html')
+  city_line = dict_city.get_line_by_city_name(city_name, self.params.city_list)
+  path = get_folder(city_line.city,'html')
   full_name = f'{path}\\{id}.html'
   result_html = ''
-  if not os.path.isfile(full_name):
+  if not common.isfile(full_name):
     full_url = f'https://yandex.ru/maps-reviews-widget/{id}?size=m&comments'
     #print(f'load from {full_url=}')
     headers = common.get_header_dict_from_txt('ya_parser/headers_raiting.txt')
@@ -80,7 +78,6 @@ def parse_html_get_json(html_str:str):
 
 def get_json_ya_raiting(city, ya_id):
   html_result = get_raiting_html(city,ya_id)
-  #print(len(html_result))
   json_result = parse_html_get_json(html_result)
   return json_result
 
@@ -92,22 +89,16 @@ def parse_and_get_result(row):
     row[key] = json_result[key]
 
   return row
-def start(
-        #path = 'data/hotel_from_ya_search_20240123.xlsx',
-          #result_path = 'tables\\hotel_from_ya_search_20240123_with_raiting.xlsx'
-    df_source:pd.DataFrame
-    ):
+
+
+def start(df_source:pd.DataFrame):
   tqdm.pandas()
-  #df = pd.read_excel(path,sheet_name='Sheet1')
 
   is_ya_cnt_category_match = df_source['ya_cnt_category_match']>0
   ya_is_match_address = df_source['ya_is_match_address']
-  #is_city = df['location_nm_rus'] == 'Сочи'
 
   df_source = df_source[is_ya_cnt_category_match & ya_is_match_address]
 
-  #df = df.head(10)
   df_result = df_source.progress_apply(parse_and_get_result,axis=1)
   df_result = pd.DataFrame(df_result)
-  #df_result.to_excel(result_path,index=False)
   return df_result

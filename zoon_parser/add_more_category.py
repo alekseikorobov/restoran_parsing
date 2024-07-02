@@ -20,7 +20,7 @@ def get_html_type_all(city:str):
     full_url = 'https://zoon.ru/msk/restaurants/type/'
     full_name = 'data/msk/type_all.html'
     html_result = ''
-    if not os.path.isfile(full_name):
+    if not common.isfile(full_name):
         logging.debug(f'load {full_url=}')
         headers = {
             'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
@@ -70,7 +70,7 @@ def get_type_as_json(html_result):
 
 def get_result_type_list(html_result):
     full_name = 'data/msk/type_all.json'
-    if not os.path.isfile(full_name):
+    if not common.isfile(full_name):
         logging.debug('Start parse html_result')
         result_type_list = get_type_as_json(html_result)
         logging.debug(f'get - {len(result_type_list)=}')
@@ -92,7 +92,7 @@ def get_html_by_one_type(city,type_json):
     full_name = f'{folder}/type_{type_name}.html'
     logging.debug(f'get_html_by_one_type by {type_name=} {full_url=}')
     html_result = ''
-    if not os.path.isfile(full_name):
+    if not common.isfile(full_name):
         headers = {
             'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
             ,'Accept-Encoding':'gzip, deflate, br'
@@ -128,7 +128,7 @@ def get_mid_from_type_html(html_result:str):
 
 def get_result_with_mid_type_list(result_type_list):
     full_name = 'data/msk/type_all_with_mid.json'
-    if not os.path.isfile(full_name):
+    if not common.isfile(full_name):
         for type_json in result_type_list:
             html_result = get_html_by_one_type('city',type_json)
             mid = get_mid_from_type_html(html_result)

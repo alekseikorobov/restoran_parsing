@@ -77,17 +77,18 @@ def get_header_dict_from_txt(file):
 
 def get_html_by_url(full_name, url:str, type_page='details',replace=False):
     html_result = ''
-    if not os.path.isfile(full_name) or replace:
+    if not common.isfile(full_name) or replace:
         if type_page == 'details':
             headers = get_header_dict_from_txt('ta_parser/headers.txt')
         else:
             headers = get_header_dict_from_txt('ta_parser/headers_search.txt')
             headers['Referer'] = url
-        logging.debug('load')
+        logging.debug(f'load by {url=}')
+        logging.debug(f'{headers=}')
         res = requests.get(url, headers=headers, verify=False, timeout=120)
         get_random_second()
         with open(full_name, 'w', encoding='utf-8') as f:
-            html_result = res.text 
+            html_result = res.text
             f.write(html_result)
     else:
         logging.debug(f'already exists {full_name=}')
@@ -114,7 +115,7 @@ def get_html_details_and_parse(city, test_url, id,replace_json=False):
     
     result_details_json = get_full_name_by_details_json(city, id)
     
-    if replace_json or not os.path.isfile(result_details_json):
+    if replace_json or not common.isfile(result_details_json):
         full_name = get_full_name_from_url(city, test_url)
         html_result = get_html_by_url(full_name, test_url)
         start_index = html_result.find('__WEB_CONTEXT__')
@@ -402,7 +403,7 @@ def save_json_by_search_page(city:str, query:str,page_offset:int = 0,replace_jso
     logging.debug(f'start - {city=}, {query=}')
     full_name = get_full_name_by_query_json(city, query, page_offset)
     logging.debug(f'start {full_name=}')
-    if replace_json or not os.path.isfile(full_name):
+    if replace_json or not common.isfile(full_name):
         html_result = get_html_by_search_page(city ,query, page_offset,type_org='RESTAURANT')
         result_orgs, page_offsets = parse_page_search(html_result, page_offset)
         logging.debug(f'get pages - {page_offsets=}')
@@ -413,11 +414,3 @@ def save_json_by_search_page(city:str, query:str,page_offset:int = 0,replace_jso
     else:
         logging.debug(f'already exists {full_name=}')
 
-#save_json_by_search_page('msk','Мясорубка Москва',replace_json=True)
-#parse_page_search(html_result)
-#%%
-# if __name__ == "__main__":
-#     test_url = 'https://www.tripadvisor.ru/Restaurant_Review-g298484-d13925670-Reviews-Brusnika-Moscow_Central_Russia.html'
-#     query = 'Брусника Чистопрудный бул., 15, стр. 6'
-
-#     save_json_by_search_page(query)

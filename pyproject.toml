@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "restoran-to-dadm"
+version = "0.1.0"
+description = ""
+authors = ["alekseikorobov <aleksei_korobov@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11"
+openpyxl = "^3.1.5"
+pyarrow = "^16.1.0"
+transliterate = "^1.10.2"
+requests = "^2.32.3"
+geopy = "^2.4.1"
+beautifulsoup4 = "^4.12.3"
+tqdm = "^4.66.4"
+selenium = "^4.22.0"
+tables = "^3.9.2"
+pandas = "2.1.1"
+numpy = "1.26.4"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
