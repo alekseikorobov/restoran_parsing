@@ -75,7 +75,7 @@ def get_header_dict_from_txt(file):
         #print(lines)
     return obj
 
-def get_html_by_url(full_name, url:str, type_page='details',replace=False):
+def get_html_by_url(full_name, url:str, type_page='details',replace=False, timeout=120):
     html_result = ''
     if not common.isfile(full_name) or replace:
         if type_page == 'details':
@@ -85,7 +85,7 @@ def get_html_by_url(full_name, url:str, type_page='details',replace=False):
             headers['Referer'] = url
         logging.debug(f'load by {url=}')
         logging.debug(f'{headers=}')
-        res = requests.get(url, headers=headers, verify=False, timeout=120)
+        res = requests.get(url, headers=headers, verify=False, timeout=timeout)
         get_random_second()
         with open(full_name, 'w', encoding='utf-8') as f:
             html_result = res.text
@@ -111,13 +111,13 @@ def get_location_id_from_url(ta_link:str):
     else:
         raise(Exception(f'cannot location id from url {ta_link=}'))
 
-def get_html_details_and_parse(city, test_url, id,replace_json=False):
+def get_html_details_and_parse(city, test_url, id,replace_json=False,timeout=120):
     
     result_details_json = get_full_name_by_details_json(city, id)
     
     if replace_json or not common.isfile(result_details_json):
         full_name = get_full_name_from_url(city, test_url)
-        html_result = get_html_by_url(full_name, test_url)
+        html_result = get_html_by_url(full_name, test_url,timeout=timeout)
         start_index = html_result.find('__WEB_CONTEXT__')
         if start_index == -1:
             logging.warn(f'not found __WEB_CONTEXT__ in {full_name=}')
@@ -151,7 +151,7 @@ ssrc_map = {
     'RESTAURANT':'e',
 }
 
-def get_html_by_search_page(city, query,page_offset,replace=False,type_org = 'HOTEL'):
+def get_html_by_search_page(city, query,page_offset,replace=False,type_org = 'HOTEL',timeout=120):
     q_param = requests.utils.quote(query)
     logging.debug(f'{q_param=}')
     
@@ -162,7 +162,7 @@ def get_html_by_search_page(city, query,page_offset,replace=False,type_org = 'HO
     test_url = f'https://www.tripadvisor.ru/Search?q={q_param}&ssrc={ssrc}&searchSessionId=7236A310399549A50A126094AFC0892C1696514443093ssid&sid=D0973E54C82A43E1BF5883FCF8DC9D1A1696514444209&blockRedirect=true&isSingleSearch=true&locationRejected=true&firstEntry=false&o={page_offset}'
     full_name = get_full_name_by_query_html(city, query, page_offset)
     logging.debug(f'{full_name=}')
-    html_result = get_html_by_url(full_name, test_url,type_page='search',replace=replace)
+    html_result = get_html_by_url(full_name, test_url,type_page='search',replace=replace,timeout=timeout)
     logging.debug(f'{len(html_result)=}')
     return html_result
 
@@ -399,18 +399,18 @@ def parse_page_search(html_result:str, page_offset:int):
                             page_offsets.append(int(offset))
     return result_orgs, page_offsets[0:6] # не более 6ти страниц
 
-def save_json_by_search_page(city:str, query:str,page_offset:int = 0,replace_json=False):
+def save_json_by_search_page(city:str, query:str,page_offset:int = 0,replace_json=False,timeout=120):
     logging.debug(f'start - {city=}, {query=}')
     full_name = get_full_name_by_query_json(city, query, page_offset)
     logging.debug(f'start {full_name=}')
     if replace_json or not common.isfile(full_name):
-        html_result = get_html_by_search_page(city ,query, page_offset,type_org='RESTAURANT')
+        html_result = get_html_by_search_page(city ,query, page_offset,type_org='RESTAURANT',timeout=timeout)
         result_orgs, page_offsets = parse_page_search(html_result, page_offset)
         logging.debug(f'get pages - {page_offsets=}')
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
         for _page_offset in page_offsets:
-            save_json_by_search_page(city,query,_page_offset,replace_json)
+            save_json_by_search_page(city,query,_page_offset,replace_json,timeout=timeout)
     else:
         logging.debug(f'already exists {full_name=}')
 

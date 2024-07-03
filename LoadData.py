@@ -323,11 +323,13 @@ class LoadData:
 
     def add_info_for_zoon_details(self, df_zoon_details):
         df_zoon_details['z_company_name_norm'] = df_zoon_details.apply(
-            lambda row: common.normalize_company_name(common.zoon_name_fix(row['z_name']), not row['is_map']), axis=1)
+            lambda row: common.normalize_company_name(common.zoon_name_fix(row['z_name'],self.params.list_replace_type_names), not row['is_map']), axis=1)
         df_zoon_details['z_similarity_name_n'] = df_zoon_details.apply(
             lambda row: common.str_similarity(row['ya_company_name_norm'], row['z_company_name_norm']), axis=1)
         df_zoon_details['z_similarity_name_n_2'] = df_zoon_details.apply(
             lambda row: common.str_similarity2(row['ya_company_name_norm'], row['z_company_name_norm']), axis=1)
+
+        df_zoon_details['actual_date'] = datetime.datetime.now()    
         return df_zoon_details
 
     def get_or_action(self, path_file:str, action, *args):
@@ -458,6 +460,8 @@ class LoadData:
                     df_trip_details = self.get_df_trip_details_by_db(df_selected)
                 else:
                     df_trip_details = self.load_trip_details.start(df_selected)
+
+                df_trip_details['actual_date'] = datetime.datetime.now()
 
                 df_trip_details.to_parquet(self.params.trip_details_file, index=False)   
                 end = time.time()

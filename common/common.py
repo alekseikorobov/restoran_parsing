@@ -129,28 +129,9 @@ def normalize_company_name(company_name:str, is_translit=True):
         norm2 = my_language_ru_pack.my_translite(norm2)
     return norm2
 
-list_replace_type_names = [
-      'Банкетный зал '
-    , 'Городской ресторан '
-    , 'Загородный клуб '
-    , 'Кафе-столовая '
-    , 'Кофе-бар '
-    , 'Кафе '
-    , 'Клуб-ресторан '
-    , 'Кондитерский дом '
-    , 'Кофейня '
-    , 'Кулинария-кафе '
-    , 'Кулинария '
-    , 'Паб крафтового пива '
-    , 'Паб '
-    , 'Пекарня '
-    , 'Ресторан японской и азиатской кухни '
-    , 'Ресторан '
-    , 'Турецкий ресторан '
-    , 'Фастфуд '
-]
 
-def zoon_name_fix(str1:str)->str:
+
+def zoon_name_fix(str1:str,list_replace_type_names)->str:
     if str1 == '': return ''
     if str1 is None: return ''
     if str(str1) == str(np.nan): return str1
@@ -160,27 +141,10 @@ def zoon_name_fix(str1:str)->str:
 
     return str1
 
-list_replace_stop_word_adress = ['бульвар'
-,'корпус'
-,'корп.'
-,'набережная'
-,'область'
-,'округ'
-,'переулок'
-,'площадь'
-,'посёлок'
-,'проезд'
-,'проспект'
-,'район'
-,'строение'
-,'стр.'
-,'ул.'
-,'улица'
-,'шоссе'
-,'село']
 
 
-def replace_address_by_city_line(city_line, address_text:str|None):
+
+def replace_address_by_city_line(city_line, address_text:str|None,list_replace_stop_word_adress):
     if address_text == '' or address_text is None or str(address_text) == str(np.nan):
         return address_text
 
@@ -196,16 +160,16 @@ def replace_address_by_city_line(city_line, address_text:str|None):
 
     return address_text.strip()
 
-def replace_address_by_city_code(city_code:str, address_text:str|None, city_list):
+def replace_address_by_city_code(city_code:str, address_text:str|None, city_list,list_replace_stop_word_adress):
     city_line = dict_city.get_line_by_city_code(city_code, city_list)
 
     return replace_address_by_city_line(city_line, address_text)
 
-def replace_address_by_city(city_name:str, address_text:str|None, city_list):
+def replace_address_by_city(city_name:str, address_text:str|None, city_list,list_replace_stop_word_adress):
 
     city_line = dict_city.get_line_by_city_name(city_name, city_list)
 
-    return replace_address_by_city_line(city_line, address_text)
+    return replace_address_by_city_line(city_line, address_text, list_replace_stop_word_adress)
 
 # def str_similarity_ww(str1:str,str2:str,func=str_similarity,is_debug=False):
 #     '''

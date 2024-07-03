@@ -31,7 +31,7 @@ class MyTest(unittest.TestCase):
             print(type(param))
 
         for test_case in test_list:
-            self.assertEqual(common.replace_address_by_city('Москва',test_case[0],param.city_list),test_case[1])
+            self.assertEqual(common.replace_address_by_city('Москва',test_case[0],param.city_list,param.list_replace_stop_word_adress),test_case[1])
     
     def test_normalize_transaction_name(self):
         
@@ -319,6 +319,21 @@ class MyTest(unittest.TestCase):
             assert description_element is not None,f'not found description by {full_name=}'
         
 
+    def test_get_data_from_item_rating_value(self):
+        params = [
+            ('4,9',r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json'),
+            ('3,8',r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json'),
+        ]
+        for expect_value,full_name in params:
+            html_str = parse_data.get_html_from_json_file(full_name)
+            soup = BeautifulSoup(html_str,"html.parser")
+            items = soup.find_all(class_='minicard-item js-results-item')
+            object_results = []
+            for item_element in items:
+                rating_value = parse_data.get_data_from_item_rating_value(item_element)
+                print(f'{rating_value=}')
+                assert expect_value == rating_value, f'{expect_value=} != {rating_value=} by {full_name=}'
+                break
 
     def test_ya_raiting_parse_html_get_json(self):
 

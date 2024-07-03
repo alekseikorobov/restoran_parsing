@@ -354,6 +354,18 @@ def get_html_from_json_file(full_path_page):
         html_str = obj_result['html']
     return html_str
 
+def get_data_from_item_rating_value(item_element):
+    rating_value_element = item_element.find(class_ = 'rating-value')
+    if rating_value_element is not None:
+        return rating_value_element.text
+    else:
+        #новая разметка
+        rating_value_element = item_element.find(class_ = 'stars')
+        if rating_value_element is not None:
+            return get_normal_text_from_element(rating_value_element)
+    return ''
+
+
 def get_data_from_item(item_element):
     object_result = {
         'z_title':'',
@@ -400,9 +412,8 @@ def get_data_from_item(item_element):
     
     object_result['z_features'] =  ';'.join(features)
 
-    rating_value_element = item_element.find(class_ = ' ')
-    if rating_value_element is not None:
-        object_result['z_rating_value'] = rating_value_element.text
+    object_result['z_rating_value'] = get_data_from_item_rating_value(item_element)
+
 
     minicard_item__worktime_element = item_element.find(class_ = 'minicard-item__work-time')
     worktimes = []

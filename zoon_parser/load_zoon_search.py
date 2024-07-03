@@ -106,7 +106,7 @@ class LoadZoonSearch:
             l2_ya, l1_ya = map(float,row['ya_point'].split(','))
 
             if not common.isfile(full_name):
-                lbyd.save_json_by_search_page(city_line,(l1_ya,l2_ya), replace=False)
+                lbyd.save_json_by_search_page(city_line,(l1_ya,l2_ya), replace=False,timeout=self.params.timeout_load_zoon_search)
 
             with open(full_name,'r',encoding='utf-8') as f:
                 json_result_list = json.load(f)
@@ -125,7 +125,7 @@ class LoadZoonSearch:
                         if key == 'z_path_source': continue
                         row[key] = json_result_item[key]
 
-                    row['z_address_n'] = common.replace_address_by_city(row['location_nm_rus'], row['z_address'], self.params.city_list)
+                    row['z_address_n'] = common.replace_address_by_city(row['location_nm_rus'], row['z_address'], self.params.city_list,self.params.list_replace_stop_word_adress)
                     row['z_count_search'] = len(json_result_list)
 
                     row['z_dist'] = None

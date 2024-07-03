@@ -33,7 +33,7 @@ class LoadZoonDetails:
             row['z_status'] = 'empty'
             return row
 
-        load_data.load_page_if_not_exists(city_line.city ,z_source_url)
+        load_data.load_page_if_not_exists(city_line.city ,z_source_url,timeout=self.params.timeout_load_zoon_details)
         new_row = parse_data.get_details_json(city_line.city,z_source_url, replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
         
         for key in new_row:

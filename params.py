@@ -21,7 +21,7 @@ class Params:
     all_zoon_search_file: str = 'tables\\all_zoon_search.hd'
     using_all_db = True
 
-    logs_path: str = 'logs/all_logs_20240124.log'
+    logs_path: str = 'logs/all_logs_$date_now.log'
     
     # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
     zoon_details_replace_json = False
@@ -30,6 +30,55 @@ class Params:
 
     # делать удаление перед записью или нет
     is_replace_file = False
+
+    using_all_db:bool = False
+    load_from_trip:bool = False
+
+    timeout_load_trip_details:int = 120
+    timeout_load_zoon_details:int = 120
+    timeout_load_trip_search:int = 120
+    timeout_load_zoon_search:int = 120
+
+    list_replace_type_names:list = field(default_factory=lambda:[ 
+          'Банкетный зал '
+        , 'Городской ресторан '
+        , 'Загородный клуб '
+        , 'Кафе-столовая '
+        , 'Кофе-бар '
+        , 'Кафе '
+        , 'Клуб-ресторан '
+        , 'Кондитерский дом '
+        , 'Кофейня '
+        , 'Кулинария-кафе '
+        , 'Кулинария '
+        , 'Паб крафтового пива '
+        , 'Паб '
+        , 'Пекарня '
+        , 'Ресторан японской и азиатской кухни '
+        , 'Ресторан '
+        , 'Турецкий ресторан '
+        , 'Фастфуд '
+    ])
+
+    list_replace_stop_word_adress:list = field(default_factory=lambda:[ 'бульвар'
+        ,'корпус'
+        ,'корп.'
+        ,'набережная'
+        ,'область'
+        ,'округ'
+        ,'переулок'
+        ,'площадь'
+        ,'посёлок'
+        ,'проезд'
+        ,'проспект'
+        ,'район'
+        ,'строение'
+        ,'стр.'
+        ,'ул.'
+        ,'улица'
+        ,'шоссе'
+        ,'село'
+    ])
 
     city_list:list = field(default_factory=lambda:[        
         {'name': 'Москва', 'city': 'msk', "is_domain": False, 
@@ -146,7 +195,7 @@ if __name__ == '__main__':
   # print(p.all_trip_details_file)
   # with open('params.json','w',encoding='UTF-8') as f:
   #   json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
-  # print('done')
+  
 
   #read from file
   p = Params()

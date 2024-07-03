@@ -70,7 +70,7 @@ class LoadTripSearch:
             row['ta_path_source'] = full_name_param
             if not common.isfile(full_name_param):
                 try:
-                    lbyd.save_json_by_search_page(city_line.city, query)
+                    lbyd.save_json_by_search_page(city_line.city, query,timeout=self.params.timeout_load_trip_search)
                     self.curr_error = 0
                 except Exception as ex:
                     self.curr_error += 1
@@ -105,7 +105,7 @@ class LoadTripSearch:
 
                             row['ta_location_id'] = int(row['ta_location_id'])
                             row['ta_address'] = self.revert_address(row['ta_address'])
-                            row['ta_address_n'] = common.replace_address_by_city(row['location_nm_rus'], row['ta_address'], self.params.city_list)
+                            row['ta_address_n'] = common.replace_address_by_city(row['location_nm_rus'], row['ta_address'], self.params.city_list,self.params.list_replace_stop_word_adress)
                             json_list_result.append(row.copy())
 
                 except Exception as ex:

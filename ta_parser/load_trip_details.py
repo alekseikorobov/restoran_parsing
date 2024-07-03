@@ -44,7 +44,7 @@ class LoadTripDetails:
         full_name = load_data.get_full_name_by_details_json(city_line.city,location_id)
         if not common.isfile(full_name):
             full_url = f"https://www.tripadvisor.ru/{row['ta_link'].strip('/')}"
-            load_data.get_html_details_and_parse(city, full_url, location_id,replace_json=False)
+            load_data.get_html_details_and_parse(city, full_url, location_id,replace_json=False,timeout=self.params.timeout_load_trip_details)
         try:
             row_new = load_data.parse_page_details_from_json(full_name, int(location_id))
         except Exception as ex:
