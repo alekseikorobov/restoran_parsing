@@ -8,4 +8,3 @@
 * Для получения картинок сначала запускается файл [load_image_param_from_ya.py](load_image_param_from_ya.py)
 * После этого запускается файл [load_image_from_ya.py](load_image_from_ya.py)
 * есть небольшое количество тестов в файле [unit_test.py](unit_test.py)
-* файл [dict\validate_map_rest.xlsx](dict\validate_map_rest.xlsx) - собран вручную для корректировки полученных данных (приоритезация или выборка для итоговых значений полученных из внешних источников), в дальнейшем планируется дополняться
