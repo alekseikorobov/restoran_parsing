@@ -1,6 +1,6 @@
 #%%
 import os
-#os.chdir(r'C:\work\map_api')
+
 import numpy as np
 import unicodedata
 import common.dict_city as dict_city

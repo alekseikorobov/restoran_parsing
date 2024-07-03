@@ -1,6 +1,5 @@
 #%%
 import os
-#os.chdir(r'C:\work\map_api')
 import common.common as common
 import json
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag

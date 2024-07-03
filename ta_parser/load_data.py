@@ -5,7 +5,7 @@ import time, random
 import re
 import json
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
-#os.chdir('C:\work\map_api')
+
 base_folder = f'{os.path.abspath("")}/data/trip'
 import sys
 import warnings

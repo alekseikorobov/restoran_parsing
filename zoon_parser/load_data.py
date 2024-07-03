@@ -1,6 +1,6 @@
 
 import os
-#os.chdir('C:\work\map_api')
+
 import requests
 import urllib.parse as parse
 import re
