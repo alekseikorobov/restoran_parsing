@@ -166,10 +166,10 @@ async def get_full_params(session_id, system_links, ya_id):
     full_params = f'{param_str}&s={param_s}'
     return full_params
 
-async def load_param_image_by_id(city_name, ya_id):
+async def load_param_image_by_id(city_name, ya_id, city_list=city_list):
   logging.debug(f'start {city_name=} {ya_id=}')
 
-  city_line = dict_city.get_line_by_city_name(city_name)
+  city_line = dict_city.get_line_by_city_name(city_name,city_list=city_list)
   city_code = city_line.city
   path = load_ya_raiting.get_folder(city_code,'gallery_json')
   full_name = f'{path}\\{ya_id}.json'
@@ -264,7 +264,7 @@ async def main():
     city_name = row['location_nm_rus']
     ya_id = str(row['ya_id']).replace('.0','')
     logging.debug(f"{city_name=},{ya_id=}")
-    json_result = await load_param_image_by_id(city_name, ya_id)
+    json_result = await load_param_image_by_id(city_name, ya_id,city_list=city_list)
 
     for data_json in get_obj_iterator(json_result,ya_id,city_name):
       data_json_list.append(data_json)

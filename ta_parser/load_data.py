@@ -75,7 +75,7 @@ def get_header_dict_from_txt(file):
         #print(lines)
     return obj
 
-def get_html_by_url(full_name, url:str, type_page='details',replace=False, timeout=120):
+def get_html_by_url(full_name, url:str, type_page='details',replace=False, timeout=120, proxy = None):
     html_result = ''
     if not common.isfile(full_name) or replace:
         if type_page == 'details':
@@ -85,7 +85,15 @@ def get_html_by_url(full_name, url:str, type_page='details',replace=False, timeo
             headers['Referer'] = url
         logging.debug(f'load by {url=}')
         logging.debug(f'{headers=}')
-        res = requests.get(url, headers=headers, verify=False, timeout=timeout)
+
+        proxies = None
+        if proxy is not None:
+            proxies = {
+            'http': proxy,
+            'https': proxy
+            }
+
+        res = requests.get(url, headers=headers, verify=False, timeout=timeout,proxies=proxies)
         get_random_second()
         with open(full_name, 'w', encoding='utf-8') as f:
             html_result = res.text

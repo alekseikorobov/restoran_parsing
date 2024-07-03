@@ -58,7 +58,7 @@ def load_image(row):
 
   if not os.path.isfile(full_name):
     logging.debug(f'load - {full_name}')
-    response = requests.get(image_url)
+    response = requests.get(image_url,verify=False)
     if response.status_code == 200:
       img_data = response.content
       with open(full_name, 'wb') as handler:

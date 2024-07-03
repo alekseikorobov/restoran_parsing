@@ -13,13 +13,6 @@ import json
 import warnings
 import logging
 warnings.filterwarnings("ignore")
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.remote_connection import LOGGER
-LOGGER.setLevel(logging.INFO)
 
 
 def get_random_second():
@@ -82,16 +75,6 @@ def get_search_text(search_text):
         logging.warning(f'Входная строка обрезана до "{search_text}" ')
     return search_text.lower()
 
-driver:WebDriver|None = None
-is_driver = True
-
-def get_driver() -> WebDriver:
-    global driver
-    if driver is None:
-        options = Options()
-        options.add_argument("--headless")
-        driver = webdriver.Firefox(options=options)
-    return driver
 
 def save_json_by_search_page(city_line:dict,point:tuple,replace=False, timeout=120):
     zoom=18
@@ -134,7 +117,7 @@ def get_html_by_point_search_company(city_line:dict, point:tuple, zoom:int, time
 
         logging.debug(f'{headers=}')
         logging.debug(f'{data=}')
-        res = requests.post(full_url, data=data, headers=headers,timeout=timeout)
+        res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False)
         
         logging.debug(f'{res.status_code=}')
 
@@ -171,52 +154,3 @@ def get_html_by_point_search_company(city_line:dict, point:tuple, zoom:int, time
 
     return html
 
-def get_html_by_search_company(city:str, search_text:str,replace=False,load=True,timeout=120):
-    driver = get_driver()
-    html_result = ''    
-    
-    search_text = get_search_text(search_text)
-
-    page_name = f'{pretty_file_name(search_text)}.html'
-    path = common.get_folder(base_folder, city,'search',None)
-    full_name = f'{path}/{page_name}'
-    
-    search_text = parse.quote(search_text)
-
-    if replace or not common.isfile(full_name):
-        
-        if not load:
-            raise(Exception(f'not found file {full_name} and can not load'))
-
-        full_url = f'https://zoon.ru/search/?city={city}&query={search_text}'
-        logging.debug(f'request {full_url=} and save to {full_name=}')
-
-        if is_driver:
-            driver.get(full_url)
-            html_result = driver.page_source
-        else:
-            headers = common.get_header_dict_from_txt('zoon_parser/headers.txt')
-            headers['Cookie'] = get_cookies('zoon_parser/cookie_for_search.txt')
-    
-            res = requests.get(full_url,headers=headers,verify=False,timeout=timeout)
-            if res.status_code == 512:
-                raise(Exception('can not load data'))
-
-        if 'Zoon.ru для вас недоступен, к сожалению' in html_result:
-            raise(Exception('can not load data!'))
-        with open(full_name, 'w', encoding='utf-8') as f:
-            f.write(html_result)
-        get_random_second()
-    else:
-        #logging.debug(f'ready load {full_name=}')
-        pass
-    
-    with open(full_name, 'r', encoding='utf-8') as f:
-        html_result = f.read()
-    
-    if 'Zoon.ru для вас недоступен, к сожалению' in html_result:
-        raise(Exception('can not load data!'))
-        
-    logging.debug(f'{len(html_result)=}')
-    
-    return html_result
