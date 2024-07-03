@@ -12,16 +12,6 @@ import re
 import hashlib
 base_folder = f'{os.path.abspath("")}/data/zoon'
 
-# logging.basicConfig(
-#     level=logging.DEBUG,
-#     format="%(asctime)s [%(levelname)s] %(message)s",
-#     handlers=[
-#         logging.FileHandler("logs/parse_data.log",encoding='utf'),
-#         logging.StreamHandler()
-#     ]
-# )
-#%%
-
 def get_normal_text_from_element(element:PageElement)->str:
     
     if element is None: return ''
@@ -197,11 +187,9 @@ def parse_html_details(full_name, is_debug_log = False):
         'z_source_url_n':''
     }
     
-    if is_debug_log: print(f'{full_name=}')
     if not common.isfile(full_name):
         raise(Exception(f'not found file {full_name=}'))
     logging.debug(f'parse html {full_name}')
-    if is_debug_log: print(f'parse html  {full_name}')
     html_str = ''
     with open(full_name,'r',encoding='utf-8') as f:
         html_str = f.read()
@@ -262,7 +250,7 @@ def parse_html_details(full_name, is_debug_log = False):
                 dt_element = dl_element.find('dt')
                 if dt_element is not None:
                     dt_element_text = get_normal_text_from_element(dt_element)
-                    if is_debug_log:print(f'{dt_element_text=}')
+                    if is_debug_log:logging.debug(f'{dt_element_text=}')
                     if dt_element_text == 'Время работы':
                         dd_element = dl_element.find('dd')
                         result_data['z_hours'] = get_normal_text_from_element(dd_element)
@@ -282,10 +270,10 @@ def parse_html_details(full_name, is_debug_log = False):
                         dd_element = dl_element.find('dd')
                         time_price_element = dd_element.find(class_='time__price')
                         if time_price_element is not None:
-                            if is_debug_log: print('exists time_price_element') 
+                            if is_debug_log: logging.debug('exists time_price_element') 
                             price_range_element = dd_element.find('span',{'itemprop':'priceRange'})
                             if price_range_element is not None:
-                                if is_debug_log: print('exists price')                          
+                                if is_debug_log: logging.debug('exists price')                          
                                 result_data['z_price'] = get_normal_text_from_element(price_range_element)
         else:
             logging.warning('element dl not found in element service-box-description')
@@ -310,7 +298,7 @@ def get_details_json(city,full_url,replace=False,is_debug_log = False):
 
     path_json = common.get_folder(base_folder, city, 'pages_json')
     full_name_json = f'{path_json}/{page_name}.json'
-    if is_debug_log: print(f'{full_name_json=}')
+    if is_debug_log: logging.debug(f'{full_name_json=}')
     if not replace and common.isfile(full_name_json):
         with open(full_name_json, 'r', encoding='utf-8') as f:
             result_data = json.load(f)

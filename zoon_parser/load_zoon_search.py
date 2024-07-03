@@ -140,9 +140,8 @@ class LoadZoonSearch:
         df_result = pd.DataFrame(json_list_result)
         return df_result
 
-    def start(self, df_yandex_match:pd.DataFrame)->pd.DataFrame:
+    def start(self, df:pd.DataFrame)->pd.DataFrame:
         logging.debug('start match zoon search and yandex data')
-        df = df_yandex_match
         logging.info(f'get {df.shape=}')
         df_result = self.parse_search_data(df)
         logging.debug(f'{df_result["z_status"].value_counts()=}')

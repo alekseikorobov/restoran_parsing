@@ -48,7 +48,7 @@ class LoadTripDetails:
         try:
             row_new = load_data.parse_page_details_from_json(full_name, int(location_id))
         except Exception as ex:
-            print(full_name, location_id)
+            logging.error(full_name + location_id,exc_info=True)
             raise(ex)
 
         for key in row_new:

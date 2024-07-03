@@ -160,7 +160,6 @@ def get_html_by_point_search_company(city_line:dict, point:tuple, zoom:int, time
                     return res.text
                 else:
                     logging.error('get text:')
-                    print(res.text)
                     logging.error(res.text)
                     raise(Exception(f'not correct data by {full_name=}'))
             get_random_second()

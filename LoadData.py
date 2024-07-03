@@ -106,7 +106,7 @@ class LoadData:
                 raise (
                     Exception(f'Exists duplicate by filed {check_duble_field} values - {ls}'))
         
-        print(df_all.info())
+        logging.info(df_all.info())
 
         df_all.to_hdf(self.all_source_file[key_source], 'DATA')
         logging.debug(f'save to {self.all_source_file[key_source]}')
@@ -128,7 +128,7 @@ class LoadData:
 
         for on_item in on:
             if on_item not in df_source.columns:
-                print(df_source.columns)
+                logging.info(df_source.columns)
                 raise (Exception(f'not exists column {on_item} in df_source'))
             if on_item not in df_left.columns:
                 raise (Exception(f'not exists column {on_item} in df_left'))
@@ -197,7 +197,7 @@ class LoadData:
         df_zoon_details_new = pd.DataFrame()
         if len(df_to_load) > 0:
             df_zoon_details_new = self.load_zoon_details.start(df_to_load)
-            # print(f'{df_zoon_details_new.columns=}')
+            logging.info(f'{df_zoon_details_new.columns=}')
             cols_to_save = [
                 'z_name',
                 'z_type_organization', 'z_kitchens', 'z_all_param', 'z_address_2',
