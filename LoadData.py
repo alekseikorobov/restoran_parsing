@@ -1,14 +1,3 @@
-# задача класса объеденить все процессы в один
-'''
-* запускаем по всем компаниям скачивание из яндекса. Из файла tables\\to_search.csv скриптом - to_search_yandex.py результат записывается в to_search.xlsx
-* запускаем поиск из zoon со страницы поиска load_from_zoon_by_ya_data.py, получаем список html
-
-* запускаем скрипт получения json с полями из страниц html результатов поиска parse_from_zoon_search.py - сохраняем результат в json файлы
-
-* запускаем скрипт match_data_ya_and_zoon_search.py сопоставление zoon и яндекса результат записываем в match_zoon_ya.xlsx
-* запускаем скрипт load_from_zoon_details_by_match_ya.py скачивание деталей по компаниям
-* запускаем скрипт parse_from_zoon_details_by_match_ya.py для парсинга деталей, результат записываем в match_zoon_ya_with_details.xlsx
-'''
 import logging
 import common.common as common
 
@@ -172,25 +161,55 @@ class LoadData:
             df_ya_image_params = self.get_or_action(self.params.ya_image_params_file,
                                                 self.load_ya_image_params.start,
                                                 df_yandex_data)
+            
             self.load_ya_image.start(df_ya_image_params)
-            #load_image_from_ya.start(df_ya_image_params)
 
         logging.debug(f'DONE')
 
         end_all = time.time()
         logging.info(f'all time - {end_all - start_all}')
 
+import argparse
+def get_arguments():
+    parser = argparse.ArgumentParser(
+                    prog='parsing restaurants',
+                    description='',
+                    epilog='')
+    
+    parser.add_argument('-b', '--base_path',help='Базовый путь для всех файлов, откуда забираются данные для парсинга и куда кладутся вспомогательные и выходные файлы. Если не указано, используйте base_path из params.json. ', default = None)
+    parser.add_argument('-p', '--proxy', help='Прокси для всех http-запросов requests. См. proxy в params.json. По умолчанию None', default = None)
+    parser.add_argument('-r', '--replace', help='если использовать этот флаг, то все файлы будут удалены перед запуском. По умолчанию false', default = False, action='store_true')
+
+    args = parser.parse_args()
+    return args
+
 if __name__ == '__main__':
-    print(sys.argv)
-    param = Params()
-    with open('params.json','r',encoding='UTF-8') as f:
-        param = json.load(f, object_hook=lambda d: Params(**d))
-        print(type(param))
-    
     if len(sys.argv) == 1:
-        param.is_replace_file = False
-    else:
-        param.is_replace_file = True if sys.argv[1] == '1' else False
-    ld = LoadData(param)
+        print('WARNING','not override params. Start with default params')
     
+    args = get_arguments()
+
+    base_path = ''
+    if args.base_path is not None:
+        base_path = args.base_path
+        if not os.path.isdir(base_path):
+            raise(Exception(f'folder not exists by path {base_path}'))
+    
+    path_for_param = os.path.join(base_path,'params.json')
+    if not os.path.isfile(path_for_param):
+        raise(Exception(f'not found params.json by path = {path_for_param}'))
+    
+    param = None
+    with open(path_for_param,'r', encoding='UTF-8') as f:
+        param = json.load(f, object_hook=lambda d: Params(**d))
+
+    if args.proxy is not None:
+        param.proxy = args.proxy
+    if args.base_path is not None:
+        param.base_path = args.base_path
+
+    param.is_replace_file = args.replace
+    
+    print(f'{args=}')
+    ld = LoadData(param)
     ld.start_load()

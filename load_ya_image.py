@@ -36,13 +36,16 @@ class LoadYaImage:
       # if common.is_nan(tag_id): tag_id = 'other'
       city_name = row['city_name']
       ya_id = str(row['ya_id']).replace('.0','')
-      image_id = row['image_id'].replace('urn:yandex:sprav:photo:','')
+      #image_id = row['image_id'].replace('urn:yandex:sprav:photo:','')
+      image_id = common.get_id_from_ya_image_url(image_url)
 
       logging.debug(f"{city_name=},{ya_id=}")
 
-      city_line = dict_city.get_line_by_city_name(city_name,self.params.city_list)
-      path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_line.city,f'gallery_images/{tag_id}')
-      full_name = f'{path}/{ya_id}_{image_id}.jpg'
+      image_folder = self.params.ya_images_folder.rstrip('/\\')
+      if not os.path.isdir(image_folder):
+        os.makedirs(image_folder)
+
+      full_name = f'{image_folder}/{ya_id}_{image_id}.jpg'
       
       row['path_image'] = full_name
       proxies = {'http':self.params.proxy,'https':self.params.proxy}
@@ -58,6 +61,8 @@ class LoadYaImage:
         else:
           raise(Exception(f'not load - {response.status_code}, {response.text}'))
         self.get_random_second()
+      else:
+        logging.debug(f'image already exists - {full_name}')
 
       return row
 
@@ -75,7 +80,7 @@ class LoadYaImage:
       df_to_load = grouped.apply(lambda x: x.nlargest(self.params.top_load_ya_image, 'i'))
 
       logging.debug(f'start load - {df_to_load.shape}')
-      df_result = df_to_load.progress_apply(self.load_image,axis=1)
+      df_result = df_to_load.progress_apply(self.load_image, axis=1)
 
       logging.debug(f'full data - {df_result.shape=}')
       return logging

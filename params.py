@@ -11,39 +11,39 @@ class Params:
 
     @property
     def yandex_data_file(self):
-        return Template(self._yandex_data_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._yandex_data_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_zoon_search_file(self):
-        return Template(self._temp_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._temp_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_select_best_zoon_search_file(self):
-        return Template(self._temp_select_best_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._temp_select_best_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def zoon_details_file(self):
-        return Template(self._zoon_details_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._zoon_details_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_trip_search_file(self):
-        return Template(self._temp_trip_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._temp_trip_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_select_best_trip_search_file(self):
-        return Template(self._temp_select_best_trip_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._temp_select_best_trip_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def trip_details_file(self):
-        return Template(self._trip_details_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._trip_details_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def cache_data_folder(self):
-        return Template(self._cache_data_folder).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._cache_data_folder).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def ya_image_params_file(self):
-        return Template(self._ya_image_params_file).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._ya_image_params_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def ya_images_folder(self):
-        return Template(self._ya_images_folder).substitute({'base_path':self.base_path.rstrip('/')})
+        return Template(self._ya_images_folder).substitute({'base_path':self.base_path.rstrip('/\\')})
 
     @property
     def logs_path(self):
         return Template(self._logs_path).substitute({
-            'base_path':self.base_path.rstrip('/'),
+            'base_path':self.base_path.rstrip('/\\'),
             'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
         })
 

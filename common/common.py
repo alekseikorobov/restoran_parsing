@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 def normalize_z_source_url(url:str):
     if is_nan(url): return url
 
-    url = url.rstrip('/')
+    url = url.rstrip('/\\')
 
     if not url.startswith('https'):
         return url
@@ -40,6 +40,13 @@ def normalize_z_source_url(url:str):
     
     raise(Exception(f'not correct normalize url {url}'))
 
+
+def get_id_from_ya_image_url(url:str):
+    if is_nan(url): return url
+    urls = url.split('/')
+    parts = urls[-3:-1]
+    return '_'.join(parts)
+
 def get_rectangle_bounds(coordinates, width=314, length=314):
 
     start = geopy.Point(coordinates)
@@ -60,7 +67,7 @@ def get_rectangle_bounds(coordinates, width=314, length=314):
     return bounds
 
 def get_folder(base_folder, city: str, fold: str) -> str:
-    path = f'{base_folder}/{city}/{fold}'.rstrip('/')
+    path = f'{base_folder}/{city}/{fold}'.rstrip('/\\')
     if not os.path.isdir(path):
         os.makedirs(path)
     return path

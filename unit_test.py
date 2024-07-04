@@ -33,6 +33,14 @@ class MyTest(unittest.TestCase):
         for test_case in test_list:
             self.assertEqual(common.replace_address_by_city('Москва',test_case[0],param.city_list,param.list_replace_stop_word_adress),test_case[1])
     
+
+    def test_get_id_from_ya_image_url(self):
+        url = 'https://avatars.mds.yandex.net/get-altay/4737312/2a0000017abf099a6142bcc666c109dccd85/XXXL'
+        result_id = '4737312_2a0000017abf099a6142bcc666c109dccd85'
+    
+        fact_id = common.get_id_from_ya_image_url(url)
+        self.assertEqual(result_id,fact_id)
+
     def test_normalize_transaction_name(self):
         
         #from, to

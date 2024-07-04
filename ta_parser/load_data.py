@@ -18,7 +18,7 @@ def get_random_second():
     time.sleep(random.choice([2,3, 1]))
 
 def get_full_name_from_url(base_folder, city, url):
-    path = common.get_folder(base_folder.rstrip('/') + '/trip',city,'details')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/trip',city,'details')
     url = url.strip('/')
     page_name = url.split('/')[-1]
     full_name = f'{path}/{page_name}'
@@ -26,7 +26,7 @@ def get_full_name_from_url(base_folder, city, url):
 
 def get_full_name_by_query_html(base_folder, city,query, page_offset):
     filename = pretty_file_name(query.lower().replace(',','').replace(' ',''))
-    path = common.get_folder(base_folder.rstrip('/') + '/trip',city,'search')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/trip',city,'search')
     full_name = f'{path}/{filename}.html'
     if page_offset>0:
         full_name = f'{path}/{filename}_{page_offset}.html'
@@ -34,14 +34,14 @@ def get_full_name_by_query_html(base_folder, city,query, page_offset):
 
 def get_full_name_by_query_json(base_folder, city, query, page_offset):
     filename = pretty_file_name(query.lower().replace(',','').replace(' ',''))
-    path = common.get_folder(base_folder.rstrip('/') + '/trip',city,'search_json')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/trip',city,'search_json')
     full_name = f'{path}/{filename}.json'
     if page_offset>0:
         full_name = f'{path}/{filename}_{page_offset}.json'
     return full_name
 
 def get_full_name_by_details_json(base_folder, city, id):
-    path = common.get_folder(base_folder.rstrip('/') + '/trip', city,'details_json')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/trip', city,'details_json')
     result_details_json = f'{path}/{int(id)}.json'
     return result_details_json
 

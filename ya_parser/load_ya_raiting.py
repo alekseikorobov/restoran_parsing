@@ -13,7 +13,7 @@ def get_random_second():
   time.sleep(random.choice([2,3, 1]))
 
 def get_folder(base_folder, city: str, sub_folder: str) -> str:
-  path = f'{base_folder}/yandex_r/{city}/{sub_folder}'.rstrip('/')
+  path = f'{base_folder}/yandex_r/{city}/{sub_folder}'.rstrip('/\\')
   if not os.path.isdir(path):
     os.makedirs(path)
   return path

@@ -24,7 +24,7 @@ class LoadZoonDetails:
             page_name = res.hexdigest()
             full_url = f'https://zoon.ru{full_url}'
         else:
-            page_name = full_url.rstrip('/').split('/')[-1]
+            page_name = full_url.rstrip('/\\').split('/')[-1]
 
         if page_name == '':
             raise(Exception('can not define page name by url='+full_url))

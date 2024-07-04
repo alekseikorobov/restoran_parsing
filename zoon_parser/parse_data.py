@@ -282,8 +282,8 @@ def parse_html_details(full_name, is_debug_log = False):
 
 def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = False):
     
-    path = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages')
-    path_json = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages_json')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages')
+    path_json = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages_json')
     full_name_json = f'{path_json}/{page_name}.json'
     full_name_html = f'{path}/{page_name}'
 
