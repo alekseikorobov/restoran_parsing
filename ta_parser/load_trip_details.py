@@ -10,6 +10,7 @@ import common.dict_city as dict_city
 from tqdm import tqdm
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 import logging
+import datetime
 
 from params import Params
 
@@ -67,6 +68,8 @@ class LoadTripDetails:
         for col,typ in zip(df_result.columns, df_result.dtypes):
             if typ =='object':
                 df_result[col] = df_result[col].apply(self.replace_str)
+
+        df_result['actual_date'] = datetime.datetime.now()
 
         logging.info(f'{df_result.shape=}')
 
