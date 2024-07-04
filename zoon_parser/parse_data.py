@@ -287,7 +287,7 @@ def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = 
     full_name_json = f'{path_json}/{page_name}.json'
     full_name_html = f'{path}/{page_name}'
 
-    if is_debug_log: logging.debug(f'{full_name_json=}')
+    logging.debug(f'{full_name_json=}')
     if not replace and common.isfile(full_name_json):
         #если json уже существует, то забираем только его
         with open(full_name_json, 'r', encoding='utf-8') as f:

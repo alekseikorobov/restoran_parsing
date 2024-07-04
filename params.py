@@ -7,7 +7,7 @@ class Params:
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
-    base_path:str = ''
+    base_path:str = '.'
 
     @property
     def yandex_data_file(self):
@@ -33,6 +33,12 @@ class Params:
     @property
     def cache_data_folder(self):
         return Template(self._cache_data_folder).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def ya_image_params_file(self):
+        return Template(self._ya_image_params_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def ya_images_folder(self):
+        return Template(self._ya_images_folder).substitute({'base_path':self.base_path.rstrip('/')})
 
     @property
     def logs_path(self):
@@ -51,10 +57,14 @@ class Params:
     _temp_trip_search_file: str = '$base_path/tables/trip_search.hd'
     _temp_select_best_trip_search_file: str = '$base_path/tables/trip_select_best.hd'
     _trip_details_file: str = '$base_path/tables/trip_details.parquet'
+    _ya_image_params_file: str = '$base_path/tables/ya_image_params.hd'
 
     _logs_path: str = '$base_path/logs/all_logs_$date_now.log'
 
     _cache_data_folder: str = '$base_path/data'
+    _ya_images_folder: str = '$base_path/data/images'
+
+    log_level = 'DEBUG'
     
     # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
     zoon_details_replace_json = False
@@ -65,11 +75,19 @@ class Params:
     is_replace_file = False
 
     load_from_trip:bool = False
+    load_from_zoon:bool = True
+
+    load_images_from_ya:bool = True
 
     timeout_load_trip_details:int = 120
     timeout_load_zoon_details:int = 120
     timeout_load_trip_search:int = 120
     timeout_load_zoon_search:int = 120
+    
+    timeout_load_ya_image_params:int = 120
+    timeout_load_ya_image:int = 120
+
+    top_load_ya_image:int = 10
 
     proxy:str = None
     '''g'''

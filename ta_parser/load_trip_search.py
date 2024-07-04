@@ -70,7 +70,7 @@ class LoadTripSearch:
             row['ta_path_source'] = full_name_param
             if not common.isfile(full_name_param):
                 try:
-                    lbyd.save_json_by_search_page(base_folder, city_line.city, query,timeout=self.params.timeout_load_trip_search)
+                    lbyd.save_json_by_search_page(base_folder, city_line.city, query,timeout=self.params.timeout_load_trip_search,proxy=self.params.proxy)
                     self.curr_error = 0
                 except Exception as ex:
                     self.curr_error += 1

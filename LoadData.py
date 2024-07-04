@@ -20,6 +20,8 @@ import ta_parser.load_trip_details as load_trip_details
 import ta_parser.load_trip_search as load_trip_search
 import zoon_parser.load_zoon_details as load_zoon_details
 import zoon_parser.load_zoon_search as load_zoon_search
+import load_ya_image_params
+import load_ya_image
 
 import os
 import pandas as pd
@@ -41,6 +43,9 @@ class LoadData:
         self.load_trip_search = load_trip_search.LoadTripSearch(self.params)
         self.load_zoon_details = load_zoon_details.LoadZoonDetails(self.params)
         self.load_zoon_search = load_zoon_search.LoadZoonSearch(self.params)
+        
+        self.load_ya_image_params = load_ya_image_params.LoadYaImageParams(self.params)
+        self.load_ya_image = load_ya_image.LoadYaImage(self.params)
 
 
         self.config_logging()
@@ -62,9 +67,12 @@ class LoadData:
         if not os.path.isdir(folder):
             os.makedirs(folder)
             print(f'created dir - {folder}')
+        
+        if self.params.log_level.upper() not in logging.getLevelNamesMapping():
+            raise(Exception(f'Not correct log level in param value - {self.params.log_level}. Avaliable - {",".join(logging.getLevelNamesMapping().keys())}'))
 
         logging.basicConfig(
-            level=logging.DEBUG,
+            level=logging.getLevelName(self.params.log_level.upper()),
             format="%(asctime)s\t%(filename)s\t%(funcName)s\t[%(levelname)s]\t%(lineno)d\t%(message)s",
             handlers=[
                 logging.FileHandler(self.params.logs_path, encoding='utf-8'),
@@ -119,6 +127,7 @@ class LoadData:
                 self.params.temp_select_best_trip_search_file,
                 self.params.zoon_details_file,
                 self.params.trip_details_file,
+                self.params.ya_image_params_file
             ]:
                 if common.isfile(path):
                     os.remove(path)
@@ -133,17 +142,18 @@ class LoadData:
 
         control_count = df_yandex_data['source_id'].nunique()
 
-        df_zoon_search = self.get_or_action(self.params.temp_zoon_search_file,
-                                             self.load_zoon_search.start,
-                                             df_yandex_data[self.columns_ya_for_zoon_search])
+        if self.params.load_from_zoon:
+            df_zoon_search = self.get_or_action(self.params.temp_zoon_search_file,
+                                                self.load_zoon_search.start,
+                                                df_yandex_data[self.columns_ya_for_zoon_search])
 
-        df_selected = self.get_or_action(self.params.temp_select_best_zoon_search_file,
-                                             self.select_best_zoon_search.start,
-                                             df_zoon_search)
+            df_selected = self.get_or_action(self.params.temp_select_best_zoon_search_file,
+                                                self.select_best_zoon_search.start,
+                                                df_zoon_search)
 
-        df_zoon_details = self.get_or_action(self.params.zoon_details_file,
-                                             self.load_zoon_details.start,
-                                             df_selected)
+            df_zoon_details = self.get_or_action(self.params.zoon_details_file,
+                                                self.load_zoon_details.start,
+                                                df_selected)
 
         if self.params.load_from_trip:
             df_trip_search = self.get_or_action(self.params.temp_trip_search_file,
@@ -157,6 +167,13 @@ class LoadData:
             df_trip_details = self.get_or_action(self.params.trip_details_file,
                                                 self.load_trip_details.start,
                                                 df_selected)
+
+        if self.params.load_images_from_ya:
+            df_ya_image_params = self.get_or_action(self.params.ya_image_params_file,
+                                                self.load_ya_image_params.start,
+                                                df_yandex_data)
+            self.load_ya_image.start(df_ya_image_params)
+            #load_image_from_ya.start(df_ya_image_params)
 
         logging.debug(f'DONE')
 

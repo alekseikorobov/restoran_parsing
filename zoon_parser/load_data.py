@@ -21,7 +21,7 @@ def get_random_second():
 
 import hashlib
 
-def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120):
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None):
     path = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
@@ -32,7 +32,8 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,repl
     headers['Cookie'] = get_cookies('zoon_parser/cookie_for_details.txt')
     
     logging.debug(f'request {full_url=}')
-    res = requests.get(full_url,headers=headers,verify=False,timeout=timeout)
+    proxies = {'http': proxy,'https': proxy}
+    res = requests.get(full_url,headers=headers,verify=False,timeout=timeout,proxies=proxies)
     if res.status_code == 512:
         raise(Exception('can not load data'))
     
@@ -68,11 +69,11 @@ def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     return full_name
 
 
-def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120):
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None):
     zoom = 18
     full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
     if replace or not common.isfile(full_name):
-        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout)
+        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
@@ -81,7 +82,7 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
         logging.debug(f'already exists {full_name=}')
     return full_name
 
-def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120):
+def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None):
 
     page_name = f'{zoom}_{point[0]}_{point[1]}.json'
     path = common.get_folder(base_folder.rstrip('/') + '/zoon', city_line.city,'search_p')
@@ -108,7 +109,8 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
 
         logging.debug(f'{headers=}')
         logging.debug(f'{data=}')
-        res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False)
+        proxies = {'http': proxy,'https': proxy}
+        res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False,proxies=proxies)
         
         logging.debug(f'{res.status_code=}')
 
