@@ -54,7 +54,7 @@ class LoadZoonSearch:
         city_line = dict_city.get_line_by_city_name(city_name, self.params.city_list)
         point = ya_point.split(',')
         zoom = 18
-        return f"{city_line.city}_{zoom}_{point[1]}_{point[0]}"
+        return f"{city_line['city']}_{zoom}_{point[1]}_{point[0]}"
 
     def parse_search_data(self, df_process):
         #is_cnt_category_match = df['ya_cnt_category_match'] > 0
@@ -98,7 +98,11 @@ class LoadZoonSearch:
 
             l2_ya, l1_ya = map(float,row['ya_point'].split(','))
 
-            full_name = lbyd.save_json_by_search_page(self.params.cache_data_folder, city_line,(l1_ya,l2_ya), replace=False,timeout=self.params.timeout_load_zoon_search,proxy=self.params.proxy)
+            full_name = lbyd.save_json_by_search_page(self.params.cache_data_folder, city_line,(l1_ya,l2_ya),
+                replace=False,
+                timeout=self.params.timeout_load_zoon_search,
+                proxy=self.params.proxy,
+                headers=self.params.zoon_parser_headers_search)
 
             with open(full_name,'r',encoding='utf-8') as f:
                 json_result_list = json.load(f)

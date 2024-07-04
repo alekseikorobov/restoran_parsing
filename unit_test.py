@@ -27,7 +27,7 @@ class MyTest(unittest.TestCase):
         ]
         param = Params()
         with open('params.json','r',encoding='UTF-8') as f:
-            param = json.load(f, object_hook=lambda d: Params(**d))
+            param = Params(**json.load(f))
             print(type(param))
 
         for test_case in test_list:

@@ -83,16 +83,6 @@ def isfile(path):
 
     return os.path.isfile(path)
 
-def get_header_dict_from_txt(file):
-    obj = {}
-    with open(file,'r') as f:
-        lines = f.read().splitlines()
-        for i in range(0,len(lines),2):
-            obj[lines[i].rstrip(':')] = lines[i+1]
-
-        #print(lines)
-    return obj
-
 delete_words = [
     #'ooo' # приняли решение что это стоит исключить из удаление из транзакций, потому что результат становится хуже.
     #,'restoran'
@@ -154,7 +144,7 @@ def replace_address_by_city_line(city_line, address_text:str|None,list_replace_s
 
     address_text = address_text.lower()
     address_text = re.sub('(этаж \\d+)|(\\d+ этаж.*?,)|(цокольный этаж.*?,)','',address_text).replace('  ',' ')
-    for rep in city_line.replaces:
+    for rep in city_line['replaces']:
         address_text = address_text.replace(rep.lower(),'')
 
     address_text = address_text.replace(',',' ').replace(';',' ').replace('  ',' ')

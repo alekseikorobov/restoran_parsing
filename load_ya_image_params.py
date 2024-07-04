@@ -32,7 +32,7 @@ class LoadYaImageParams:
       full_name = f'{path}/{ya_id}.html'
       result_html = ''
       if not os.path.isfile(full_name):
-        headers = common.get_header_dict_from_txt('ya_parser/headers_gallery.txt')
+        headers = self.params.ya_parser_headers_gallery
         
         logging.debug(f'load {url}')
         proxies = {'http':self.params.proxy,'https':self.params.proxy}
@@ -40,7 +40,7 @@ class LoadYaImageParams:
         if response.status_code == 200:
           result_html = response.text
           if 'Please confirm that you and not a robot are sending requests' in result_html:
-            raise(Exception('need capcha. Update - ya_parser/headers_gallery.txt'))
+            raise(Exception('need capcha. Update - parameter headers_gallery'))
           with open(full_name,'w',encoding='UTF-8') as f:
             f.write(result_html)
             logging.debug(f'save to {full_name=}')
@@ -91,7 +91,7 @@ class LoadYaImageParams:
     def get_new_csrf_token(self):
       url = 'https://yandex.ru/maps/api/photos/getByBusinessId?ajax=1'
       logging.debug(f'load {url}')
-      headers = common.get_header_dict_from_txt('ya_parser/headers_token.txt')
+      headers = self.params.ya_parser_headers_token
       proxies = {'http':self.params.proxy,'https':self.params.proxy}
       response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
       result_json = response.json()
@@ -131,7 +131,7 @@ class LoadYaImageParams:
     def get_gallery_json(self, full_params):
       url = f'https://yandex.ru/maps/api/photos/getByBusinessId?{full_params}'
       logging.debug(f'load {url}')
-      headers = common.get_header_dict_from_txt('ya_parser/headers_token.txt')
+      headers = self.params.ya_parser_headers_token
       proxies = {'http':self.params.proxy,'https':self.params.proxy}
       response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
       result_json = response.json()
@@ -160,12 +160,15 @@ class LoadYaImageParams:
       logging.debug(f'start {city_name=} {ya_id=}')
 
       city_line = dict_city.get_line_by_city_name(city_name,city_list=city_list)
-      city_code = city_line.city
+      city_code = city_line['city']
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code, 'gallery_json')
       full_name = f'{path}/{ya_id}.json'
       json_result = None
       if not os.path.isfile(full_name):
-        json_result = load_ya_raiting.get_json_ya_raiting(self.params.cache_data_folder,city_code, ya_id, proxy = self.params.proxy,timeout=self.params.timeout_load_ya_image_params)
+        json_result = load_ya_raiting.get_json_ya_raiting(self.params.cache_data_folder,city_code, ya_id,
+            proxy = self.params.proxy,
+            timeout=self.params.timeout_load_ya_image_params,
+            headers=self.params.ya_parser_headers_raiting)
         ya_link_org = json_result['ya_link_org']
         if ya_link_org == '' or ya_link_org is None:
           raise(Exception(f'link not correct by id {ya_id}'))

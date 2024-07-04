@@ -19,18 +19,13 @@ def get_random_second():
     time.sleep(random.choice([2,3,4, 1]))
 
 
-import hashlib
 
-def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None):
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None):
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
         #logging.debug(f'ready load {full_name=}')
         return
-
-    headers = common.get_header_dict_from_txt('zoon_parser/headers.txt')
-    headers['Cookie'] = get_cookies('zoon_parser/cookie_for_details.txt')
-    
     logging.debug(f'request {full_url=}')
     proxies = {'http': proxy,'https': proxy}
     res = requests.get(full_url,headers=headers,verify=False,timeout=timeout,proxies=proxies)
@@ -64,16 +59,16 @@ def get_search_text(search_text):
 
 def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     page_name = f'{zoom}_{point[0]}_{point[1]}.json'
-    path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line.city,'search_p_json')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line['city'],'search_p_json')
     full_name = f'{path}/{page_name}'
     return full_name
 
 
-def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None):
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None,headers=None):
     zoom = 18
     full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
     if replace or not common.isfile(full_name):
-        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy)
+        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy,headers=headers)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
@@ -82,22 +77,23 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
         logging.debug(f'already exists {full_name=}')
     return full_name
 
-def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None):
+def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None):
 
     page_name = f'{zoom}_{point[0]}_{point[1]}.json'
-    path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line.city,'search_p')
+    path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line['city'],'search_p')
     full_name = f'{path}/{page_name}'
 
     #logging.debug(f'{full_name=}')
     if not common.isfile(full_name):
-        headers = common.get_header_dict_from_txt('zoon_parser/headers_for_search_by_p.txt')
         base_url = ''
-        if city_line.is_domain == True:
-            base_url = f"https://{city_line.city}.zoon.ru"
+        if city_line['is_domain'] == True:
+            base_url = f"https://{city_line['city']}.zoon.ru"
         else:
-            base_url = f"https://zoon.ru/{city_line.city}"
-        headers['Origin'] = base_url
-        headers['Referer'] = base_url
+            base_url = f"https://zoon.ru/{city_line['city']}"
+        
+        if headers is not None:
+            headers['Origin'] = base_url
+            headers['Referer'] = base_url
 
         full_url = f'{base_url}/json-rpc/v1/'
         full_url = f'{base_url}/restaurants/?action=listJson&type=service'

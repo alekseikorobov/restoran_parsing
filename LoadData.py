@@ -199,9 +199,10 @@ if __name__ == '__main__':
     if not os.path.isfile(path_for_param):
         raise(Exception(f'not found params.json by path = {path_for_param}'))
     
+    print(f'{path_for_param=}')
     param = None
     with open(path_for_param,'r', encoding='UTF-8') as f:
-        param = json.load(f, object_hook=lambda d: Params(**d))
+        param = Params(**json.load(f))
 
     if args.proxy is not None:
         param.proxy = args.proxy

@@ -9,6 +9,7 @@ import common.common as common
 import numpy as np
 from params import Params
 import datetime
+import hashlib
 
 tqdm.pandas()
 
@@ -48,9 +49,12 @@ class LoadZoonDetails:
             row['z_status'] = 'empty'
             return row
         page_name = self.get_page_name(z_source_url)
-        load_data.load_page_if_not_exists(self.params.cache_data_folder, page_name, city_line.city, z_source_url,timeout=self.params.timeout_load_zoon_details,proxy=self.params.proxy)
+        load_data.load_page_if_not_exists(self.params.cache_data_folder, page_name, city_line['city'], z_source_url,
+            timeout=self.params.timeout_load_zoon_details,
+            proxy=self.params.proxy,
+            headers=self.params.zoon_parser_headers)
 
-        new_row = parse_data.get_details_json(self.params.cache_data_folder, page_name, city_line.city, replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
+        new_row = parse_data.get_details_json(self.params.cache_data_folder, page_name, city_line['city'], replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
         
         for key in new_row:
             row[key] = new_row[key]

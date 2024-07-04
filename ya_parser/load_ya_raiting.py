@@ -19,14 +19,13 @@ def get_folder(base_folder, city: str, sub_folder: str) -> str:
   return path
 
 
-def get_raiting_html(base_folder, city_code, id:str, proxy = None,timeout=5):
+def get_raiting_html(base_folder, city_code, id:str, proxy = None,timeout=5,headers = None):
   path = get_folder(base_folder,city_code,'html')
   full_name = f'{path}/{id}.html'
   result_html = ''
   if not common.isfile(full_name):
     full_url = f'https://yandex.ru/maps-reviews-widget/{id}?size=m&comments'
     #print(f'load from {full_url=}')
-    headers = common.get_header_dict_from_txt('ya_parser/headers_raiting.txt')
     proxies = {'http': proxy,'https': proxy}
     res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
     with open(full_name,'w',encoding='UTF-8') as f:
@@ -72,7 +71,7 @@ def parse_html_get_json(html_str:str) -> dict:
 
   return result_data
 
-def get_json_ya_raiting(base_folder, city_code, ya_id, proxy = None, timeout=5) -> dict:
-  html_result = get_raiting_html(base_folder, city_code, ya_id, proxy=proxy, timeout=timeout)
+def get_json_ya_raiting(base_folder, city_code, ya_id, proxy = None, timeout=5,headers=None) -> dict:
+  html_result = get_raiting_html(base_folder, city_code, ya_id, proxy=proxy, timeout=timeout,headers=headers)
   json_result = parse_html_get_json(html_result)
   return json_result

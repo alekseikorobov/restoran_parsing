@@ -76,7 +76,7 @@ class LoadYaImage:
       
       df['i'] = df.index
       grouped = df.groupby(['ya_id'])
-
+      logging.debug(f'{self.params.top_load_ya_image=}')
       df_to_load = grouped.apply(lambda x: x.nlargest(self.params.top_load_ya_image, 'i'))
 
       logging.debug(f'start load - {df_to_load.shape}')

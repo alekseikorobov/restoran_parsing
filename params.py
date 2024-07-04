@@ -4,8 +4,8 @@ import datetime
 
 @dataclass
 class Params:
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
+    # def __init__(self, **entries):
+    #     self.__dict__.update(entries)
 
     base_path:str = '.'
 
@@ -240,11 +240,126 @@ class Params:
     ])
 
 
+    ya_parser_headers_gallery:dict = field(default_factory=lambda:{
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'max-age=0',
+        'Cookie': 'maps_los=0; is_gdpr=0; i=Kxvxo3OPNuCwzeVNRaGrfXfe2s/Em8w7Ity8QoodPsUA07RFNbLEmXwtgpd1EkzE5qULAeFzNWAcTy4I4J4MuHqkaEw=; yandexuid=4786207591695973728; yuidss=4786207591695973728; ymex=2011333729.yrts.1695973729; is_gdpr_b=CKDSYBCS0QEoAg==; _ym_uid=1695973729430834572; _ym_d=1695973730; yashr=2431041841696579811; cycada=Bb2gJVadcsVLrA/D1AidqogIJNFLRDTW1PEs0mFE0Ic=; yp=2014700099.pcs.0#1700837872.hdrc.1#1730876099.p_sw.1699340098#1699445301.szm.1_25:1536x864:1528x716#1730376505.p_cl.1698840504#1730376517.p_undefined.1698840516; bh=EkIiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsICJDaHJvbWl1bSI7dj0iMTE5IiwgIk5vdD9BX0JyYW5kIjt2PSIyNCIaBSJ4ODYiIg8iMTE5LjAuMjE1MS40NCIqAj8wMgIiIjoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJdIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwgIkNocm9taXVtIjt2PSIxMTkuMC42MDQ1LjEwNSIsICJOb3Q/QV9CcmFuZCI7dj0iMjQuMC4wLjAiWgI/MA==; gdpr=0; _ym_isad=2; spravka=dD0xNjk5NDM3MzkyO2k9NDYuNjEuMjQyLjIzO0Q9QzI1MUE0Mzk2RkJDMDNCNzdGODJFOEEyNjVCMjhEOTMzOUFGNzE2RkYyRTI4QjZEMkU1NUI3NEZCRjdEQjAwN0ZBNkExNUJDMkZFQjYxRTJDRUNBNUMwQUM1NTYyMUQyMDJGMTk0RTdEMkZFMDQxQTQ1MzUyQ0EwQ0RBRjdDQzEzODA4MDg5QTgzNzA1MDVBO3U9MTY5OTQzNzM5Mjg4MDEyOTI4MztoPTc2OTEwZGNhN2JiMDdmNzljNjE4NGVmZTFmYTM4MjNm; _yasc=BIB3QCytfG0iYfXyVSu1bsxaqPmF6GdVMY9gOl205Ed5b+kNxDPNfhpoX+v2X5dtYc8sbdg+pH7NctdlJ4Wj; bh=EkAiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsIkNocm9taXVtIjt2PSIxMTkiLCJOb3Q/QV9CcmFuZCI7dj0iMjQiGgUieDg2IiIPIjExOS4wLjIxNTEuNDQiKgI/MDoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJcIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwiQ2hyb21pdW0iO3Y9IjExOS4wLjYwNDUuMTA1IiwiTm90P0FfQnJhbmQiO3Y9IjI0LjAuMC4wIiI=',
+        'Device-Memory': '8',
+        'Downlink': '10',
+        'Dpr': '1.25',
+        'Ect': '4g',
+        'Rtt': '0',
+        'Sec-Ch-Ua': '"Microsoft Edge";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
+        'Sec-Ch-Ua-Arch': '"x86"',
+        'Sec-Ch-Ua-Bitness': '"64"',
+        'Sec-Ch-Ua-Full-Version': '"119.0.2151.44"',
+        'Sec-Ch-Ua-Full-Version-List': '"Microsoft Edge";v="119.0.2151.44", "Chromium";v="119.0.6045.105", "Not?A_Brand";v="24.0.0.0"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Model': '""',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Ch-Ua-Platform-Version': '"10.0.0"',
+        'Sec-Ch-Ua-Wow64': '?0',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0',
+        'Viewport-Width': '1528'
+    })
+
+    ya_parser_headers_token:dict = field(default_factory=lambda:{
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'max-age=0',
+        'Cookie': 'is_gdpr=0; i=Kxvxo3OPNuCwzeVNRaGrfXfe2s/Em8w7Ity8QoodPsUA07RFNbLEmXwtgpd1EkzE5qULAeFzNWAcTy4I4J4MuHqkaEw=; yandexuid=4786207591695973728; yuidss=4786207591695973728; ymex=2011333729.yrts.1695973729; is_gdpr_b=CKDSYBCS0QEoAg==; _ym_uid=1695973729430834572; _ym_d=1695973730; yashr=2431041841696579811; cycada=Bb2gJVadcsVLrA/D1AidqogIJNFLRDTW1PEs0mFE0Ic=; yp=2014700099.pcs.0#1700837872.hdrc.1#1730876099.p_sw.1699340098#1699445301.szm.1_25:1536x864:1528x716#1730376505.p_cl.1698840504#1730376517.p_undefined.1698840516; bh=EkIiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsICJDaHJvbWl1bSI7dj0iMTE5IiwgIk5vdD9BX0JyYW5kIjt2PSIyNCIaBSJ4ODYiIg8iMTE5LjAuMjE1MS40NCIqAj8wMgIiIjoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJdIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwgIkNocm9taXVtIjt2PSIxMTkuMC42MDQ1LjEwNSIsICJOb3Q/QV9CcmFuZCI7dj0iMjQuMC4wLjAiWgI/MA==; gdpr=0; bh=EkAiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsIkNocm9taXVtIjt2PSIxMTkiLCJOb3Q/QV9CcmFuZCI7dj0iMjQiGgUieDg2IiIPIjExOS4wLjIxNTEuNDQiKgI/MDoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJcIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwiQ2hyb21pdW0iO3Y9IjExOS4wLjYwNDUuMTA1IiwiTm90P0FfQnJhbmQiO3Y9IjI0LjAuMC4wIiI=; _ym_visorc=b; _yasc=vbpN6auE2EGGo2YmK7QsCH4OKXhYGrtm69lJ1sm8PYbDLVKtJKhIhBvuxn9nG//I9VGC908lY5tGSdZsmeLK; _ym_isad=2; spravka=dD0xNjk5NDM3MzkyO2k9NDYuNjEuMjQyLjIzO0Q9QzI1MUE0Mzk2RkJDMDNCNzdGODJFOEEyNjVCMjhEOTMzOUFGNzE2RkYyRTI4QjZEMkU1NUI3NEZCRjdEQjAwN0ZBNkExNUJDMkZFQjYxRTJDRUNBNUMwQUM1NTYyMUQyMDJGMTk0RTdEMkZFMDQxQTQ1MzUyQ0EwQ0RBRjdDQzEzODA4MDg5QTgzNzA1MDVBO3U9MTY5OTQzNzM5Mjg4MDEyOTI4MztoPTc2OTEwZGNhN2JiMDdmNzljNjE4NGVmZTFmYTM4MjNm',
+        'Device-Memory': '8',
+        'Downlink': '10',
+        'Dpr': '1.25',
+        'Ect': '4g',
+        'If-None-Match': 'W/"43-aTmVzDxL8/BvDxJrIgmtdcB2zz4"',
+        'Rtt': '250',
+        'Sec-Ch-Ua': '"Microsoft Edge";v="119", "Chromium";v="119", "Not?A_Brand";v="24"',
+        'Sec-Ch-Ua-Arch': '"x86"',
+        'Sec-Ch-Ua-Bitness': '"64"',
+        'Sec-Ch-Ua-Full-Version': '"119.0.2151.44"',
+        'Sec-Ch-Ua-Full-Version-List': '"Microsoft Edge";v="119.0.2151.44", "Chromium";v="119.0.6045.105", "Not?A_Brand";v="24.0.0.0"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Model': '""',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Ch-Ua-Platform-Version': '"10.0.0"',
+        'Sec-Ch-Ua-Wow64': '?0',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0',
+        'Viewport-Width': '1528'
+    })
+
+    ta_parser_headers:dict = field(default_factory=lambda:{})
+    ta_parser_headers_search:dict = field(default_factory=lambda:{})
+
+    ya_parser_headers_raiting:dict = field(default_factory=lambda:{
+        'Accept': '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9,ru;q=0.8',
+        'Origin': 'https://yandex.ru',
+        'Referer': 'https://yandex.ru/',
+        'Sec-Ch-Ua': '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-site',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
+    })
+
+    zoon_parser_headers:dict = field(default_factory=lambda:{
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'Accept-Language': 'en-US,en;q=0.9,ru;q=0.8',
+        'Cache-Control': 'max-age=0',
+        'Cookie': 'locale=ru_RU; AATestGlobal=variation; anon_id=20230920095826SWst.2ddd; _ga=GA1.2.1291800659.1695193108; _ym_uid=1695193108677982975; _ym_d=1695193108; sid=98be808e6516d0244bfc9617793338; _gid=GA1.2.1208684991.1695993893; _ym_isad=2; city=msk; captcha_pass=eb498b420348e75212393672af8aa661; _gat=1; _ga_KK9RGD935B=GS1.2.1695999086.30.0.1695999086.60.0.0',
+        'Referer': 'https://zoon.ru/search/',
+        'Sec-Ch-Ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
+    })
+
+    zoon_parser_headers_search:dict = field(default_factory=lambda:{
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Content-Length': '183',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'Cookie': 'locale=ru_RU; sid=f2d4b2a76684037b279d0820785709; anon_id=20240702164115fJqj.19f7; _ga=GA1.2.425807124.1719927683; _gid=GA1.2.1582261302.1719927683; _ym_uid=1719927683159033006; _ym_d=1719927683; _ym_isad=2; city=ekb; _ga_KK9RGD935B=GS1.2.1719927692.1.1.1719927702.50.0.0',
+        'Origin': 'https://zoon.ru',
+        'Priority': 'u=1, i',
+        'Referer': 'https://zoon.ru/ekb/restaurants/?search_query_form=1&center%5B%5D=56.81553064458854&center%5B%5D=60.72317535354089&zoom=11',
+        'Sec-Ch-Ua': '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
+        'Sec-Ch-Ua-Mobile': '?0',
+        'Sec-Ch-Ua-Platform': '"Windows"',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+    })
+
+
    
 import json
 if __name__ == '__main__':
   #save to file:
   p = Params()
+  print(type(p.zoon_parser_headers_search))
   #p.base_path = '/1/'
   print(p.yandex_data_file)
   #print(p.all_trip_details_file)
@@ -252,8 +367,11 @@ if __name__ == '__main__':
     json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
   
 
-#   #read from file
+  #read from file
 #   p = Params()
 #   with open('params.json','r',encoding='UTF-8') as f:
 #     p = json.load(f)
+#   print(type(p),type(p.city_list),type(p.city_list[0]))
+#   print(type(p.zoon_parser_headers_search),p.zoon_parser_headers_search)
 #   print('done')
+    pass

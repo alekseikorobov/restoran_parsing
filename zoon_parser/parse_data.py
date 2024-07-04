@@ -8,7 +8,7 @@ import zoon_parser.map_dict as map_dict
 import logging
 import numpy as np
 import re
-import hashlib
+
 
 def get_normal_text_from_element(element:PageElement)->str:
     
