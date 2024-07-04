@@ -57,9 +57,6 @@ class LoadData:
         ]
 
     def config_logging(self):
-        self.params.logs_path = Template(self.params.logs_path).substitute({
-            'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
-        })
         folder,file_name = os.path.split(self.params.logs_path)
 
         if not os.path.isdir(folder):

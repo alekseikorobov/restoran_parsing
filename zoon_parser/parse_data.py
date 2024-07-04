@@ -9,7 +9,6 @@ import logging
 import numpy as np
 import re
 import hashlib
-base_folder = f'{os.path.abspath("")}/data/zoon'
 
 def get_normal_text_from_element(element:PageElement)->str:
     
@@ -281,34 +280,26 @@ def parse_html_details(full_name, is_debug_log = False):
 
     return result_data
 
-def get_details_json(city,full_url,replace=False,is_debug_log = False):
+def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = False):
     
-    path = common.get_folder(base_folder, city, 'pages')
-    page_name = ''
-    if full_url[0] == '/':
-        res = hashlib.sha1(full_url.encode())
-        page_name = res.hexdigest()
-        full_url = f'https://zoon.ru{full_url}'
-    else:
-        page_name = full_url.rstrip('/').split('/')[-1]
-
-    if page_name == '':
-        raise(Exception('can not define page name by url='+full_url))
-
-    path_json = common.get_folder(base_folder, city, 'pages_json')
+    path = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages')
+    path_json = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages_json')
     full_name_json = f'{path_json}/{page_name}.json'
+    full_name_html = f'{path}/{page_name}'
+
     if is_debug_log: logging.debug(f'{full_name_json=}')
     if not replace and common.isfile(full_name_json):
+        #если json уже существует, то забираем только его
         with open(full_name_json, 'r', encoding='utf-8') as f:
             result_data = json.load(f)
             result_data = {replace_key(key):result_data[key] for key in result_data }
-            result_data['z_source_path'] = full_name_json.replace('/','\\')
+            result_data['z_source_path'] = full_name_json
             if 'z_source_url_n' not in result_data:
                 result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
     else:
-        full_name = f'{path}/{page_name}'
-        result_data = parse_html_details(full_name,is_debug_log=is_debug_log)
-        result_data['z_source_path'] = full_name_json.replace('/','\\')
+        #если json нет, тогда парсим html и результат сохраняем в json
+        result_data = parse_html_details(full_name_html, is_debug_log=is_debug_log)
+        result_data['z_source_path'] = full_name_json
         if 'z_source_url_n' not in result_data:
             result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
 
@@ -436,31 +427,3 @@ def get_items(html_str):
         #object_result['z_path_source'] = full_path_page
         object_results.append(object_result)
     return object_results
-
-def get_company_list_by_page(full_path_page):
-    items = []
-    try:
-        html_str = get_html_from_json_file(full_path_page)
-        
-        items = get_items(html_str)
-    except Exception as ex:
-        logging.error(f'{full_path_page=}',exc_info=True)
-    return items
-   
-def parse_all(file_result:str):
-    items_all = []
-    for obj in map_dict.list_map_dict:
-        obj_name = obj['name'] if obj['name'] != "" else obj['title'] 
-        path = common.get_folder(base_folder, 'msk', obj_name)
-        for page in os.listdir(path):
-            full_path_page  = f'{path}/{page}'
-            items = get_company_list_by_page(full_path_page)
-            items_all.extend(items)
-
-        logging.debug(len(items_all))
-
-    pd.DataFrame(items_all).to_excel(file_result, index=False)
-
-if __name__ == '__main__':
-    parse_all(file_result = 'data.xlsx')
-

@@ -21,22 +21,8 @@ def get_random_second():
 
 import hashlib
 
-##TODO: уточнить как правильно задавать путь
-base_folder = f'{os.path.abspath("")}/data/zoon'
-
-def load_page_if_not_exists(city: str, full_url:str,replace=False, timeout=120):
-    path = common.get_folder(base_folder, city, 'pages', is_page = True)
-    page_name = ''
-    if full_url[0] == '/':
-        res = hashlib.sha1(full_url.encode())
-        page_name = res.hexdigest()
-        full_url = f'https://zoon.ru{full_url}'
-    else:
-        #page_name = 'kafe_lelo_na_prospekte_vernadskogo'
-        page_name = full_url.rstrip('/').split('/')[-1]
-    
-    if page_name == '':
-        raise(Exception('can not define page name by url='+full_url))
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120):
+    path = common.get_folder(base_folder.rstrip('/') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
         #logging.debug(f'ready load {full_name=}')
@@ -75,25 +61,30 @@ def get_search_text(search_text):
         logging.warning(f'Входная строка обрезана до "{search_text}" ')
     return search_text.lower()
 
-
-def save_json_by_search_page(city_line:dict,point:tuple,replace=False, timeout=120):
-    zoom=18
+def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     page_name = f'{zoom}_{point[0]}_{point[1]}.json'
-    path = common.get_folder(base_folder, city_line.city,'search_p_json',None)
+    path = common.get_folder(base_folder.rstrip('/') + '/zoon', city_line.city,'search_p_json')
     full_name = f'{path}/{page_name}'
+    return full_name
+
+
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120):
+    zoom = 18
+    full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
     if replace or not common.isfile(full_name):
-        html_result = get_html_by_point_search_company(city_line,point,zoom,timeout=timeout)
+        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
         logging.debug(f'write result to file {full_name=}')
     else:
         logging.debug(f'already exists {full_name=}')
+    return full_name
 
-def get_html_by_point_search_company(city_line:dict, point:tuple, zoom:int, timeout=120):
+def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120):
 
     page_name = f'{zoom}_{point[0]}_{point[1]}.json'
-    path = common.get_folder(base_folder, city_line.city,'search_p',None)
+    path = common.get_folder(base_folder.rstrip('/') + '/zoon', city_line.city,'search_p')
     full_name = f'{path}/{page_name}'
 
     #logging.debug(f'{full_name=}')

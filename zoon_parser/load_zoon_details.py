@@ -16,6 +16,20 @@ class LoadZoonDetails:
     def __init__(self, params: Params) -> None:
         self.params = params
 
+    
+    def get_page_name(self, full_url):
+        page_name = ''
+        if full_url[0] == '/':
+            res = hashlib.sha1(full_url.encode())
+            page_name = res.hexdigest()
+            full_url = f'https://zoon.ru{full_url}'
+        else:
+            page_name = full_url.rstrip('/').split('/')[-1]
+
+        if page_name == '':
+            raise(Exception('can not define page name by url='+full_url))
+        return page_name
+    
     def update_all(self, row):
         if row['z_status'] == 'empty':
             return row
@@ -33,9 +47,10 @@ class LoadZoonDetails:
         if common.is_nan(z_source_url):
             row['z_status'] = 'empty'
             return row
+        page_name = self.get_page_name(z_source_url)
+        load_data.load_page_if_not_exists(self.params.cache_data_folder, page_name, city_line.city, z_source_url,timeout=self.params.timeout_load_zoon_details)
 
-        load_data.load_page_if_not_exists(city_line.city ,z_source_url,timeout=self.params.timeout_load_zoon_details)
-        new_row = parse_data.get_details_json(city_line.city,z_source_url, replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
+        new_row = parse_data.get_details_json(self.params.cache_data_folder, page_name, city_line.city, replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
         
         for key in new_row:
             row[key] = new_row[key]
@@ -59,7 +74,7 @@ class LoadZoonDetails:
 
         df_result = df_result.progress_apply(self.update_all,axis=1)
 
-        df_result = add_info_for_zoon_details(df_result)
+        df_result = self.add_info_for_zoon_details(df_result)
 
         logging.debug(f'{df_result.shape=}, {df_result["source_id"].nunique()=}, {df_result[["ya_id","source_id"]].drop_duplicates().shape=}')
             

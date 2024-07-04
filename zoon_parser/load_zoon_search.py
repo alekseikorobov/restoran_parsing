@@ -13,8 +13,6 @@ import logging
 import json
 from params import Params
 
-base_folder = f'{os.path.abspath("")}/data/zoon'
-
 class LoadZoonSearch:
     def __init__(self, params: Params) -> None:
         self.params = params
@@ -96,17 +94,11 @@ class LoadZoonSearch:
             city_name = row['location_nm_rus']
             city_line = dict_city.get_line_by_city_name(city_name, self.params.city_list)
             
-            point = row['ya_point'].split(',')
-            zoom=18
             row['z_query'] = self.get_z_query(row['location_nm_rus'],row['ya_point'])
-            page_name = f'{zoom}_{point[1]}_{point[0]}.json'
-            path = common.get_folder(base_folder, city_line.city,'search_p_json',None)
-            full_name = f'{path}/{page_name}'
 
             l2_ya, l1_ya = map(float,row['ya_point'].split(','))
 
-            if not common.isfile(full_name):
-                lbyd.save_json_by_search_page(city_line,(l1_ya,l2_ya), replace=False,timeout=self.params.timeout_load_zoon_search)
+            full_name = lbyd.save_json_by_search_page(self.params.cache_data_folder, city_line,(l1_ya,l2_ya), replace=False,timeout=self.params.timeout_load_zoon_search)
 
             with open(full_name,'r',encoding='utf-8') as f:
                 json_result_list = json.load(f)

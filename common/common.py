@@ -59,11 +59,8 @@ def get_rectangle_bounds(coordinates, width=314, length=314):
 
     return bounds
 
-def get_folder(base_folder, city: str, type: str, is_page: bool|None = True) -> str:
-    fold = ''
-    if is_page is not None:
-        fold = 'pages' if is_page else 'details'
-    path = f'{base_folder}/{city}/{type}/{fold}'.rstrip('/')
+def get_folder(base_folder, city: str, fold: str) -> str:
+    path = f'{base_folder}/{city}/{fold}'.rstrip('/')
     if not os.path.isdir(path):
         os.makedirs(path)
     return path

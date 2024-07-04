@@ -1,27 +1,60 @@
 from dataclasses import dataclass, field
+from string import Template
+import datetime
 
 @dataclass
 class Params:
     def __init__(self, **entries):
         self.__dict__.update(entries)
-    #входной фал для поиска
-    yandex_data_file: str = 'tables\\dm_rest_yandex_data.parquet'
-    temp_zoon_search_file: str = 'tables\\zoon_search.hd'
-    temp_select_best_zoon_search_file: str = 'tables\\zoon_select_best.hd'
+
+    base_path:str = ''
+
+    @property
+    def yandex_data_file(self):
+        return Template(self._yandex_data_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def temp_zoon_search_file(self):
+        return Template(self._temp_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def temp_select_best_zoon_search_file(self):
+        return Template(self._temp_select_best_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def zoon_details_file(self):
+        return Template(self._zoon_details_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def temp_trip_search_file(self):
+        return Template(self._temp_trip_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def temp_select_best_trip_search_file(self):
+        return Template(self._temp_select_best_trip_search_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def trip_details_file(self):
+        return Template(self._trip_details_file).substitute({'base_path':self.base_path.rstrip('/')})
+    @property
+    def cache_data_folder(self):
+        return Template(self._cache_data_folder).substitute({'base_path':self.base_path.rstrip('/')})
+
+    @property
+    def logs_path(self):
+        return Template(self._logs_path).substitute({
+            'base_path':self.base_path.rstrip('/'),
+            'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
+        })
+
+    #входной фал для поиска 
+    _yandex_data_file: str = '$base_path/tables/dm_rest_yandex_data.parquet'
+    _temp_zoon_search_file: str = '$base_path/tables/zoon_search.hd'
+    _temp_select_best_zoon_search_file: str = '$base_path/tables/zoon_select_best.hd'
 
     #выходной файл по zoon
-    zoon_details_file: str = 'tables\\zoon_details.parquet'
-    temp_trip_search_file: str = 'tables\\trip_search.hd'
-    temp_select_best_trip_search_file: str = 'tables\\trip_select_best.hd'
-    trip_details_file: str = 'tables\\trip_details.parquet'
-    
-    all_trip_search_file: str = 'tables\\all_trip_search.hd'
-    all_trip_details_file: str = 'tables\\all_trip_details.hd'
-    all_zoon_details_file: str = 'tables\\all_zoon_details.hd'
-    all_zoon_search_file: str = 'tables\\all_zoon_search.hd'
-    using_all_db = True
+    _zoon_details_file: str = '$base_path/tables/zoon_details.parquet'
+    _temp_trip_search_file: str = '$base_path/tables/trip_search.hd'
+    _temp_select_best_trip_search_file: str = '$base_path/tables/trip_select_best.hd'
+    _trip_details_file: str = '$base_path/tables/trip_details.parquet'
 
-    logs_path: str = 'logs/all_logs_$date_now.log'
+    _logs_path: str = '$base_path/logs/all_logs_$date_now.log'
+
+    _cache_data_folder: str = '$base_path/data'
     
     # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
     zoon_details_replace_json = False
@@ -31,13 +64,15 @@ class Params:
     # делать удаление перед записью или нет
     is_replace_file = False
 
-    using_all_db:bool = False
     load_from_trip:bool = False
 
     timeout_load_trip_details:int = 120
     timeout_load_zoon_details:int = 120
     timeout_load_trip_search:int = 120
     timeout_load_zoon_search:int = 120
+
+    proxy:str = None
+    '''g'''
 
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '
@@ -191,14 +226,16 @@ class Params:
 import json
 if __name__ == '__main__':
   #save to file:
-  # p = Params()
-  # print(p.all_trip_details_file)
-  # with open('params.json','w',encoding='UTF-8') as f:
-  #   json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
+  p = Params()
+  #p.base_path = '/1/'
+  print(p.yandex_data_file)
+  #print(p.all_trip_details_file)
+  with open('params.json','w',encoding='UTF-8') as f:
+    json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
   
 
-  #read from file
-  p = Params()
-  with open('params.json','r',encoding='UTF-8') as f:
-    p = json.load(f)
-  print('done')
+#   #read from file
+#   p = Params()
+#   with open('params.json','r',encoding='UTF-8') as f:
+#     p = json.load(f)
+#   print('done')
