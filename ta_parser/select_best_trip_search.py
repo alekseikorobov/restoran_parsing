@@ -4,7 +4,6 @@ import ta_parser.load_data as load_data
 import common.common as common
 import importlib
 importlib.reload(load_data)
-from tqdm import tqdm
 import logging
 
 from params import Params

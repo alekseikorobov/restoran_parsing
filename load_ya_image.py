@@ -11,9 +11,7 @@ import json
 import base64
 import requests
 import numpy as np
-from tqdm import tqdm
 from functools import partial
-tqdm.pandas()
 import warnings
 warnings.filterwarnings("ignore")
 import logging
@@ -80,7 +78,7 @@ class LoadYaImage:
       df_to_load = grouped.apply(lambda x: x.nlargest(self.params.top_load_ya_image, 'i'))
 
       logging.debug(f'start load - {df_to_load.shape}')
-      df_result = df_to_load.progress_apply(self.load_image, axis=1)
+      df_result = df_to_load.apply(self.load_image, axis=1)
 
       logging.debug(f'full data - {df_result.shape=}')
       return logging

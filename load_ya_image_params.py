@@ -12,7 +12,6 @@ import json
 import base64
 import requests
 import numpy as np
-from tqdm import tqdm
 import warnings
 warnings.filterwarnings("ignore")
 import logging
@@ -255,7 +254,7 @@ class LoadYaImageParams:
 
       data_json_list = []
 
-      for i, row in tqdm(df.iterrows(),total=df.shape[0]):
+      for i, row in df.iterrows():
         city_name = row['location_nm_rus']
         ya_id = str(row['ya_id']).replace('.0','')
         logging.debug(f"{city_name=},{ya_id=}")

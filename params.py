@@ -49,15 +49,15 @@ class Params:
 
     #входной фал для поиска 
     _yandex_data_file: str = '$base_path/tables/dm_rest_yandex_data.parquet'
-    _temp_zoon_search_file: str = '$base_path/tables/zoon_search.hd'
-    _temp_select_best_zoon_search_file: str = '$base_path/tables/zoon_select_best.hd'
+    _temp_zoon_search_file: str = '$base_path/tables/zoon_search.pik'
+    _temp_select_best_zoon_search_file: str = '$base_path/tables/zoon_select_best.pik'
 
     #выходной файл по zoon
     _zoon_details_file: str = '$base_path/tables/zoon_details.parquet'
-    _temp_trip_search_file: str = '$base_path/tables/trip_search.hd'
-    _temp_select_best_trip_search_file: str = '$base_path/tables/trip_select_best.hd'
+    _temp_trip_search_file: str = '$base_path/tables/trip_search.pik'
+    _temp_select_best_trip_search_file: str = '$base_path/tables/trip_select_best.pik'
     _trip_details_file: str = '$base_path/tables/trip_details.parquet'
-    _ya_image_params_file: str = '$base_path/tables/ya_image_params.hd'
+    _ya_image_params_file: str = '$base_path/tables/ya_image_params.pik'
 
     _logs_path: str = '$base_path/logs/all_logs_$date_now.log'
 

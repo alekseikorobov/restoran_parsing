@@ -138,7 +138,7 @@ def zoon_name_fix(str1:str,list_replace_type_names)->str:
 
 
 
-def replace_address_by_city_line(city_line, address_text:str|None,list_replace_stop_word_adress):
+def replace_address_by_city_line(city_line, address_text:str,list_replace_stop_word_adress):
     if address_text == '' or address_text is None or str(address_text) == str(np.nan):
         return address_text
 
@@ -154,12 +154,12 @@ def replace_address_by_city_line(city_line, address_text:str|None,list_replace_s
 
     return address_text.strip()
 
-def replace_address_by_city_code(city_code:str, address_text:str|None, city_list,list_replace_stop_word_adress):
+def replace_address_by_city_code(city_code:str, address_text:str, city_list,list_replace_stop_word_adress):
     city_line = dict_city.get_line_by_city_code(city_code, city_list)
 
     return replace_address_by_city_line(city_line, address_text)
 
-def replace_address_by_city(city_name:str, address_text:str|None, city_list,list_replace_stop_word_adress):
+def replace_address_by_city(city_name:str, address_text:str, city_list,list_replace_stop_word_adress):
 
     city_line = dict_city.get_line_by_city_name(city_name, city_list)
 

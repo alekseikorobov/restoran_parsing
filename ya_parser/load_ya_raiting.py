@@ -1,5 +1,4 @@
 import pandas as pd
-from tqdm import tqdm
 import common.common as common
 import common.dict_city as dict_city
 import os

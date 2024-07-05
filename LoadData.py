@@ -57,8 +57,8 @@ class LoadData:
             os.makedirs(folder)
             print(f'created dir - {folder}')
         
-        if self.params.log_level.upper() not in logging.getLevelNamesMapping():
-            raise(Exception(f'Not correct log level in param value - {self.params.log_level}. Avaliable - {",".join(logging.getLevelNamesMapping().keys())}'))
+        if not isinstance(logging.getLevelName(self.params.log_level.upper()),int):
+            raise(Exception(f'Not correct log level in param value - {self.params.log_level}'))
 
         logging.basicConfig(
             level=logging.getLevelName(self.params.log_level.upper()),

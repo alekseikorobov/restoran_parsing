@@ -1,7 +1,5 @@
 import pandas as pd
 import logging
-
-from tqdm import tqdm
 import common.common as common
 import numpy as np
 from params import Params
@@ -102,7 +100,7 @@ class SelectBestZoonSearch:
         logging.debug(f"{df_process['source_id'].nunique()=}")
         #return None
 
-        for i, row in tqdm(df_process.iterrows(),total=df_process.shape[0]):
+        for i, row in df_process.iterrows():
             
             if str(row['ya_id']) == str(np.nan):
                 df_line = df_zoon_search[(df_zoon_search['source_id'] == row['source_id'])]

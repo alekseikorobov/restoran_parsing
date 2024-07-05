@@ -7,7 +7,6 @@ import ta_parser.load_data as load_data
 import importlib
 importlib.reload(load_data)
 import common.dict_city as dict_city
-from tqdm import tqdm
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 import logging
 import datetime
@@ -61,11 +60,11 @@ class LoadTripDetails:
         return row
 
     def start(self, df_result:pd.DataFrame) -> pd.DataFrame:
-        tqdm.pandas()
+
         logging.debug('start')
         logging.info(f'{df_result.shape=}')
 
-        df_result = df_result.progress_apply(self.update_all,axis=1)
+        df_result = df_result.apply(self.update_all,axis=1)
 
         df_result = pd.DataFrame(df_result)
 

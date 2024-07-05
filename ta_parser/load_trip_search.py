@@ -7,7 +7,6 @@ import common.dict_city as dict_city
 import common.my_language_ru_pack as my_language_ru_pack
 import importlib
 importlib.reload(lbyd)
-from tqdm import tqdm
 from geopy.distance import geodesic as GD 
 import common.common as common
 importlib.reload(common)
@@ -31,7 +30,7 @@ class LoadTripSearch:
 
     def parse_search_data(self, df_process):
         json_list_result = []
-        for i, row in tqdm(df_process.iterrows(), total=df_process.shape[0]):
+        for i, row in df_process.iterrows():
 
             if row['ya_status'] in ['not_match_a','not_match_cat','not_match_n05','not_match_other']:
                 row['ta_status'] = 'ya_not_match'

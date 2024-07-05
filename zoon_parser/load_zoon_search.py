@@ -5,7 +5,6 @@ import zoon_parser.load_data as lbyd
 import common.dict_city as dict_city
 import importlib
 importlib.reload(lbyd)
-from tqdm import tqdm
 import zoon_parser.parse_data as parse_data
 from geopy.distance import geodesic as GD 
 import common.common as common
@@ -61,7 +60,7 @@ class LoadZoonSearch:
         #is_match_address = (df['ya_is_match_address'] == True)
         #df_process = df[is_cnt_category_match & is_match_address & is_ya_status]
         json_list_result = []
-        for i, row in tqdm(df_process.iterrows(), total=df_process.shape[0]):
+        for i, row in df_process.iterrows():
 
             if row['ya_status'] in ['not_match_a','not_match_cat','not_match_n05','not_match_other']:
                 row['z_status'] = 'empty'

@@ -4,14 +4,12 @@ import zoon_parser.load_data as load_data
 import zoon_parser.parse_data as parse_data
 import common.dict_city as dict_city
 import logging
-from tqdm import tqdm
 import common.common as common
 import numpy as np
 from params import Params
 import datetime
 import hashlib
 
-tqdm.pandas()
 
 class LoadZoonDetails:
     def __init__(self, params: Params) -> None:
@@ -76,7 +74,7 @@ class LoadZoonDetails:
 
         logging.debug(f'start {df_result.columns=}')
 
-        df_result = df_result.progress_apply(self.update_all,axis=1)
+        df_result = df_result.apply(self.update_all,axis=1)
 
         df_result = self.add_info_for_zoon_details(df_result)
 
