@@ -72,13 +72,10 @@ class LoadZoonDetails:
 
     def start(self, df_result:pd.DataFrame) -> pd.DataFrame:
 
-        logging.debug(f'start {df_result.columns=}')
-
         df_result = df_result.apply(self.update_all,axis=1)
 
         df_result = self.add_info_for_zoon_details(df_result)
 
-        logging.debug(f'{df_result.shape=}, {df_result["source_id"].nunique()=}, {df_result[["ya_id","source_id"]].drop_duplicates().shape=}')
-            
-        logging.info(f'{df_result.shape=}')
+        logging.debug(f'{df_result["source_id"].nunique()=}, {df_result[["ya_id","source_id"]].drop_duplicates().shape=}')
+        
         return pd.DataFrame(df_result)

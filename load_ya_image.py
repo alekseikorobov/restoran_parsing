@@ -65,6 +65,9 @@ class LoadYaImage:
       return row
 
     def start(self, df):
+
+      logging.debug(f'start {df.shape=} {df.columns=}')
+      
       #df['tag_id'].fillna('other',inplace=True)
       df['ya_id'] = df['ya_id'].astype(str)
       is_interior = df['tag_id']=='Interior'
@@ -80,6 +83,6 @@ class LoadYaImage:
       logging.debug(f'start load - {df_to_load.shape}')
       df_result = df_to_load.apply(self.load_image, axis=1)
 
-      logging.debug(f'full data - {df_result.shape=}')
-      return logging
+      logging.debug(f'{df_result.shape=}, {df_result.info()}')
+      return df_result
       #df_result.to_excel(path_to, index=False)

@@ -309,6 +309,23 @@ def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = 
     return result_data
 
 
+def get_html_from_json_str(obj_result):
+    if not 'success' in obj_result:
+        raise(Exception('not key success!!'))
+    
+    if not obj_result['success']:
+        raise(Exception('not success!!!'))
+    
+    if not 'html' in obj_result:
+        raise(Exception('not key html!!'))
+    len_html = len(obj_result['html'])
+    if len_html == 0:
+        raise(Exception('html empty!!!'))
+    
+    html_str = obj_result['html']
+    return html_str
+
+#not using method
 def get_html_from_json_file(full_path_page):
     #full_path_page = 'data/msk/sushi-bar/pages/page_1.json'
     with open(full_path_page,'r',encoding='UTF-8') as f:

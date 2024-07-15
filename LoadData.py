@@ -71,6 +71,11 @@ class LoadData:
 
 
     def get_or_action(self, path_file:str, action, *args):
+        
+        df_input = args[0]
+
+        logging.debug(f'start {df_input.shape=} {df_input.columns=}')
+
         _,ext = os.path.splitext(path_file)
         if common.isfile(path_file):
             if ext == '.pik':
@@ -95,6 +100,7 @@ class LoadData:
             df.to_hdf(path_file,'DATA')
         else:
             raise(Exception(f'not support extention {ext}'))
+        logging.debug(f'{df.shape=}, {df.info()}, saved to {path_file=}')
         return df
     
     def start_load(self):

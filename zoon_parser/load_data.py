@@ -16,7 +16,9 @@ warnings.filterwarnings("ignore")
 
 
 def get_random_second():
-    time.sleep(random.choice([2,3,4, 1]))
+    t = random.choice([2,3,4,1])
+    time.sleep(t)
+    logging.debug(f'time.sleep({t=})')
 
 
 
@@ -78,11 +80,19 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
     return full_name
 
 def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None):
-
-    page_name = f'{zoom}_{point[0]}_{point[1]}.json'
+    '''
+    Пытаемся получить html со страницы поиска из zoon.ru.
+    html кешируется.
+    В некоторых случаеях приходит json, а в некоторых html.
+    сначала проверяем присутствует ли html, тогда возвращаем.
+    Если нет, тогда делаем запрос в zoon. Пытаемся получить данные как json. Если выходит ошибка парсинга json, тогда это чисто html.
+    Записываем в файл.
+    Если ошибки нет и это json, тогда извлекаем из него html и записываем в файл
+    '''
+    page_name = f'{zoom}_{point[0]}_{point[1]}.html'
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line['city'],'search_p')
     full_name = f'{path}/{page_name}'
-
+    html_result = ''
     #logging.debug(f'{full_name=}')
     if not common.isfile(full_name):
         base_url = ''
@@ -95,17 +105,19 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
             headers['Origin'] = base_url
             headers['Referer'] = base_url
 
-        full_url = f'{base_url}/json-rpc/v1/'
+        #full_url = f'{base_url}/json-rpc/v1/'
         full_url = f'{base_url}/restaurants/?action=listJson&type=service'
         #logging.debug(f'request {full_url=}')
 
         bounds = common.get_rectangle_bounds(point)
-        logging.debug(f'{full_url=}')
         data = f'need%5B%5D=items&need%5B%5D=points&page=1&search_query_form=1&bounds%5B%5D={bounds[0][1]}&bounds%5B%5D={bounds[0][0]}&bounds%5B%5D=={bounds[1][1]}&bounds%5B%5D={bounds[1][0]}'
+        proxies = {'http': proxy,'https': proxy}
 
+        logging.debug(f'{full_url=}')
         logging.debug(f'{headers=}')
         logging.debug(f'{data=}')
-        proxies = {'http': proxy,'https': proxy}
+        logging.debug(f'{proxies=}')
+        logging.debug(f'{timeout=}')
         res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False,proxies=proxies)
         
         logging.debug(f'{res.status_code=}')
@@ -113,15 +125,13 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
         if res.status_code == 200:
             res_json = ''
             is_error = False
-            with open(full_name, 'w',encoding='UTF-8') as f:
-                try:
-                    res_json = res.json()
-                except Exception as ex:
-                    logging.error(ex)
-                    is_error=True
-                    logging.error(full_name,exc_info=True)
-                if not is_error:
-                    json.dump(res_json, f, ensure_ascii=False)
+            try:
+                res_json = res.json()
+            except Exception as ex:
+                is_error=True
+                logging.error(full_name,exc_info=True)
+            if not is_error:
+                html_result = parse_data.get_html_from_json_str(res_json)
             if is_error:
                 # в некоторых случаях вместо json файла (в котором находится html), приходит сразу html с данными
                 #  тогда идет проверка что полученый текст начиается с тега html и возвращаем эти данные 
@@ -129,17 +139,22 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
                     if common.isfile(full_name):
                         logging.warn(f'delete file {full_name}')
                         os.remove(full_name)
-                    return res.text
+                    html_result = res.text
                 else:
-                    logging.error('get text:')
-                    logging.error(res.text)
-                    raise(Exception(f'not correct data by {full_name=}'))
+                    logging.error(f'{res.text=}')
+                    raise(Exception(f'not correct data by {full_url=}'))
+            with open(full_name, 'w',encoding='UTF-8') as f:
+                f.write(html_result)
+            logging.debug(f'write to file {full_name=}')
             get_random_second()
         else:
             logging.error(f'{res.text=}')
             raise(Exception(f'{res.text=}'))
 
-    html = parse_data.get_html_from_json_file(full_name)
+    else:
+        with open(full_name,'r',encoding='UTF-8') as f:
+            html_result = f.read()
+        logging.debug(f'read from file {full_name=}')
 
-    return html
+    return html_result
 

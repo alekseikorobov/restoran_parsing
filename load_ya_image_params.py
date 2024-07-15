@@ -246,12 +246,6 @@ class LoadYaImageParams:
           yield data_json
 
     def start(self, df):
-      logging.info('start load yandex images params')
-      #path_from = r"tables\tran_yandex_data.xlsx"
-      #path_to = r'tables\all_link_image_ya.xlsx'
-      # df = pd.read_excel(path_from)
-      # df['ya_id'] = df['ya_id'].astype(str)
-
       data_json_list = []
 
       for i, row in df.iterrows():
@@ -264,6 +258,4 @@ class LoadYaImageParams:
           data_json_list.append(data_json)
         
       df_result = pd.DataFrame(data_json_list)
-      logging.debug(f'full data - {df_result.shape=}')
-      #df_result.to_excel(path_to, index=False)
       return df_result

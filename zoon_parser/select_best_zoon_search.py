@@ -48,11 +48,9 @@ class SelectBestZoonSearch:
         return df_res
 
     def start(self, df_zoon_search:pd.DataFrame) -> pd.DataFrame:
-        logging.debug(f'start')
-
-        logging.info(f'{df_zoon_search.shape=}')
 
         fact_count = df_zoon_search['source_id'].nunique()
+        logging.debug(f"{fact_count=}")
         #assert fact_count == control_count, f'not correct count before load  {fact_count} {control_count}'
 
         df_result = pd.DataFrame(columns=['v_zoon_id','source_id'])
@@ -123,8 +121,7 @@ class SelectBestZoonSearch:
             df_result = pd.concat([df_result,df_line])
         
         fact_count = df_result['source_id'].nunique()
+        logging.debug(f"{fact_count=}")
         #assert fact_count == control_count, f'not correct count after load {fact_count} {control_count}'
-        
-        logging.debug(f'{df_result.columns=}')
 
         return df_result

@@ -136,13 +136,8 @@ class LoadZoonSearch:
         return df_result
 
     def start(self, df:pd.DataFrame)->pd.DataFrame:
-        logging.debug('start match zoon search and yandex data')
-        logging.info(f'get {df.shape=}')
         df_result = self.parse_search_data(df)
         logging.debug(f'{df_result["z_status"].value_counts()=}')
-        logging.info(f'resutl {df_result.shape=}')
-        #df_result.to_excel(to_path, index=False)
-        #logging.debug(f'saved to {to_path=}')
         return df_result
 
 
