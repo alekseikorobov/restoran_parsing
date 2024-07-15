@@ -113,6 +113,7 @@ class LoadData:
             raise ex
     
     def __start_load__(self):
+        logging.debug(f'Начало обработки')
         start_all = time.time()
         if self.params.is_replace_file:
             for path in [

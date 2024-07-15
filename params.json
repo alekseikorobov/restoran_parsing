@@ -8,7 +8,7 @@
   "_temp_select_best_trip_search_file": "$base_path/tables/trip_select_best.pik",
   "_trip_details_file": "$base_path/tables/trip_details.parquet",
   "_ya_image_params_file": "$base_path/tables/ya_image_params.pik",
-  "_logs_path": "$base_path/logs/all_logs_$date_now.log",
+  "_logs_path": "$base_path/logs/all_logs_${date_now}.log",
   "_cache_data_folder": "$base_path/data",
   "_ya_images_folder": "$base_path/data/images",
   "load_from_trip": false,
