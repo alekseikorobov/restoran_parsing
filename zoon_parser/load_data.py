@@ -13,6 +13,7 @@ import json
 import warnings
 import logging
 warnings.filterwarnings("ignore")
+import cloudscraper
 
 
 def get_random_second():
@@ -22,15 +23,27 @@ def get_random_second():
 
 
 
-def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None):
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None, http_client='requests'):
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
         #logging.debug(f'ready load {full_name=}')
         return
-    logging.debug(f'request {full_url=}')
+    logging.debug(f'{full_url=}')
     proxies = {'http': proxy,'https': proxy}
-    res = requests.get(full_url,headers=headers,verify=False,timeout=timeout,proxies=proxies)
+    logging.debug(f'{headers=}')
+    logging.debug(f'{proxies=}')
+    logging.debug(f'{timeout=}')
+    logging.debug(f'{http_client=}')
+
+    if http_client == 'requests':
+        res = requests.get(full_url,headers=headers,verify=False,timeout=timeout,proxies=proxies)
+    elif http_client == 'cloudscraper':
+        scraper = cloudscraper.create_scraper()
+        res = scraper.get(full_url,timeout=timeout,proxies=proxies)
+    else:
+        raise(Exception(f'not correct parameter {http_client=}'))
+
     if res.status_code == 512:
         raise(Exception('can not load data'))
     
@@ -66,11 +79,11 @@ def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     return full_name
 
 
-def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None,headers=None):
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None,headers=None, http_client='requests'):
     zoom = 18
     full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
     if replace or not common.isfile(full_name):
-        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy,headers=headers)
+        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy,headers=headers,http_client=http_client)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
@@ -79,7 +92,7 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
         logging.debug(f'already exists {full_name=}')
     return full_name
 
-def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None):
+def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None, http_client='requests'):
     '''
     Пытаемся получить html со страницы поиска из zoon.ru.
     html кешируется.
@@ -118,9 +131,15 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
         logging.debug(f'{data=}')
         logging.debug(f'{proxies=}')
         logging.debug(f'{timeout=}')
-        res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False,proxies=proxies)
-        
-        logging.debug(f'{res.status_code=}')
+        logging.debug(f'{http_client=}')
+
+        if http_client == 'requests':
+            res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False,proxies=proxies)
+        elif http_client == 'cloudscraper':
+            scraper = cloudscraper.create_scraper()
+            res = scraper.post(full_url, data=data, timeout=timeout,proxies=proxies)
+        else:
+            raise(Exception(f'not correct parameter {http_client=}'))
 
         if res.status_code == 200:
             res_json = ''

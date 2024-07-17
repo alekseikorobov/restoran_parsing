@@ -101,7 +101,8 @@ class LoadZoonSearch:
                 replace=False,
                 timeout=self.params.timeout_load_zoon_search,
                 proxy=self.params.proxy,
-                headers=self.params.zoon_parser_headers_search)
+                headers=self.params.zoon_parser_headers_search,
+                http_client=self.params.zoon_parser_http_client)
 
             with open(full_name,'r',encoding='utf-8') as f:
                 json_result_list = json.load(f)

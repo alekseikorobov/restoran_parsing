@@ -59,7 +59,7 @@ class Params:
     _trip_details_file: str = '$base_path/tables/trip_details.parquet'
     _ya_image_params_file: str = '$base_path/tables/ya_image_params.pik'
 
-    _logs_path: str = '$base_path/logs/all_logs_$date_now.log'
+    _logs_path: str = '$base_path/logs/all_logs_${date_now}.log'
 
     _cache_data_folder: str = '$base_path/data'
     _ya_images_folder: str = '$base_path/data/images'
@@ -90,7 +90,8 @@ class Params:
     top_load_ya_image:int = 10
 
     proxy:str = None
-    '''g'''
+    
+    zoon_parser_http_client:str = 'cloudscraper'
 
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '

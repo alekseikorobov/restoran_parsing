@@ -50,7 +50,8 @@ class LoadZoonDetails:
         load_data.load_page_if_not_exists(self.params.cache_data_folder, page_name, city_line['city'], z_source_url,
             timeout=self.params.timeout_load_zoon_details,
             proxy=self.params.proxy,
-            headers=self.params.zoon_parser_headers)
+            headers=self.params.zoon_parser_headers,
+            http_client=self.params.zoon_parser_http_client)
 
         new_row = parse_data.get_details_json(self.params.cache_data_folder, page_name, city_line['city'], replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
         

@@ -22,6 +22,7 @@
   "timeout_load_ya_image": 120,
   "top_load_ya_image": 10,
   "proxy": null,
+  "zoon_parser_http_client": "cloudscraper",
   "list_replace_type_names": [
     "Банкетный зал ",
     "Городской ресторан ",
