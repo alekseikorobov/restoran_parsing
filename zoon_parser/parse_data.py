@@ -98,6 +98,20 @@ def parse_url_from_zoon(url):
             return url_new_decode
     return url
 
+def parset_html_details_get_data_og_url(soup):
+    org_link_element_element = soup.find("a", {"data-uitest" : 'org-link'})
+    if org_link_element_element is not None:
+        if org_link_element_element.attrs is not None:
+            return org_link_element_element.attrs['href']
+
+    
+    og_url_element = soup.find("meta", {"property" : "og:url"})
+    if og_url_element is not None:
+        if og_url_element.attrs is not None:
+            return og_url_element.attrs['content']
+            #<meta property="og:url" content="https://ekb.zoon.ru/restaurants/restoran_krevetki_i_burgery_na_ulitse_malysheva/">
+    return ''
+
 def parset_html_details_get_data_owner_id(soup):
     div_reviews_element = soup.find("div", {"data-owner-id" : True})
     if div_reviews_element is not None:
@@ -200,12 +214,8 @@ def parse_html_details(full_name, is_debug_log = False):
     if name_element is not None:
         result_data['z_name'] = get_normal_text_from_element(name_element)
 
-    og_url_element = soup.find("meta", {"property" : "og:url"})
-    if og_url_element is not None:
-        if og_url_element.attrs is not None:
-            result_data['z_source_url'] = og_url_element.attrs['content']
-            result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
-            #<meta property="og:url" content="https://ekb.zoon.ru/restaurants/restoran_krevetki_i_burgery_na_ulitse_malysheva/">
+    result_data['z_source_url'] = parset_html_details_get_data_og_url(soup)
+    result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
 
     result_data['z_id'] = parset_html_details_get_data_owner_id(soup)
     
@@ -287,8 +297,8 @@ def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = 
     full_name_json = f'{path_json}/{page_name}.json'
     full_name_html = f'{path}/{page_name}'
 
-    logging.debug(f'{full_name_json=}')
     if not replace and common.isfile(full_name_json):
+        logging.debug(f'already exists - {full_name_json=}')
         #если json уже существует, то забираем только его
         with open(full_name_json, 'r', encoding='utf-8') as f:
             result_data = json.load(f)
@@ -298,6 +308,7 @@ def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = 
                 result_data['z_source_url_n'] = common.normalize_z_source_url(result_data['z_source_url'])
     else:
         #если json нет, тогда парсим html и результат сохраняем в json
+        logging.debug(f'parsing html - {full_name_html=}')
         result_data = parse_html_details(full_name_html, is_debug_log=is_debug_log)
         result_data['z_source_path'] = full_name_json
         if 'z_source_url_n' not in result_data:
@@ -305,6 +316,7 @@ def get_details_json(base_folder, page_name, city, replace=False,is_debug_log = 
 
         with open(full_name_json,'w', encoding='utf') as f:
             json.dump(result_data,f, ensure_ascii=False)
+            logging.debug(f'save to {full_name_json=}')
         
     return result_data
 
@@ -360,6 +372,18 @@ def get_data_from_item_rating_value(item_element):
             return get_normal_text_from_element(rating_value_element)
     return ''
 
+def get_data_from_item_z_source_url(item_element):
+
+    org_link_element_element = item_element.find("a", {"data-uitest" : 'org-link'})
+    if org_link_element_element is not None:
+        if org_link_element_element.attrs is not None:
+            return org_link_element_element.attrs['href']
+
+    element_title = item_element.find(class_ = 'title-link js-item-url')
+    if element_title is not None:
+        return element_title.attrs.get('href',None)
+    return ''
+
 
 def get_data_from_item(item_element):
     object_result = {
@@ -381,8 +405,8 @@ def get_data_from_item(item_element):
 
     if element_title is not None:
         object_result['z_title'] = element_title.text.strip()
-        object_result['z_source_url'] = element_title.attrs.get('href',None)
-        object_result['z_source_url_n'] = common.normalize_z_source_url(object_result['z_source_url'])
+    object_result['z_source_url'] = get_data_from_item_z_source_url(item_element)
+    object_result['z_source_url_n'] = common.normalize_z_source_url(object_result['z_source_url'])
 
     #li class="minicard-item js-results-item  " data-lon="37.629834" data-lat="55.782546999962" data-id="4fa56de03c72dd5c550000d0" data-object_id="4fa56de03c72dd5c550000d0.8247" data-ev_label="premium"
     object_result['z_lon'] = item_element.attrs.get('data-lon','')

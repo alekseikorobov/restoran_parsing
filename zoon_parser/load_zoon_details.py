@@ -31,6 +31,7 @@ class LoadZoonDetails:
     
     def update_all(self, row):
         if row['z_status'] == 'empty':
+            logging.warn(f'z_status == empty, {row["source_id"]}')
             return row
 
         city_name = row['location_nm_rus']
@@ -44,6 +45,7 @@ class LoadZoonDetails:
             #l_replace_json = True #TODO: временно, только для того чтобы пересчитать id
 
         if common.is_nan(z_source_url):
+            logging.warn(f'z_source_url is EMPTY! {row["source_id"]}')
             row['z_status'] = 'empty'
             return row
         page_name = self.get_page_name(z_source_url)
@@ -51,7 +53,8 @@ class LoadZoonDetails:
             timeout=self.params.timeout_load_zoon_details,
             proxy=self.params.proxy,
             headers=self.params.zoon_parser_headers,
-            http_client=self.params.zoon_parser_http_client)
+            http_client=self.params.zoon_parser_http_client,
+            selenium_browser=self.params.zoon_parser_selenium_browser)
 
         new_row = parse_data.get_details_json(self.params.cache_data_folder, page_name, city_line['city'], replace = l_replace_json, is_debug_log=self.params.zoon_details_debug_log)
         
@@ -74,6 +77,8 @@ class LoadZoonDetails:
     def start(self, df_result:pd.DataFrame) -> pd.DataFrame:
 
         df_result = df_result.apply(self.update_all,axis=1)
+
+        logging.debug(f'result parsing details {df_result.shape=}, {df_result.columns}')
 
         df_result = self.add_info_for_zoon_details(df_result)
 

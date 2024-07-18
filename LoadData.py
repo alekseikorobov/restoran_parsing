@@ -74,7 +74,7 @@ class LoadData:
         
         df_input = args[0]
 
-        logging.debug(f'start {df_input.shape=} {df_input.columns=}')
+        logging.debug(f'start {action.__self__.__class__}: {df_input.shape=} {df_input.columns=}')
 
         _,ext = os.path.splitext(path_file)
         if common.isfile(path_file):
@@ -100,7 +100,7 @@ class LoadData:
             df.to_hdf(path_file,'DATA')
         else:
             raise(Exception(f'not support extention {ext}'))
-        logging.debug(f'{df.shape=}, {df.info()}, saved to {path_file=}')
+        logging.debug(f'{df.shape=}, {df.columns}, saved to {path_file=}')
         return df
     
     def start_load(self):

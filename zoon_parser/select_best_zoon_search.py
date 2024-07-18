@@ -122,6 +122,8 @@ class SelectBestZoonSearch:
         
         fact_count = df_result['source_id'].nunique()
         logging.debug(f"{fact_count=}")
+        logging.debug(f'{df_result["z_status"].value_counts()=}')
+        logging.debug(f'{df_result["z_status_m"].value_counts()=}')
         #assert fact_count == control_count, f'not correct count after load {fact_count} {control_count}'
 
         return df_result

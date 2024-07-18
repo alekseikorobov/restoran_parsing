@@ -258,6 +258,36 @@ class MyTest(unittest.TestCase):
         for url,result in urls:
             self.assertEqual(common.normalize_z_source_url(url), result)
 
+    
+    def test_zoon_parse_data_og_url_from_html(self):
+        print()
+        for file,expect in [
+            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
+            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
+            (r'data_unit_test\zoon\msk\search_p\18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
+        ]:
+            with open(file,'r',encoding='UTF-8') as f:
+                res_json = json.load(f)
+                html_result = parse_data.get_html_from_json_str(res_json)
+                soup = BeautifulSoup(html_result,"html.parser")
+
+                z_source_url = parse_data.parset_html_details_get_data_og_url(soup)
+
+                assert z_source_url == expect,f'{file=},{expect=},{z_source_url=}'
+                #print(f'{file=} {z_source_url=}')
+        for full_name,expect in [
+            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
+            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
+        ]:
+            html_str = ''
+            with open(full_name,'r',encoding='utf-8') as f:
+                html_str = f.read()
+            soup = BeautifulSoup(html_str,"html.parser")
+
+            z_source_url = parse_data.parset_html_details_get_data_og_url(soup)
+            assert z_source_url == expect,f'{full_name=},{expect=},{z_source_url=}'
+    
+    
     def test_zoon_parse_data_owner_id_from_html(self):
         
         full_name = r'data_unit_test\zoon\ekb\pages\pages\kafe_na_pervomajskoj'
@@ -325,7 +355,40 @@ class MyTest(unittest.TestCase):
 
             description_element = parse_data.parset_html_details_get_description_element(soup)
             assert description_element is not None,f'not found description by {full_name=}'
-        
+
+    def test_get_data_from_item_z_source_url(self):
+        print()
+        for file,expect in [
+            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
+            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
+            (r'data_unit_test\zoon\msk\search_p\18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
+        ]:
+            with open(file,'r',encoding='UTF-8') as f:
+                res_json = json.load(f)
+                html_result = parse_data.get_html_from_json_str(res_json)
+                soup = BeautifulSoup(html_result,"html.parser")
+                items = soup.find_all(class_='minicard-item js-results-item')
+                for item_element in items:
+                    z_source_url = parse_data.get_data_from_item_z_source_url(item_element)
+                    #assert z_source_url == expect,f'{file=},{expect=},{z_source_url=}'
+                    assert z_source_url != "",f'{file=},{z_source_url=}'
+                    #break
+                #print(f'{file=} {z_source_url=}')
+        for full_name,expect in [
+            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
+            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
+        ]:
+            html_str = ''
+            with open(full_name,'r',encoding='utf-8') as f:
+                html_str = f.read()
+            soup = BeautifulSoup(html_str,"html.parser")
+            items = soup.find_all(class_='minicard-item js-results-item')
+            for item_element in items:
+                z_source_url = parse_data.get_data_from_item_z_source_url(item_element)
+                #assert z_source_url == expect,f'{full_name=},{expect=},{z_source_url=}'
+                assert z_source_url != "",f'{full_name=},{z_source_url=}'
+                #break     
+
 
     def test_get_data_from_item_rating_value(self):
         params = [

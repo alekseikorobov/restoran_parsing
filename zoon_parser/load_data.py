@@ -21,7 +21,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.remote_connection import LOGGER
-LOGGER.setLevel(logging.DEBUG)
+LOGGER.setLevel(logging.INFO)
 
 
 def get_random_second():
@@ -31,11 +31,11 @@ def get_random_second():
 
 
 
-def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None, http_client='requests'):
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None, http_client='requests',selenium_browser='chrome'):
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
-        #logging.debug(f'ready load {full_name=}')
+        logging.debug(f'ready load {full_name=}')
         return
     logging.debug(f'{full_url=}')
     proxies = {'http': proxy,'https': proxy}
@@ -49,6 +49,13 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,repl
     elif http_client == 'cloudscraper':
         scraper = cloudscraper.create_scraper()
         res = scraper.get(full_url,timeout=timeout,proxies=proxies)
+    elif http_client == 'selenium':
+        driver = get_driver(proxy=proxy, browser=selenium_browser)
+        driver.get(full_url)
+        html_result = driver.page_source
+        with open(full_name, 'w',encoding='UTF-8') as f:
+            f.write(html_result)
+        return html_result
     else:
         raise(Exception(f'not correct parameter {http_client=}'))
 
@@ -57,6 +64,7 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,repl
     
     with open(full_name, 'w', encoding='utf-8') as f:
         f.write(res.text)
+    logging.debug(f'write to file {full_name=}')
     get_random_second()
 
 
