@@ -15,6 +15,14 @@ import logging
 warnings.filterwarnings("ignore")
 import cloudscraper
 
+# from selenium import webdriver
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.remote.webdriver import WebDriver
+# from selenium.webdriver.remote.remote_connection import LOGGER
+# LOGGER.setLevel(logging.INFO)
+
 
 def get_random_second():
     t = random.choice([2,3,4,1])
@@ -92,6 +100,17 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
         logging.debug(f'already exists {full_name=}')
     return full_name
 
+
+# driver:WebDriver = None
+
+# def get_driver() -> WebDriver:
+#     global driver
+#     if driver is None:
+#         options = Options()
+#         options.add_argument("--headless")
+#         driver = webdriver.Firefox(options=options)
+#     return driver
+
 def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None, http_client='requests'):
     '''
     Пытаемся получить html со страницы поиска из zoon.ru.
@@ -138,26 +157,23 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
         elif http_client == 'cloudscraper':
             scraper = cloudscraper.create_scraper()
             res = scraper.post(full_url, data=data, timeout=timeout,proxies=proxies)
+        # elif http_client == 'selenium':
+        #     driver = get_driver()
+        #     response = driver.request('POST', full_url, data = data, timeout=timeout,proxies=proxies)
+        #     # driver.get(full_url)
+        #     # html_result = driver.page_source
         else:
             raise(Exception(f'not correct parameter {http_client=}'))
 
         if res.status_code == 200:
-            res_json = ''
-            is_error = False
-            try:
+            if 'json' in res.headers['content-type']:
+                logging.debug('geted json')
                 res_json = res.json()
-            except Exception as ex:
-                is_error=True
-                logging.error(full_name,exc_info=True)
-            if not is_error:
                 html_result = parse_data.get_html_from_json_str(res_json)
-            if is_error:
+            else:
                 # в некоторых случаях вместо json файла (в котором находится html), приходит сразу html с данными
                 #  тогда идет проверка что полученый текст начиается с тега html и возвращаем эти данные 
                 if '<html' in res.text:
-                    if common.isfile(full_name):
-                        logging.warn(f'delete file {full_name}')
-                        os.remove(full_name)
                     html_result = res.text
                 else:
                     logging.error(f'{res.text=}')
