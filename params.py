@@ -91,7 +91,9 @@ class Params:
 
     proxy:str = None
     
-    zoon_parser_http_client:str = 'cloudscraper'
+    zoon_parser_http_client:str = 'selenium' #'cloudscraper'
+    
+    zoon_parser_selenium_browser:str = 'chrome' #'firefox'
 
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '
@@ -135,11 +137,11 @@ class Params:
     ])
 
     city_list:list = field(default_factory=lambda:[        
-        {'name': 'Москва', 'city': 'msk', "is_domain": False, 
+        {'name': 'Москва', 'city': 'msk', "is_domain": True, 
         'replaces':['Россия, Центральный округ, Москва','Россия, Центральный округ, Московская Область','Москва, ','Московская область, ',', Москва'], 
         'center_point':(55.755864, 37.617698)},
         
-        {'name': 'Московская область', 'city': 'msk', "is_domain": False, 
+        {'name': 'Московская область', 'city': 'msk', "is_domain": True, 
         'replaces':['Россия, Центральный округ, Москва','Россия, Центральный округ, Московская Область','Москва, ','Московская область, ',', Москва'], 
         'center_point':(55.755864, 37.617698)},
         
@@ -164,7 +166,7 @@ class Params:
         {'name': 'Красноярск', 'city': 'krasnoyarsk', "is_domain": True, 
         'replaces':['Россия, Сибирский округ, Красноярский край, Красноярск','Красноярск, ',', Красноярск'], 
         'center_point':(56.010569, 92.852572)},
-        {'name': 'Самара', 'city': 'samara', "is_domain": False, 
+        {'name': 'Самара', 'city': 'samara', "is_domain": True, 
         'replaces':['Россия, Приволжский округ, Самарская область, Самара','Самара, ',', Самара'], 
         'center_point':(53.195878, 50.100202)},
         {'name': 'Уфа', 'city': 'ufa', "is_domain": True, 
@@ -179,7 +181,7 @@ class Params:
         {'name': 'Краснодар', 'city': 'krasnodar', "is_domain": True, 
         'replaces':['Россия, Южный округ, Краснодарский край, Краснодар','Краснодар, ',', Краснодар'], 
         'center_point':(45.035470, 38.975313)},
-        {'name': 'Воронеж', 'city': 'voronezh', "is_domain": False, 
+        {'name': 'Воронеж', 'city': 'voronezh', "is_domain": True, 
         'replaces':['Россия, Центральный округ, Воронежская область, Воронеж','Воронеж, ',', Воронеж'], 
         'center_point':(51.660781, 39.200296)},
         {'name': 'Пермь', 'city': 'perm', "is_domain": True, 
