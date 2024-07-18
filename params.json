@@ -700,7 +700,7 @@
     "Accept-Language": "en-US,en;q=0.9",
     "Content-Length": "183",
     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-    "Cookie": "locale=ru_RU; sid=f2d4b2a76684037b279d0820785709; anon_id=20240702164115fJqj.19f7; _ga=GA1.2.425807124.1719927683; _gid=GA1.2.1582261302.1719927683; _ym_uid=1719927683159033006; _ym_d=1719927683; _ym_isad=2; city=ekb; _ga_KK9RGD935B=GS1.2.1719927692.1.1.1719927702.50.0.0",
+    "Cookie": "anon_id=202405271130152nKR.0227; _ym_uid=1716798616133068309; _ym_d=1716798616; _ga=GA1.2.1399164107.1716798616; AATestGlobal=control; city=msk; _ga_KK9RGD935B=GS1.2.1721218245.4.1.1721218286.19.0.0; locale=ru_RU; sid=31dcf9a466990a0674358796234063",
     "Origin": "https://zoon.ru",
     "Priority": "u=1, i",
     "Referer": "https://zoon.ru/ekb/restaurants/?search_query_form=1&center%5B%5D=56.81553064458854&center%5B%5D=60.72317535354089&zoom=11",
