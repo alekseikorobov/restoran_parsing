@@ -24,6 +24,7 @@
   "proxy": null,
   "zoon_parser_http_client": "selenium",
   "zoon_parser_selenium_browser": "chrome",
+  "zoon_parser_selenium_chromedriver_path": "./lib/chromedriver-linux64-123.0.6312.122/chromedriver",
   "list_replace_type_names": [
     "Банкетный зал ",
     "Городской ресторан ",

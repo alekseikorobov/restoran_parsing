@@ -14,6 +14,7 @@ import warnings
 import logging
 warnings.filterwarnings("ignore")
 import cloudscraper
+from params import Params
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -31,7 +32,17 @@ def get_random_second():
 
 
 
-def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,replace=False, timeout=120,proxy=None,headers=None, http_client='requests',selenium_browser='chrome'):
+def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,params:Params,replace=False):
+
+    #from params:
+    timeout = params.timeout_load_zoon_search
+    proxy = params.proxy
+    headers = params.zoon_parser_headers_search
+    http_client = params.zoon_parser_http_client
+    selenium_browser = params.zoon_parser_selenium_browser
+    chromedriver_path = params.zoon_parser_selenium_chromedriver_path
+
+    #timeout=120,proxy=None,headers=None, http_client='requests',selenium_browser='chrome'
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city, 'pages')
     full_name = f'{path}/{page_name}'
     if not replace and common.isfile(full_name):
@@ -50,7 +61,7 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,repl
         scraper = cloudscraper.create_scraper()
         res = scraper.get(full_url,timeout=timeout,proxies=proxies)
     elif http_client == 'selenium':
-        driver = get_driver(proxy=proxy, browser=selenium_browser)
+        driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path)
         driver.get(full_url)
         html_result = driver.page_source
         with open(full_name, 'w',encoding='UTF-8') as f:
@@ -95,11 +106,11 @@ def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     return full_name
 
 
-def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=False, timeout=120, proxy=None,headers=None, http_client='requests',selenium_browser='chrome'):
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,params:Params,replace=False):
     zoom = 18
     full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
     if replace or not common.isfile(full_name):
-        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom,timeout=timeout, proxy=proxy,headers=headers,http_client=http_client,selenium_browser=selenium_browser)
+        html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom, params)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
             json.dump(result_orgs,f, ensure_ascii=False)
@@ -111,7 +122,7 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,replace=Fal
 
 driver:WebDriver = None
 
-def get_driver(proxy=None, browser='chrome') -> WebDriver:
+def get_driver(proxy=None, browser='chrome',chromedriver_path = None) -> WebDriver:
     global driver
     if driver is not None:
         return driver 
@@ -123,14 +134,20 @@ def get_driver(proxy=None, browser='chrome') -> WebDriver:
         options.add_argument('--marionette')
         driver = webdriver.Firefox(options=options)
     elif browser == 'chrome':
+        service = None
+        if chromedriver_path is not None:
+            if not os.path.isfile(chromedriver_path):
+                raise(Exception(f'driver not found from {chromedriver_path=}'))
+            service = webdriver.ChromeService(executable_path=chromedriver_path)
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--headless")
         if proxy is not None:
             chrome_options.add_argument(f'--proxy-server={proxy}')
-        driver = webdriver.Chrome(options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options,service=service)
     return driver
 
-def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int, timeout=120, proxy=None, headers = None, http_client='requests',selenium_browser='chrome'):
+def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int,params:Params):
+#timeout=120, proxy=None, headers = None, http_client='requests',selenium_browser='chrome',chromedriver_path=None):
     '''
     Пытаемся получить html со страницы поиска из zoon.ru.
     html кешируется.
@@ -140,6 +157,15 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
     Записываем в файл.
     Если ошибки нет и это json, тогда извлекаем из него html и записываем в файл
     '''
+
+    #from params:
+    timeout = params.timeout_load_zoon_search
+    proxy = params.proxy
+    headers = params.zoon_parser_headers_search
+    http_client = params.zoon_parser_http_client
+    selenium_browser = params.zoon_parser_selenium_browser
+    chromedriver_path = params.zoon_parser_selenium_chromedriver_path
+
     page_name = f'{zoom}_{point[0]}_{point[1]}.html'
     path = common.get_folder(base_folder.rstrip('/\\') + '/zoon', city_line['city'],'search_p')
     full_name = f'{path}/{page_name}'
@@ -162,6 +188,7 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
 
         bounds = common.get_rectangle_bounds(point)
         data = f'need%5B%5D=items&need%5B%5D=points&page=1&search_query_form=1&bounds%5B%5D={bounds[0][1]}&bounds%5B%5D={bounds[0][0]}&bounds%5B%5D=={bounds[1][1]}&bounds%5B%5D={bounds[1][0]}'
+
         proxies = {'http': proxy,'https': proxy}
 
         logging.debug(f'{full_url=}')
@@ -170,6 +197,7 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
         logging.debug(f'{proxies=}')
         logging.debug(f'{timeout=}')
         logging.debug(f'{http_client=}')
+        logging.debug(f'{chromedriver_path=}')
 
         if http_client == 'requests':
             res = requests.post(full_url, data=data, headers=headers,timeout=timeout, verify=False,proxies=proxies)
@@ -177,7 +205,7 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
             scraper = cloudscraper.create_scraper()
             res = scraper.post(full_url, data=data, timeout=timeout,proxies=proxies)
         elif http_client == 'selenium':
-            driver = get_driver(proxy=proxy, browser=selenium_browser)
+            driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path)
             driver.get(full_url)
             html_result = driver.page_source
             with open(full_name, 'w',encoding='UTF-8') as f:

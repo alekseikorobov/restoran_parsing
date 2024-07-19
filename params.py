@@ -95,6 +95,8 @@ class Params:
     
     zoon_parser_selenium_browser:str = 'chrome' #'firefox'
 
+    zoon_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
+
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '
         , 'Городской ресторан '
