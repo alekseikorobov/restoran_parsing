@@ -64,7 +64,9 @@ class Params:
     _cache_data_folder: str = '$base_path/data'
     _ya_images_folder: str = '$base_path/data/images'
 
-    log_level = 'DEBUG'
+    log_level:str = 'DEBUG'
+    
+    log_level_selenium:str = 'DEBUG'
     
     # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
     zoon_details_replace_json = False

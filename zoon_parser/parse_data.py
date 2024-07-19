@@ -375,14 +375,16 @@ def get_data_from_item_rating_value(item_element):
 def get_data_from_item_z_source_url(item_element):
 
     org_link_element_element = item_element.find("a", {"data-uitest" : 'org-link'})
-    if org_link_element_element is not None:
-        if org_link_element_element.attrs is not None:
-            return org_link_element_element.attrs['href']
-
-    element_title = item_element.find(class_ = 'title-link js-item-url')
-    if element_title is not None:
-        return element_title.attrs.get('href',None)
-    return ''
+    link = ''
+    if org_link_element_element is not None and org_link_element_element.attrs is not None:
+        link = org_link_element_element.attrs.get('href',None)
+    else:
+        element_title = item_element.find(class_ = 'title-link js-item-url')
+        if element_title is not None and element_title.attrs is not None:
+            link = element_title.attrs.get('href',None)
+    if link == '' or link is None:
+        logging.warn('can not get link for details!')
+    return link
 
 
 def get_data_from_item(item_element):

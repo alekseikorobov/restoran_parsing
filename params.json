@@ -11,6 +11,8 @@
   "_logs_path": "$base_path/logs/all_logs_${date_now}.log",
   "_cache_data_folder": "$base_path/data",
   "_ya_images_folder": "$base_path/data/images",
+  "log_level": "DEBUG",
+  "log_level_selenium": "DEBUG",
   "load_from_trip": false,
   "load_from_zoon": true,
   "load_images_from_ya": true,

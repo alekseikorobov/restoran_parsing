@@ -22,7 +22,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.remote_connection import LOGGER
-LOGGER.setLevel(logging.INFO)
 
 
 def get_random_second():
@@ -61,7 +60,7 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,para
         scraper = cloudscraper.create_scraper()
         res = scraper.get(full_url,timeout=timeout,proxies=proxies)
     elif http_client == 'selenium':
-        driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path)
+        driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
         driver.get(full_url)
         html_result = driver.page_source
         with open(full_name, 'w',encoding='UTF-8') as f:
@@ -122,7 +121,7 @@ def save_json_by_search_page(base_folder, city_line:dict,point:tuple,params:Para
 
 driver:WebDriver = None
 
-def get_driver(proxy=None, browser='chrome',chromedriver_path = None) -> WebDriver:
+def get_driver(proxy=None, browser='chrome',chromedriver_path = None, log_level='info') -> WebDriver:
     global driver
     if driver is not None:
         return driver 
@@ -144,6 +143,15 @@ def get_driver(proxy=None, browser='chrome',chromedriver_path = None) -> WebDriv
         if proxy is not None:
             chrome_options.add_argument(f'--proxy-server={proxy}')
         driver = webdriver.Chrome(options=chrome_options,service=service)
+    #log_level
+
+    if not isinstance(logging.getLevelName(log_level.upper()),int):
+        raise(Exception(f'Not correct log level in param value - {log_level}'))
+    
+    level=logging.getLevelName(log_level.upper())
+
+    LOGGER.setLevel(level)
+
     return driver
 
 def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, zoom:int,params:Params):
@@ -205,11 +213,12 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
             scraper = cloudscraper.create_scraper()
             res = scraper.post(full_url, data=data, timeout=timeout,proxies=proxies)
         elif http_client == 'selenium':
-            driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path)
+            driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
             driver.get(full_url)
             html_result = driver.page_source
             with open(full_name, 'w',encoding='UTF-8') as f:
                 f.write(html_result)
+            logging.debug(f'write to file {full_name=}')
             return html_result
         else:
             raise(Exception(f'not correct parameter {http_client=}'))
