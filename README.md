@@ -2,7 +2,7 @@
 
 ## Описание
 
-ыПолучение данных начинается по запуску файла [LoadData.py](LoadData.py)
+Получение данных начинается по запуску файла [LoadData.py](LoadData.py)
 
 ```sh
 python LoadData.py -h

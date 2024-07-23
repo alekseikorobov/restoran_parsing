@@ -62,6 +62,9 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,para
     elif http_client == 'selenium':
         driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
         driver.get(full_url)
+        if params.log_level_selenium == 'DEBUG':
+            driver.get_log('browser')
+            driver.get_log('driver')
         html_result = driver.page_source
         with open(full_name, 'w',encoding='UTF-8') as f:
             f.write(html_result)
@@ -218,6 +221,13 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
             html_result = driver.page_source
             with open(full_name, 'w',encoding='UTF-8') as f:
                 f.write(html_result)
+
+            if params.log_level_selenium == 'DEBUG':
+                driver.get_log('browser')
+                driver.get_log('driver')
+                #driver.get_log('client') #error - not found 'client'
+                #driver.get_log('server') #error - not found 'server'
+
             logging.debug(f'write to file {full_name=}')
             return html_result
         else:
