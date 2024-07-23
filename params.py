@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from string import Template
 import datetime
+import json
 
 @dataclass
 class Params:
@@ -8,96 +9,134 @@ class Params:
     #     self.__dict__.update(entries)
 
     base_path:str = '.'
+    '''Базовый путь к файлам, используется как раметр $base_path
+    '''
 
     @property
     def yandex_data_file(self):
+        '''Возвращает _yandex_data_file с подстановкой параметра base_path'''
         return Template(self._yandex_data_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_zoon_search_file(self):
+        '''Возвращает _temp_zoon_search_file с подстановкой параметра base_path'''
         return Template(self._temp_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_select_best_zoon_search_file(self):
+        '''Возвращает _temp_select_best_zoon_search_file с подстановкой параметра base_path'''
         return Template(self._temp_select_best_zoon_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def zoon_details_file(self):
+        '''Возвращает _zoon_details_file с подстановкой параметра base_path'''
         return Template(self._zoon_details_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_trip_search_file(self):
+        '''Возвращает _temp_trip_search_file с подстановкой параметра base_path'''
         return Template(self._temp_trip_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def temp_select_best_trip_search_file(self):
+        '''Возвращает _temp_select_best_trip_search_file с подстановкой параметра base_path'''
         return Template(self._temp_select_best_trip_search_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def trip_details_file(self):
+        '''Возвращает _trip_details_file с подстановкой параметра base_path'''
         return Template(self._trip_details_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def cache_data_folder(self):
+        '''Возвращает _cache_data_folder с подстановкой параметра base_path'''
         return Template(self._cache_data_folder).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def ya_image_params_file(self):
+        '''Возвращает _ya_image_params_file с подстановкой параметра base_path'''
         return Template(self._ya_image_params_file).substitute({'base_path':self.base_path.rstrip('/\\')})
     @property
     def ya_images_folder(self):
+        '''Возвращает _ya_images_folder с подстановкой параметра base_path'''
         return Template(self._ya_images_folder).substitute({'base_path':self.base_path.rstrip('/\\')})
 
     @property
     def logs_path(self):
+        '''Возвращает _logs_path с подстановкой параметра base_path и date_now в формате yyyymmdd'''
         return Template(self._logs_path).substitute({
             'base_path':self.base_path.rstrip('/\\'),
             'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
         })
-
-    #входной фал для поиска 
+ 
     _yandex_data_file: str = '$base_path/tables/dm_rest_yandex_data.parquet'
+    '''таблица входного фала для поиска'''
+
     _temp_zoon_search_file: str = '$base_path/tables/zoon_search.pik'
+    '''временный файл результата парсинга со страницы поиска из zoon.ru'''
+
     _temp_select_best_zoon_search_file: str = '$base_path/tables/zoon_select_best.pik'
+    '''временный файл результата выбора лучшего соответствия между данными из яндекса и zoon.ru со страницы поиска'''
 
     #выходной файл по zoon
     _zoon_details_file: str = '$base_path/tables/zoon_details.parquet'
+    '''выходной файл результата парсинга из zoon.ru'''
     _temp_trip_search_file: str = '$base_path/tables/trip_search.pik'
     _temp_select_best_trip_search_file: str = '$base_path/tables/trip_select_best.pik'
     _trip_details_file: str = '$base_path/tables/trip_details.parquet'
     _ya_image_params_file: str = '$base_path/tables/ya_image_params.pik'
-
+    '''параметры (+ прямые ссылки) по картинкам из яндекса'''
     _logs_path: str = '$base_path/logs/all_logs_${date_now}.log'
-
+    '''файл логов результата работы парсинга'''
     _cache_data_folder: str = '$base_path/data'
+    '''папка с кешированными данным во время поиска, такие как html и json, необходимо для того чтобы запрос в сторонние сервисы делать только единожды, экономия трафика и времени работы. Нужно удалять вручную если необходимо сделать обновление данных'''
     _ya_images_folder: str = '$base_path/data/images'
-
+    '''Папка с картинками jpg из яндекс'''
     log_level:str = 'DEBUG'
-    
+    '''уроверь логирования DEBUG, INFO, WARN, ERROR '''
     log_level_selenium:str = 'DEBUG'
+    '''уроверь логирования для селениум, отличается от logging: DEBUG - это трассировочные логи, пишет очень много данных включая результаты полученных html, INFO - как debug режим пишет только основную информацию, WARN - только предупреждения и ошибки, ERROR - только ошибки '''
     
-    # перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
     zoon_details_replace_json = False
-    
+    '''перезаписать json деталей из html по zoon (если были правки парсинга в zoon_parser\parse_data.py, методе get_details_json)
+    '''
     zoon_details_debug_log = False
-
+    '''детальные логи при парсинге zoon
+    '''
     # делать удаление перед записью или нет
     is_replace_file = False
+    '''если True, то перед запускам удаляются временые таблицы результатов парсинга
+    '''
 
     load_from_trip:bool = False
+    '''делать парсинг по trip advisor или нет. На данный момент отключено (False)
+    '''
     load_from_zoon:bool = True
+    '''делать парсинг по zoon.ru или нет'''
 
     load_images_from_ya:bool = True
+    '''скачивать фотки или нет'''
 
     timeout_load_trip_details:int = 120
+    '''таймаут для парсинга по trip advisor на странице деталей'''
     timeout_load_zoon_details:int = 120
+    '''таймаут для парсинга по zoon на странице деталей'''
     timeout_load_trip_search:int = 120
+    '''таймаут для парсинга по trip advisor на странице поиска'''
     timeout_load_zoon_search:int = 120
+    '''таймаут для парсинга по zoon на странице поиска'''
     
     timeout_load_ya_image_params:int = 120
+    '''таймаут для получения параметров фоток из яндекса'''
     timeout_load_ya_image:int = 120
-
+    '''таймаут для получения фоток из яндекса'''
     top_load_ya_image:int = 10
+    '''количество фоток, которые нужно забрать по каждому ресторану'''
 
     proxy:str = None
+    '''domain прокси для парсинга'''
     
-    zoon_parser_http_client:str = 'selenium' #'cloudscraper'
-    
+    zoon_parser_http_client:str = 'selenium'
+    '''клиент для парсинга в zoon, можно использовать **requests**,**cloudscraper** или **selenium**'''
+
     zoon_parser_selenium_browser:str = 'chrome' #'firefox'
+    '''браузер из selenium для парсинга в zoon, можно использовать **chrome**  или **firefox** (но для firefox пока не реализована возможность использовать прокси и не существует параметр для подстановки драйвера)'''
 
     zoon_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
+    '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
+    '''
 
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '
@@ -119,6 +158,7 @@ class Params:
         , 'Турецкий ресторан '
         , 'Фастфуд '
     ])
+    '''замена типов заведений для стандартизации'''
 
     list_replace_stop_word_adress:list = field(default_factory=lambda:[ 'бульвар'
         ,'корпус'
@@ -139,6 +179,7 @@ class Params:
         ,'шоссе'
         ,'село'
     ])
+    '''удаление слов из адреса, для сравнения адресов'''
 
     city_list:list = field(default_factory=lambda:[        
         {'name': 'Москва', 'city': 'msk', "is_domain": True, 
@@ -362,16 +403,16 @@ class Params:
 
 
    
-import json
+
 if __name__ == '__main__':
   #save to file:
-  p = Params()
-  print(type(p.zoon_parser_headers_search))
-  #p.base_path = '/1/'
-  print(p.yandex_data_file)
-  #print(p.all_trip_details_file)
-  with open('params.json','w',encoding='UTF-8') as f:
-    json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
+#   p = Params()
+#   print(type(p.zoon_parser_headers_search))
+#   #p.base_path = '/1/'
+#   print(p.yandex_data_file)
+#   #print(p.all_trip_details_file)
+#   with open('params.json','w',encoding='UTF-8') as f:
+#     json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
   
 
   #read from file
@@ -381,4 +422,59 @@ if __name__ == '__main__':
 #   print(type(p),type(p.city_list),type(p.city_list[0]))
 #   print(type(p.zoon_parser_headers_search),p.zoon_parser_headers_search)
 #   print('done')
-    pass
+    
+    from pydoc_markdown.interfaces import Context
+    from pydoc_markdown.contrib.loaders.python import PythonLoader
+    from pydoc_markdown.contrib.renderers.markdown import MarkdownRenderer
+
+    context = Context(directory='.')
+    loader = PythonLoader(packages=['params'],modules=['params'])
+    renderer = MarkdownRenderer(
+    render_module_header=False,
+    insert_header_anchors= False,
+    html_headers= False,
+    code_headers= True,
+    descriptive_class_title = False,
+    descriptive_module_title= False,
+    add_module_prefix= False,
+    add_method_class_prefix= False,
+    add_member_class_prefix= False,
+    add_full_prefix= False,
+    sub_prefix= False,
+    data_code_block= False,
+    data_expression_maxlength = 2,
+    classdef_code_block= False,
+    classdef_with_decorators= False,
+    signature_python_help_style= False,
+    signature_code_block= False,
+    signature_in_header= False,
+    signature_with_vertical_bar= True,
+    signature_with_def= False,
+    signature_class_prefix= False,
+    signature_with_decorators= False,
+    render_toc=False,
+    format_code=False,
+    header_level_by_type = {"Method": 4,
+                "Function": 4,
+                "Variable": 4,
+                }
+    
+    )
+
+    loader.init(context)
+    renderer.init(context)
+
+    modules = loader.load()
+    result = renderer.render_to_string(modules)
+    #print(len(result))
+
+    from pathlib import Path
+
+    path = Path('docs') / f'params.md'
+    import os
+    if os.path.isfile(path):
+        os.remove(path)
+    with open(path,'w',encoding='UTF-8') as f:
+        for line in result.splitlines():
+            if not line.startswith('## '):
+                f.write(line + '\n')
