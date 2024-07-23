@@ -22,6 +22,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def get_random_second():
@@ -62,6 +64,14 @@ def load_page_if_not_exists(base_folder, page_name, city: str, full_url:str,para
     elif http_client == 'selenium':
         driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
         driver.get(full_url)
+        
+        logging.debug('start wait element from page')
+        second_wait = 60
+        element = WebDriverWait(driver, second_wait).until(
+            EC.presence_of_element_located((By.ID, "wrapper"))
+        )
+        logging.debug('end wait element from page')
+        
         if params.log_level_selenium == 'DEBUG':
             driver.get_log('browser')
             driver.get_log('driver')
@@ -218,6 +228,14 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
         elif http_client == 'selenium':
             driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
             driver.get(full_url)
+
+            logging.debug('start wait element from page')
+            second_wait = 60
+            element = WebDriverWait(driver, second_wait).until(
+                EC.presence_of_element_located((By.ID, "wrapper"))
+            )
+            logging.debug('end wait element from page')
+
             html_result = driver.page_source
             with open(full_name, 'w',encoding='UTF-8') as f:
                 f.write(html_result)
