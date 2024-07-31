@@ -118,10 +118,10 @@ def get_full_name_for_search(base_folder, city_line, point, zoom = 18):
     return full_name
 
 
-def save_json_by_search_page(base_folder, city_line:dict,point:tuple,params:Params,replace=False):
+def save_json_by_search_page(base_folder, city_line:dict,point:tuple,params:Params):
     zoom = 18
     full_name = get_full_name_for_search(base_folder, city_line, point,zoom=zoom)
-    if replace or not common.isfile(full_name):
+    if params.is_zoon_search_replace_json_request or not common.isfile(full_name):
         html_result = get_html_by_point_search_company(base_folder, city_line,point,zoom, params)
         result_orgs = parse_data.get_items(html_result)
         with open(full_name,'w', encoding='utf') as f:
@@ -192,7 +192,7 @@ def get_html_by_point_search_company(base_folder, city_line:dict, point:tuple, z
     full_name = f'{path}/{page_name}'
     html_result = ''
     #logging.debug(f'{full_name=}')
-    if not common.isfile(full_name):
+    if params.is_zoon_search_replace_html_request or not common.isfile(full_name):
         base_url = ''
         if city_line['is_domain'] == True:
             base_url = f"https://{city_line['city']}.zoon.ru"

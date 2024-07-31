@@ -18,11 +18,11 @@ def get_folder(base_folder, city: str, sub_folder: str) -> str:
   return path
 
 
-def get_raiting_html(base_folder, city_code, id:str, proxy = None,timeout=5,headers = None):
+def get_raiting_html(base_folder, city_code, id:str, proxy = None,timeout=5,headers = None,is_replase=False):
   path = get_folder(base_folder,city_code,'html')
   full_name = f'{path}/{id}.html'
   result_html = ''
-  if not common.isfile(full_name):
+  if is_replase or not common.isfile(full_name):
     full_url = f'https://yandex.ru/maps-reviews-widget/{id}?size=m&comments'
     #print(f'load from {full_url=}')
     proxies = {'http': proxy,'https': proxy}
@@ -70,7 +70,7 @@ def parse_html_get_json(html_str:str) -> dict:
 
   return result_data
 
-def get_json_ya_raiting(base_folder, city_code, ya_id, proxy = None, timeout=5,headers=None) -> dict:
-  html_result = get_raiting_html(base_folder, city_code, ya_id, proxy=proxy, timeout=timeout,headers=headers)
+def get_json_ya_raiting(base_folder, city_code, ya_id, proxy = None, timeout=5,headers=None,is_replase=False) -> dict:
+  html_result = get_raiting_html(base_folder, city_code, ya_id, proxy=proxy, timeout=timeout,headers=headers,is_replase=is_replase)
   json_result = parse_html_get_json(html_result)
   return json_result

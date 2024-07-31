@@ -30,7 +30,7 @@ class LoadYaImageParams:
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code,'gallery_html')
       full_name = f'{path}/{ya_id}.html'
       result_html = ''
-      if not os.path.isfile(full_name):
+      if self.params.is_ya_param_g_replace_html_request or not os.path.isfile(full_name):
         headers = self.params.ya_parser_headers_gallery
         
         logging.debug(f'load {url}')
@@ -44,7 +44,7 @@ class LoadYaImageParams:
             f.write(result_html)
             logging.debug(f'save to {full_name=}')
         else:
-          logging.warning(f'get {response.status_code=} skip save')
+          raise(Exception(f'not get - {response.status_code}, {response.text}'))
         self.get_random_second()
       else:
         logging.debug(f'get from {full_name=}')
@@ -67,7 +67,7 @@ class LoadYaImageParams:
       json_result = None
       system_links = []
       session_id = None
-      if not os.path.isfile(full_name):
+      if self.params.is_ya_param_g_replace_json_request or not os.path.isfile(full_name):
         result_html = self.get_gallery_html_by_org(url,city_code, ya_id)
         if result_html == '':
           logging.warning('not exists html')
@@ -163,11 +163,12 @@ class LoadYaImageParams:
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code, 'gallery_json')
       full_name = f'{path}/{ya_id}.json'
       json_result = None
-      if not os.path.isfile(full_name):
+      if self.params.is_ya_param_replace_json_request or not os.path.isfile(full_name):
         json_result = load_ya_raiting.get_json_ya_raiting(self.params.cache_data_folder,city_code, ya_id,
             proxy = self.params.proxy,
             timeout=self.params.timeout_load_ya_image_params,
-            headers=self.params.ya_parser_headers_raiting)
+            headers=self.params.ya_parser_headers_raiting,
+            is_replase=self.params.is_ya_rating_replace_html_request)
         ya_link_org = json_result['ya_link_org']
         if ya_link_org == '' or ya_link_org is None:
           raise(Exception(f'link not correct by id {ya_id}'))

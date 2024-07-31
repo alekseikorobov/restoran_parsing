@@ -112,8 +112,25 @@ class LoadData:
             logging.error(ex)
             raise ex
     
+    def get_ip(self, proxy = None):
+        try:
+            import requests
+            res = requests.get('https://ip.me/',verify=False,headers = {
+            'content-type':'text/html; charset=UTF-8'
+            }, proxies = {'http':proxy,'https':proxy}, timeout=60)
+        except BaseException as ex:
+            return 'ERROR'
+        return res.text
+
     def __start_load__(self):
         logging.debug(f'Начало обработки')
+        using_ip = self.get_ip(self.params.proxy)
+
+        if using_ip == 'ERROR':
+            logging.warn(f'ip.me with proxy {self.params.proxy} return {using_ip}')
+        else:
+            logging.debug(f'ip.me with proxy {self.params.proxy} return {using_ip}')
+
         start_all = time.time()
         if self.params.is_replace_file:
             for path in [
@@ -139,6 +156,7 @@ class LoadData:
         control_count = df_yandex_data['source_id'].nunique()
 
         if self.params.load_from_zoon:
+            logging.debug('Start load by zoon')
             df_zoon_search = self.get_or_action(self.params.temp_zoon_search_file,
                                                 self.load_zoon_search.start,
                                                 df_yandex_data[self.columns_ya_for_zoon_search])
@@ -150,6 +168,8 @@ class LoadData:
             df_zoon_details = self.get_or_action(self.params.zoon_details_file,
                                                 self.load_zoon_details.start,
                                                 df_selected)
+        else:
+            logging.debug('Skip load by zoon')
 
         if self.params.load_from_trip:
             df_trip_search = self.get_or_action(self.params.temp_trip_search_file,

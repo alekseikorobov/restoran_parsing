@@ -98,8 +98,7 @@ class LoadZoonSearch:
             l2_ya, l1_ya = map(float,row['ya_point'].split(','))
 
             full_name = lbyd.save_json_by_search_page(self.params.cache_data_folder, city_line,(l1_ya,l2_ya),
-                self.params,
-                replace=False)
+                self.params)
 
             with open(full_name,'r',encoding='utf-8') as f:
                 json_result_list = json.load(f)
