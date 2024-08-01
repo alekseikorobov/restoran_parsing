@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "restoran-to-dadm"
-version = "0.1.0"
+name = "restoran"
+version = "0.1.10"
 description = ""
 authors = ["alekseikorobov <aleksei_korobov@mail.ru>"]
 readme = "README.md"

@@ -210,7 +210,10 @@ def get_arguments():
     args = parser.parse_args()
     return args
 
+VERSION = '0.1.10'
+
 if __name__ == '__main__':
+    print(f'VERSION = {VERSION}')
     if len(sys.argv) == 1:
         print('WARNING','not override params. Start with default params')
     
@@ -240,4 +243,5 @@ if __name__ == '__main__':
     
     print(f'{args=}')
     ld = LoadData(param)
+    logging.info(f'VERSION = {VERSION}')
     ld.start_load()
