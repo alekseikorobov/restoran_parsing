@@ -145,7 +145,7 @@ class LoadData:
                 if common.isfile(path):
                     os.remove(path)
 
-        df_yandex_data = pd.read_parquet(self.params.yandex_data_file).head(1)
+        df_yandex_data = pd.read_parquet(self.params.yandex_data_file)
         df_yandex_data['transaction_info_norm'] = df_yandex_data['transaction_info_new'].apply(common.normalize_company_name)
         df_yandex_data['ya_company_name_norm'] = df_yandex_data['ya_company_name_norm'].apply(common.normalize_company_name)
         df_yandex_data['z_query'] = ''

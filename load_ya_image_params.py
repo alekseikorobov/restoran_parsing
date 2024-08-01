@@ -50,7 +50,7 @@ class LoadYaImageParams:
                     raise(Exception(f'driver not found from {chromedriver_path=}'))
                 service = webdriver.ChromeService(executable_path=chromedriver_path)
             chrome_options = webdriver.ChromeOptions()
-            #chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--headless")
             if proxy is not None:
                 chrome_options.add_argument(f'--proxy-server={proxy}')
             self._driver = webdriver.Chrome(options=chrome_options,service=service)
