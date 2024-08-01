@@ -55,12 +55,15 @@ class Params:
 
     @property
     def logs_path(self):
-        '''Возвращает _logs_path с подстановкой параметра base_path и date_now в формате yyyymmdd'''
+        '''Возвращает _logs_path с подстановкой параметра base_path и date_now в заданом формате параметра date_time_format'''
         return Template(self._logs_path).substitute({
             'base_path':self.base_path.rstrip('/\\'),
-            'date_now':f'{datetime.datetime.now():%Y%m%d}' #format yyyymmdd
+            'date_now':datetime.datetime.strftime(datetime.datetime.now(), self.date_time_format)
         })
- 
+    
+    date_time_format:str = '%Y%m%d_%H%M%S'
+    '''Параметр для форматирования даты логирования, по умолчанию %Y%m%d_%H%M%S'''
+
     _yandex_data_file: str = '$base_path/tables/dm_rest_yandex_data.parquet'
     '''таблица входного фала для поиска'''
 
@@ -99,6 +102,25 @@ class Params:
     is_replace_file = False
     '''если True, то перед запускам удаляются временые таблицы результатов парсинга
     '''
+    is_zoon_search_replace_html_request:bool = True
+    '''перезатирать html из кеша (то есть запрос на сайт zoon будет всегда)'''
+    is_zoon_search_replace_json_request:bool = True
+    '''перезатирать JSON из кеша (то есть послу получения HTML парсится json и он будет перезатерт)'''
+
+    is_ya_param_replace_json_request:bool = True
+    '''Перезатирать json c параметрами для получения картинок из яндекса'''
+    
+    is_ya_param_g_replace_json_request:bool = True
+    '''Перезатирать json c параметрами из Галереии для получения картинок из яндекса'''
+    
+    is_ya_param_g_replace_html_request:bool = True
+    '''Перезатирать HTML c параметрами из Галереии для получения картинок из яндекса'''
+
+    is_ya_rating_replace_html_request:bool = True
+    '''Перезатирать html со страницы рейтинга для получения картинок из яндекса'''
+
+    is_ya_using_cookies:bool = False
+    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_headers_gallery, для того чтобы сделать запрос через selenium. Если false, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
 
     load_from_trip:bool = False
     '''делать парсинг по trip advisor или нет. На данный момент отключено (False)
@@ -137,6 +159,19 @@ class Params:
     zoon_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
     '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
     '''
+
+
+
+    ya_parser_http_client:str = 'selenium'
+    '''клиент для парсинга в yandex, можно использовать **requests** или **selenium**'''
+
+    ya_parser_selenium_browser:str = 'chrome' #'firefox'
+    '''браузер из selenium для парсинга в yandex, можно использовать **chrome**  или **firefox** (но для firefox пока не реализована возможность использовать прокси и не существует параметр для подстановки драйвера)'''
+
+    ya_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
+    '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
+    '''
+
 
     list_replace_type_names:list = field(default_factory=lambda:[ 
           'Банкетный зал '
@@ -406,13 +441,13 @@ class Params:
 
 if __name__ == '__main__':
   #save to file:
-#   p = Params()
-#   print(type(p.zoon_parser_headers_search))
-#   #p.base_path = '/1/'
-#   print(p.yandex_data_file)
-#   #print(p.all_trip_details_file)
-#   with open('params.json','w',encoding='UTF-8') as f:
-#     json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
+  p = Params()
+  print(type(p.zoon_parser_headers_search))
+  #p.base_path = '/1/'
+  print(p.yandex_data_file)
+  #print(p.all_trip_details_file)
+  with open('params.json','w',encoding='UTF-8') as f:
+    json.dump(p,f,default=lambda o: o.__dict__,ensure_ascii=False,indent=2)
   
 
   #read from file

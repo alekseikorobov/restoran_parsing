@@ -19,12 +19,63 @@ import os
 import time
 from params import Params
 
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 class LoadYaImageParams:
     def __init__(self, params: Params) -> None:
         self.params = params
+        self._driver:WebDriver = None
+
+    def get_driver(self, proxy=None, browser='chrome',chromedriver_path = None, log_level='info') -> WebDriver:
+        if self._driver is not None:
+            return self._driver 
+        if browser == 'firefox':
+            if proxy is not None:
+                logging.warn('proxy not using!')
+            options = webdriver.FirefoxOptions()
+            options.add_argument("--headless")
+            options.add_argument('--marionette')
+            self._driver = webdriver.Firefox(options=options)
+        elif browser == 'chrome':
+            service = None
+            if chromedriver_path is not None:
+                if not os.path.isfile(chromedriver_path):
+                    raise(Exception(f'driver not found from {chromedriver_path=}'))
+                service = webdriver.ChromeService(executable_path=chromedriver_path)
+            chrome_options = webdriver.ChromeOptions()
+            #chrome_options.add_argument("--headless")
+            if proxy is not None:
+                chrome_options.add_argument(f'--proxy-server={proxy}')
+            self._driver = webdriver.Chrome(options=chrome_options,service=service)
+        #log_level
+
+        if not isinstance(logging.getLevelName(log_level.upper()),int):
+            raise(Exception(f'Not correct log level in param value - {log_level}'))
+        
+        level=logging.getLevelName(log_level.upper())
+
+        LOGGER.setLevel(level)
+
+        return self._driver
 
     def get_random_second(self):
       time.sleep(random.choice([1,2])) #,3,4
+
+    def cookies_str_to_dict(self,cookies_str):
+      cookies_list = [c for c in cookies_str.split(';') if c != '']
+      cookies_dict = {}
+      for cookie in cookies_list:
+        cookie = cookie.strip(' ')
+        k,v = cookie.split('=',1)
+        cookies_dict[k] = v
+      return cookies_dict
 
     def get_gallery_html_by_org(self, url, city_code, ya_id):
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code,'gallery_html')
@@ -35,17 +86,68 @@ class LoadYaImageParams:
         
         logging.debug(f'load {url}')
         proxies = {'http':self.params.proxy,'https':self.params.proxy}
-        response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
-        if response.status_code == 200:
-          result_html = response.text
-          if 'Please confirm that you and not a robot are sending requests' in result_html:
-            raise(Exception('need capcha. Update - parameter headers_gallery'))
-          with open(full_name,'w',encoding='UTF-8') as f:
-            f.write(result_html)
-            logging.debug(f'save to {full_name=}')
-        else:
-          raise(Exception(f'not get - {response.status_code}, {response.text}'))
-        self.get_random_second()
+
+
+        http_client = self.params.zoon_parser_http_client
+        selenium_browser = self.params.zoon_parser_selenium_browser
+        chromedriver_path = self.params.zoon_parser_selenium_chromedriver_path
+
+        if http_client == 'requests':
+          response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
+          if response.status_code == 200:
+            result_html = response.text
+            self.get_random_second()
+          else:
+            raise(Exception(f'not get - {response.status_code}, {response.text}'))
+        elif http_client == 'selenium':
+            driver = self.get_driver(proxy=self.params.proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=self.params.log_level_selenium)
+            driver.get(url)
+
+            logging.debug('start wait element from page')
+            second_wait = 60
+            element = WebDriverWait(driver, second_wait).until(
+                EC.presence_of_element_located((By.ID, "end-of-page"))
+            )
+            logging.debug('end wait element from page')
+
+            result_html = driver.page_source
+
+            if hasattr(driver,'requests'):
+              #DEBUG if using https://pypi.org/project/selenium-wire/
+              for req in driver.requests:
+                logging.debug(f'{request.url=}')
+                logging.debug(f'{request.headers=}')
+                logging.debug(f'{request.response.headers=}')
+            
+            if self.params.is_ya_using_cookies:
+              cookies_str = headers["Cookie"]
+              cookies_dict = self.cookies_str_to_dict(cookies_str)
+              driver.delete_all_cookies()
+              for k,v in cookies_dict.items():
+                driver.add_cookie({'name':k,'value':v})
+            else:
+              all_cookies = driver.get_cookies()
+              cookies_str = ';'.join(
+                [f"{c['name']}={c['value']}"
+                  for c in all_cookies
+                ]
+              )
+              logging.debug(f'{cookies_str=}')
+
+            if self.params.log_level_selenium == 'DEBUG':
+                driver.get_log('browser')
+                driver.get_log('driver')
+                #driver.get_log('client') #error - not found 'client'
+                #driver.get_log('server') #error - not found 'server'
+
+        if 'Please confirm that you and not a robot are sending requests' in result_html:
+          raise(Exception('need capcha. Update - parameter headers_gallery'))
+        
+        
+        with open(full_name,'w',encoding='UTF-8') as f:
+          f.write(result_html)
+          logging.debug(f'save to {full_name=}')
+            
       else:
         logging.debug(f'get from {full_name=}')
         with open(full_name,'r',encoding='UTF-8') as f:
@@ -155,20 +257,20 @@ class LoadYaImageParams:
         full_params = f'{param_str}&s={param_s}'
         return full_params
 
-    def load_param_image_by_id(self, city_name, ya_id, city_list):
+    def load_param_image_by_id(self, city_name, ya_id):
       logging.debug(f'start {city_name=} {ya_id=}')
 
-      city_line = dict_city.get_line_by_city_name(city_name,city_list=city_list)
+      city_line = dict_city.get_line_by_city_name(city_name,city_list=self.params.city_list)
       city_code = city_line['city']
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code, 'gallery_json')
       full_name = f'{path}/{ya_id}.json'
       json_result = None
       if self.params.is_ya_param_replace_json_request or not os.path.isfile(full_name):
-        json_result = load_ya_raiting.get_json_ya_raiting(self.params.cache_data_folder,city_code, ya_id,
-            proxy = self.params.proxy,
-            timeout=self.params.timeout_load_ya_image_params,
-            headers=self.params.ya_parser_headers_raiting,
-            is_replase=self.params.is_ya_rating_replace_html_request)
+        json_result = load_ya_raiting.get_json_ya_raiting(
+            city_code,
+            ya_id,
+            self.params
+        )
         ya_link_org = json_result['ya_link_org']
         if ya_link_org == '' or ya_link_org is None:
           raise(Exception(f'link not correct by id {ya_id}'))
@@ -253,7 +355,7 @@ class LoadYaImageParams:
         city_name = row['location_nm_rus']
         ya_id = str(row['ya_id']).replace('.0','')
         logging.debug(f"{city_name=},{ya_id=}")
-        json_result = self.load_param_image_by_id(city_name, ya_id,city_list=self.params.city_list)
+        json_result = self.load_param_image_by_id(city_name, ya_id)
 
         for data_json in self.get_obj_iterator(json_result, ya_id, city_name):
           data_json_list.append(data_json)

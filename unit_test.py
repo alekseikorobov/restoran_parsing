@@ -12,6 +12,8 @@ from params import Params
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
 
+import load_ya_image_params
+
 class MyTest(unittest.TestCase):
 
     def test_replace_address_by_city(self):
@@ -421,6 +423,40 @@ class MyTest(unittest.TestCase):
             self.assertFalse(json_res['ya_stars_count'] == '')
             self.assertFalse(json_res['ya_rating'] == '')
             self.assertFalse(json_res['ya_link_org'] == '')
+
+
+    def test_LoadYaImageParams_cookies_str_to_dict(self):
+        _load_ya_image_params = load_ya_image_params.LoadYaImageParams(None)
+
+        test_cases = [
+            (
+                "maps_los=0; is_gdpr=0; i=Kxvxo3OPNuCwzeVNRaGrfXfe2s/Em8w7Ity8QoodPsUA07RFNbLEmXwtgpd1EkzE5qULAeFzNWAcTy4I4J4MuHqkaEw=; yandexuid=4786207591695973728; yuidss=4786207591695973728; ymex=2011333729.yrts.1695973729; is_gdpr_b=CKDSYBCS0QEoAg==; _ym_uid=1695973729430834572; _ym_d=1695973730; yashr=2431041841696579811; cycada=Bb2gJVadcsVLrA/D1AidqogIJNFLRDTW1PEs0mFE0Ic=; yp=2014700099.pcs.0#1700837872.hdrc.1#1730876099.p_sw.1699340098#1699445301.szm.1_25:1536x864:1528x716#1730376505.p_cl.1698840504#1730376517.p_undefined.1698840516; bh=EkIiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsICJDaHJvbWl1bSI7dj0iMTE5IiwgIk5vdD9BX0JyYW5kIjt2PSIyNCIaBSJ4ODYiIg8iMTE5LjAuMjE1MS40NCIqAj8wMgIiIjoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJdIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwgIkNocm9taXVtIjt2PSIxMTkuMC42MDQ1LjEwNSIsICJOb3Q/QV9CcmFuZCI7dj0iMjQuMC4wLjAiWgI/MA==; gdpr=0; _ym_isad=2; spravka=dD0xNjk5NDM3MzkyO2k9NDYuNjEuMjQyLjIzO0Q9QzI1MUE0Mzk2RkJDMDNCNzdGODJFOEEyNjVCMjhEOTMzOUFGNzE2RkYyRTI4QjZEMkU1NUI3NEZCRjdEQjAwN0ZBNkExNUJDMkZFQjYxRTJDRUNBNUMwQUM1NTYyMUQyMDJGMTk0RTdEMkZFMDQxQTQ1MzUyQ0EwQ0RBRjdDQzEzODA4MDg5QTgzNzA1MDVBO3U9MTY5OTQzNzM5Mjg4MDEyOTI4MztoPTc2OTEwZGNhN2JiMDdmNzljNjE4NGVmZTFmYTM4MjNm; _yasc=BIB3QCytfG0iYfXyVSu1bsxaqPmF6GdVMY9gOl205Ed5b+kNxDPNfhpoX+v2X5dtYc8sbdg+pH7NctdlJ4Wj; bh=EkAiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsIkNocm9taXVtIjt2PSIxMTkiLCJOb3Q/QV9CcmFuZCI7dj0iMjQiGgUieDg2IiIPIjExOS4wLjIxNTEuNDQiKgI/MDoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJcIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwiQ2hyb21pdW0iO3Y9IjExOS4wLjYwNDUuMTA1IiwiTm90P0FfQnJhbmQiO3Y9IjI0LjAuMC4wIiI=", {"maps_los":"0",
+                "is_gdpr":"0",
+                "i":"Kxvxo3OPNuCwzeVNRaGrfXfe2s/Em8w7Ity8QoodPsUA07RFNbLEmXwtgpd1EkzE5qULAeFzNWAcTy4I4J4MuHqkaEw=",
+                "yandexuid":"4786207591695973728",
+                "yuidss":"4786207591695973728",
+                "ymex":"2011333729.yrts.1695973729",
+                "is_gdpr_b":"CKDSYBCS0QEoAg==",
+                "_ym_uid":"1695973729430834572",
+                "_ym_d":"1695973730",
+                "yashr":"2431041841696579811",
+                "cycada":"Bb2gJVadcsVLrA/D1AidqogIJNFLRDTW1PEs0mFE0Ic=",
+                "yp":"2014700099.pcs.0#1700837872.hdrc.1#1730876099.p_sw.1699340098#1699445301.szm.1_25:1536x864:1528x716#1730376505.p_cl.1698840504#1730376517.p_undefined.1698840516",
+                "bh":"EkIiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsICJDaHJvbWl1bSI7dj0iMTE5IiwgIk5vdD9BX0JyYW5kIjt2PSIyNCIaBSJ4ODYiIg8iMTE5LjAuMjE1MS40NCIqAj8wMgIiIjoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJdIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwgIkNocm9taXVtIjt2PSIxMTkuMC42MDQ1LjEwNSIsICJOb3Q/QV9CcmFuZCI7dj0iMjQuMC4wLjAiWgI/MA==",
+                "gdpr":"0",
+                "_ym_isad":"2",
+                "spravka":"dD0xNjk5NDM3MzkyO2k9NDYuNjEuMjQyLjIzO0Q9QzI1MUE0Mzk2RkJDMDNCNzdGODJFOEEyNjVCMjhEOTMzOUFGNzE2RkYyRTI4QjZEMkU1NUI3NEZCRjdEQjAwN0ZBNkExNUJDMkZFQjYxRTJDRUNBNUMwQUM1NTYyMUQyMDJGMTk0RTdEMkZFMDQxQTQ1MzUyQ0EwQ0RBRjdDQzEzODA4MDg5QTgzNzA1MDVBO3U9MTY5OTQzNzM5Mjg4MDEyOTI4MztoPTc2OTEwZGNhN2JiMDdmNzljNjE4NGVmZTFmYTM4MjNm",
+                "_yasc":"BIB3QCytfG0iYfXyVSu1bsxaqPmF6GdVMY9gOl205Ed5b+kNxDPNfhpoX+v2X5dtYc8sbdg+pH7NctdlJ4Wj",
+                "bh":"EkAiTWljcm9zb2Z0IEVkZ2UiO3Y9IjExOSIsIkNocm9taXVtIjt2PSIxMTkiLCJOb3Q/QV9CcmFuZCI7dj0iMjQiGgUieDg2IiIPIjExOS4wLjIxNTEuNDQiKgI/MDoJIldpbmRvd3MiQggiMTAuMC4wIkoEIjY0IlJcIk1pY3Jvc29mdCBFZGdlIjt2PSIxMTkuMC4yMTUxLjQ0IiwiQ2hyb21pdW0iO3Y9IjExOS4wLjYwNDUuMTA1IiwiTm90P0FfQnJhbmQiO3Y9IjI0LjAuMC4wIiI="
+                }
+            )
+        ]
+        for cookies_str,cookies_dict_exp in test_cases:
+            cookies_dict_fact = _load_ya_image_params.cookies_str_to_dict(cookies_str)
+            assert len(cookies_dict_fact) == len(cookies_dict_exp), f'{len(cookies_dict_fact)=}, {len(cookies_dict_exp)=}'
+            for e,f in zip(cookies_dict_exp.items(),cookies_dict_fact.items()):
+                assert e[0] == f[0], f'key not equal {e[0]=},{f[0]=}'
+                assert e[1] == f[1], f'val not equal {e[1]=},{f[1]=}'
 
 # if __name__ == '__main__':
 #     unittest.main()
