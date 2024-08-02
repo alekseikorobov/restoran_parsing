@@ -2,7 +2,7 @@ import pandas as pd
 import common.common as common
 import common.dict_city as dict_city
 import os
-# import requests
+import requests
 import warnings
 warnings.filterwarnings("ignore")
 import time,random

@@ -90,7 +90,7 @@ class LoadYaImageParams:
         proxies = {'http':self.params.proxy,'https':self.params.proxy}
 
 
-        http_client = self.params.zoon_parser_http_client
+        http_client = self.params.ya_parser_http_client
 
         if http_client == 'requests':
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
