@@ -512,7 +512,10 @@ if __name__ == '__main__':
     import os
     if os.path.isfile(path):
         os.remove(path)
+    already_added_lines = []
     with open(path,'w',encoding='UTF-8') as f:
         for line in result.splitlines():
+            if line in already_added_lines: continue
             if not line.startswith('## '):
                 f.write(line + '\n')
+                already_added_lines.append(line)
