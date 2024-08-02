@@ -27,20 +27,29 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 class LoadYaImageParams:
     def __init__(self, params: Params) -> None:
         self.params = params
         self._driver:WebDriver = None
 
-    def get_driver(self, proxy=None, browser='chrome',chromedriver_path = None, log_level='info') -> WebDriver:
+    def get_driver(self, params) -> WebDriver:
         if self._driver is not None:
             return self._driver 
+
+        proxy = params.proxy
+        browser = params.zoon_parser_selenium_browser
+        chromedriver_path = params.zoon_parser_selenium_chromedriver_path
+        log_level = params.log_level_selenium
+        param_headless = params.ya_parser_selenium_browser_param_headless
+
         if browser == 'firefox':
             if proxy is not None:
                 logging.warn('proxy not using!')
             options = webdriver.FirefoxOptions()
-            options.add_argument("--headless")
+            if param_headless:
+              options.add_argument("--headless")
             options.add_argument('--marionette')
             self._driver = webdriver.Firefox(options=options)
         elif browser == 'chrome':
@@ -50,7 +59,8 @@ class LoadYaImageParams:
                     raise(Exception(f'driver not found from {chromedriver_path=}'))
                 service = webdriver.ChromeService(executable_path=chromedriver_path)
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument("--headless")
+            if param_headless:
+              chrome_options.add_argument("--headless")
             if proxy is not None:
                 chrome_options.add_argument(f'--proxy-server={proxy}')
             self._driver = webdriver.Chrome(options=chrome_options,service=service)
@@ -68,14 +78,6 @@ class LoadYaImageParams:
     def get_random_second(self):
       time.sleep(random.choice([1,2])) #,3,4
 
-    def cookies_str_to_dict(self,cookies_str):
-      cookies_list = [c for c in cookies_str.split(';') if c != '']
-      cookies_dict = {}
-      for cookie in cookies_list:
-        cookie = cookie.strip(' ')
-        k,v = cookie.split('=',1)
-        cookies_dict[k] = v
-      return cookies_dict
 
     def get_gallery_html_by_org(self, url, city_code, ya_id):
       path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code,'gallery_html')
@@ -89,8 +91,6 @@ class LoadYaImageParams:
 
 
         http_client = self.params.zoon_parser_http_client
-        selenium_browser = self.params.zoon_parser_selenium_browser
-        chromedriver_path = self.params.zoon_parser_selenium_chromedriver_path
 
         if http_client == 'requests':
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
@@ -100,15 +100,31 @@ class LoadYaImageParams:
           else:
             raise(Exception(f'not get - {response.status_code}, {response.text}'))
         elif http_client == 'selenium':
-            driver = self.get_driver(proxy=self.params.proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=self.params.log_level_selenium)
+            driver = self.get_driver(self.params)
             driver.get(url)
+            
+            if self.params.is_ya_using_cookies:
+              logging.debug('set parameters cookies')
+              cookies_str = headers["Cookie"]
+              cookies_dict = common.cookies_str_to_dict(cookies_str)
+              driver.delete_all_cookies()
+              for k,v in cookies_dict.items():
+                cookie = {'name':k,'value':v}
+                #logging.debug(f'add {cookie=}')
+                driver.add_cookie(cookie)
+              driver.refresh()
 
-            logging.debug('start wait element from page')
-            second_wait = 60
-            element = WebDriverWait(driver, second_wait).until(
-                EC.presence_of_element_located((By.ID, "end-of-page"))
-            )
-            logging.debug('end wait element from page')
+            try:
+                logging.debug('start wait element from page')
+                second_wait = 30#60
+                element = WebDriverWait(driver, second_wait).until(
+                    EC.presence_of_element_located((By.ID, "end-of-page"))
+                )
+                logging.debug('end wait element from page')
+            except TimeoutException as e:
+                logging.error('NOT CORRECT PAGE:')
+                logging.error(f"{driver.page_source}", exc_info=True)
+                raise(Exception(e))
 
             result_html = driver.page_source
 
@@ -119,20 +135,13 @@ class LoadYaImageParams:
                 logging.debug(f'{request.headers=}')
                 logging.debug(f'{request.response.headers=}')
             
-            if self.params.is_ya_using_cookies:
-              cookies_str = headers["Cookie"]
-              cookies_dict = self.cookies_str_to_dict(cookies_str)
-              driver.delete_all_cookies()
-              for k,v in cookies_dict.items():
-                driver.add_cookie({'name':k,'value':v})
-            else:
-              all_cookies = driver.get_cookies()
-              cookies_str = ';'.join(
-                [f"{c['name']}={c['value']}"
-                  for c in all_cookies
-                ]
-              )
-              logging.debug(f'{cookies_str=}')
+            all_cookies = driver.get_cookies()
+            cookies_str = ';'.join(
+              [f"{c['name']}={c['value']}"
+                for c in all_cookies
+              ]
+            )
+            logging.debug(f'{cookies_str=}')
 
             if self.params.log_level_selenium == 'DEBUG':
                 driver.get_log('browser')

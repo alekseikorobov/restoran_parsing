@@ -97,14 +97,40 @@ def get_raiting_html(city_code, id:str, params):
       driver = get_driver(proxy=proxy, browser=selenium_browser,chromedriver_path=chromedriver_path,log_level=params.log_level_selenium)
       driver.get(full_url)
 
-      logging.debug('start wait element from page')
-      second_wait = 60
-      element = WebDriverWait(driver, second_wait).until(
-          EC.presence_of_element_located((By.CLASS_NAME, "comment__stars"))
-      )
-      logging.debug('end wait element from page')
+      if params.is_ya_using_cookies:
+          logging.debug('set parameters cookies')
+          if 'Cookie' in headers:
+            cookies_str = headers["Cookie"]
+            cookies_dict = common.cookies_str_to_dict(cookies_str)
+            driver.delete_all_cookies()
+            for k,v in cookies_dict.items():
+              cookie = {'name':k,'value':v}
+              #logging.debug(f'add {cookie=}')
+              driver.add_cookie(cookie)
+          else:
+            logging.warn('in headers (params ya_parser_headers_raiting) not found key by name Cookie')
+
+      try:
+        logging.debug('start wait element from page')
+        second_wait = 30
+        element = WebDriverWait(driver, second_wait).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "comment__stars"))
+        )
+        logging.debug('end wait element from page')
+      except Exception as e:
+        logging.error('NOT CORRECT PAGE:')
+        logging.error(f"{driver.page_source}", exc_info=True)
+        raise(Exception(e))
 
       result_html = driver.page_source
+
+      all_cookies = driver.get_cookies()
+      cookies_str = ';'.join(
+        [f"{c['name']}={c['value']}"
+          for c in all_cookies
+        ]
+      )
+      logging.debug(f'{cookies_str=}')
 
       if params.log_level_selenium == 'DEBUG':
           driver.get_log('browser')

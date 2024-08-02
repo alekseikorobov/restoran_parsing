@@ -168,6 +168,9 @@ class Params:
     ya_parser_selenium_browser:str = 'chrome' #'firefox'
     '''браузер из selenium для парсинга в yandex, можно использовать **chrome**  или **firefox** (но для firefox пока не реализована возможность использовать прокси и не существует параметр для подстановки драйвера)'''
 
+    ya_parser_selenium_browser_param_headless:bool = True
+    '''указывает нужно ли запускать браузер с параметром `--headless` этот параметр означает запуск браузера в фоновом режиме, по умолчанию True '''
+
     ya_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
     '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
     '''

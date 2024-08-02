@@ -425,8 +425,7 @@ class MyTest(unittest.TestCase):
             self.assertFalse(json_res['ya_link_org'] == '')
 
 
-    def test_LoadYaImageParams_cookies_str_to_dict(self):
-        _load_ya_image_params = load_ya_image_params.LoadYaImageParams(None)
+    def test_cookies_str_to_dict(self):
 
         test_cases = [
             (
@@ -452,7 +451,7 @@ class MyTest(unittest.TestCase):
             )
         ]
         for cookies_str,cookies_dict_exp in test_cases:
-            cookies_dict_fact = _load_ya_image_params.cookies_str_to_dict(cookies_str)
+            cookies_dict_fact = common.cookies_str_to_dict(cookies_str)
             assert len(cookies_dict_fact) == len(cookies_dict_exp), f'{len(cookies_dict_fact)=}, {len(cookies_dict_exp)=}'
             for e,f in zip(cookies_dict_exp.items(),cookies_dict_fact.items()):
                 assert e[0] == f[0], f'key not equal {e[0]=},{f[0]=}'

@@ -40,6 +40,14 @@ def normalize_z_source_url(url:str):
     
     raise(Exception(f'not correct normalize url {url}'))
 
+def cookies_str_to_dict(cookies_str):
+    cookies_list = [c for c in cookies_str.split(';') if c != '']
+    cookies_dict = {}
+    for cookie in cookies_list:
+        cookie = cookie.strip(' ')
+        k,v = cookie.split('=',1)
+        cookies_dict[k] = v
+    return cookies_dict
 
 def get_id_from_ya_image_url(url:str):
     if is_nan(url): return url
