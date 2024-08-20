@@ -86,19 +86,24 @@ class LoadYaImageParams:
       if self.params.is_ya_param_g_replace_html_request or not os.path.isfile(full_name):
         headers = self.params.ya_parser_headers_gallery
         
-        logging.debug(f'load {url}')
         proxies = {'http':self.params.proxy,'https':self.params.proxy}
-
-
         http_client = self.params.ya_parser_http_client
+        timeout = self.params.timeout_load_ya_image_params
+        
+        logging.debug(f'{url=}')
+        logging.debug(f'{headers=}')
+        logging.debug(f'{proxies=}')
+        logging.debug(f'{http_client=}')
+        logging.debug(f'{timeout=}')
 
         if http_client == 'requests':
-          response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=self.params.timeout_load_ya_image_params)
+          response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
           if response.status_code == 200:
             result_html = response.text
+            logging.debug(f'{response.headers=}')
             self.get_random_second()
           else:
-            raise(Exception(f'not get - {response.status_code}, {response.text}'))
+            raise(Exception(f'not get - {response.status_code}, {response.text}, {response.headers}'))
         elif http_client == 'selenium':
             driver = self.get_driver(self.params)
             driver.get(url)

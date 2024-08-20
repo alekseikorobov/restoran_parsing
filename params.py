@@ -60,6 +60,9 @@ class Params:
             'base_path':self.base_path.rstrip('/\\'),
             'date_now':datetime.datetime.strftime(datetime.datetime.now(), self.date_time_format)
         })
+
+    url_for_check_request:str = None
+    '''URL для проверки запроса и ответа от серевера'''
     
     date_time_format:str = '%Y%m%d_%H%M%S'
     '''Параметр для форматирования даты логирования, по умолчанию %Y%m%d_%H%M%S'''

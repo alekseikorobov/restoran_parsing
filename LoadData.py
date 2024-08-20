@@ -122,14 +122,35 @@ class LoadData:
             return 'ERROR'
         return res.text
 
+    def check_request(self, url_for_check_request:str, proxy=None):
+        try:
+            logging.debug(f'Start check_request')
+            import requests
+            headers = {
+                'content-type':'text/html; charset=UTF-8'
+            }
+            logging.debug(f'{url_for_check_request=}')
+            logging.debug(f'{headers=}')
+            logging.debug(f'{proxy=}')
+            response = requests.get(url_for_check_request,verify=False,headers = headers, proxies = {'http':proxy,'https':proxy}, timeout=60)
+            logging.debug(f'{response.headers=}')
+            logging.debug(f'{response.text=}')
+        except BaseException as ex:
+            logging.error(f'ERROR',exc_info=True)
+
     def __start_load__(self):
         logging.debug(f'Начало обработки')
         using_ip = self.get_ip(self.params.proxy)
-
+        
         if using_ip == 'ERROR':
             logging.warn(f'ip.me with proxy {self.params.proxy} return {using_ip}')
         else:
             logging.debug(f'ip.me with proxy {self.params.proxy} return {using_ip}')
+
+
+        if self.params.url_for_check_request is not None:
+            self.check_request(self.params.url_for_check_request,self.params.proxy)
+
 
         start_all = time.time()
         if self.params.is_replace_file:
