@@ -138,7 +138,20 @@ class LoadData:
         except BaseException as ex:
             logging.error(f'ERROR',exc_info=True)
 
+    def show_package(self):
+        try:
+            from pip._internal.operations import freeze
+        except ImportError:
+            from pip.operations import freeze
+        
+        pkgs = freeze.freeze()
+        for pkg in pkgs:
+            logging.debug(pkg)
+
     def __start_load__(self):
+        
+        self.show_package()
+
         logging.debug(f'Начало обработки')
         using_ip = self.get_ip(self.params.proxy)
         
