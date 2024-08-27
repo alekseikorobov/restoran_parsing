@@ -52,6 +52,16 @@ class Params:
     def ya_images_folder(self):
         '''Возвращает _ya_images_folder с подстановкой параметра base_path'''
         return Template(self._ya_images_folder).substitute({'base_path':self.base_path.rstrip('/\\')})
+    
+    @property
+    def ya_rating_file(self):
+        '''Возвращает _ya_rating_file с подстановкой параметра base_path'''
+        return Template(self._ya_rating_file).substitute({'base_path':self.base_path.rstrip('/\\')})
+    
+    @property
+    def ya_features_file(self):
+        '''Возвращает _ya_features_file с подстановкой параметра base_path'''
+        return Template(self._ya_features_file).substitute({'base_path':self.base_path.rstrip('/\\')})
 
     @property
     def logs_path(self):
@@ -90,6 +100,13 @@ class Params:
     '''папка с кешированными данным во время поиска, такие как html и json, необходимо для того чтобы запрос в сторонние сервисы делать только единожды, экономия трафика и времени работы. Нужно удалять вручную если необходимо сделать обновление данных'''
     _ya_images_folder: str = '$base_path/data/images'
     '''Папка с картинками jpg из яндекс'''
+
+    _ya_rating_file:str = '$base_path/tables/ya_rating.xlsx'
+    '''Путь к файлу с таблицей рейтинга из яндекса'''
+    
+    _ya_features_file:str = '$base_path/tables/ya_features.xlsx'
+    '''Путь к файлу с таблицей данных из яндекса со страницы Ососбеностей (features)'''
+
     log_level:str = 'DEBUG'
     '''уроверь логирования DEBUG, INFO, WARN, ERROR '''
     log_level_selenium:str = 'DEBUG'
@@ -128,10 +145,13 @@ class Params:
     load_from_trip:bool = False
     '''делать парсинг по trip advisor или нет. На данный момент отключено (False)
     '''
-    load_from_zoon:bool = True
+    load_from_zoon:bool = False
     '''делать парсинг по zoon.ru или нет'''
+    
+    load_from_ya:bool = True
+    '''делать парсинг по яндекс из страницы (Ососбености)'''
 
-    load_images_from_ya:bool = True
+    load_images_from_ya:bool = False
     '''скачивать фотки или нет'''
 
     timeout_load_trip_details:int = 120
@@ -159,7 +179,7 @@ class Params:
     zoon_parser_selenium_browser:str = 'chrome' #'firefox'
     '''браузер из selenium для парсинга в zoon, можно использовать **chrome**  или **firefox** (но для firefox пока не реализована возможность использовать прокси и не существует параметр для подстановки драйвера)'''
 
-    zoon_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
+    zoon_parser_selenium_chromedriver_path:str = './lib/chromedriver-win64-126.0.6478.182/chromedriver'
     '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
     '''
 
@@ -174,7 +194,7 @@ class Params:
     ya_parser_selenium_browser_param_headless:bool = True
     '''указывает нужно ли запускать браузер с параметром `--headless` этот параметр означает запуск браузера в фоновом режиме, по умолчанию True '''
 
-    ya_parser_selenium_chromedriver_path:str = './lib/chromedriver-linux64-123.0.6312.122/chromedriver'
+    ya_parser_selenium_chromedriver_path:str = './lib/chromedriver-win64-126.0.6478.182/chromedriver'
     '''путь к драйверу до бинарника chromedriver, необходимо иметь туже самую версию, которая установлена на среде где запускается парсинг
     '''
 
@@ -393,7 +413,7 @@ class Params:
     ta_parser_headers:dict = field(default_factory=lambda:{})
     ta_parser_headers_search:dict = field(default_factory=lambda:{})
 
-    ya_parser_headers_raiting:dict = field(default_factory=lambda:{
+    ya_parser_headers_rating:dict = field(default_factory=lambda:{
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.9,ru;q=0.8',

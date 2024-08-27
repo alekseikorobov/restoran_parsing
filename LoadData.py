@@ -9,6 +9,8 @@ import ta_parser.load_trip_details as load_trip_details
 import ta_parser.load_trip_search as load_trip_search
 import zoon_parser.load_zoon_details as load_zoon_details
 import zoon_parser.load_zoon_search as load_zoon_search
+import ya_parser.load_ya_rating as load_ya_rating
+import ya_parser.load_ya_features as load_ya_features
 import load_ya_image_params
 import load_ya_image
 
@@ -33,6 +35,10 @@ class LoadData:
         self.load_zoon_details = load_zoon_details.LoadZoonDetails(self.params)
         self.load_zoon_search = load_zoon_search.LoadZoonSearch(self.params)
         
+
+        self.load_ya_rating = load_ya_rating.LoadYaRating(self.params)
+        self.load_ya_features = load_ya_features.LoadYaFeatures(self.params)
+
         self.load_ya_image_params = load_ya_image_params.LoadYaImageParams(self.params)
         self.load_ya_image = load_ya_image.LoadYaImage(self.params)
 
@@ -78,16 +84,20 @@ class LoadData:
 
         _,ext = os.path.splitext(path_file)
         if common.isfile(path_file):
+            df_result = None
             if ext == '.pik':
-                return pd.read_pickle(path_file)
+                df_result = pd.read_pickle(path_file)
             elif ext == '.hd':
-                return pd.read_hdf(path_file,'DATA')
+                df_result = pd.read_hdf(path_file,'DATA')
             elif ext == '.xlsx':
-                return pd.read_excel(path_file)
+                df_result = pd.read_excel(path_file,engine='openpyxl')
             elif ext == '.parquet':
-                return pd.read_parquet(path_file)
+                df_result = pd.read_parquet(path_file)
             else:
-                raise(Exception(f'not support extention {ext}'))
+                raise(Exception(f'not support extention {ext} for file {path_file=}'))
+            logging.debug(f'{df_result.shape=}, {df_result.columns=}, from file {path_file=}')
+            return df_result
+
         #print(type(args))
         df = action(*args)
         if ext == '.pik':
@@ -174,7 +184,9 @@ class LoadData:
                 self.params.temp_select_best_trip_search_file,
                 self.params.zoon_details_file,
                 self.params.trip_details_file,
-                self.params.ya_image_params_file
+                self.params.ya_image_params_file,
+                self.params.ya_rating_file,
+                self.params.ya_features_file,
             ]:
                 if common.isfile(path):
                     os.remove(path)
@@ -217,11 +229,18 @@ class LoadData:
             df_trip_details = self.get_or_action(self.params.trip_details_file,
                                                 self.load_trip_details.start,
                                                 df_selected)
+        
+        df_ya_rating = None
+        if self.params.load_from_ya or self.params.load_images_from_ya:
+            df_ya_rating = self.get_or_action(self.params.ya_rating_file, self.load_ya_rating.start, df_yandex_data)
 
+        if self.params.load_from_ya:
+            df_ya_features = self.get_or_action(self.params.ya_features_file, self.load_ya_features.start, df_ya_rating)
+        
         if self.params.load_images_from_ya:
             df_ya_image_params = self.get_or_action(self.params.ya_image_params_file,
                                                 self.load_ya_image_params.start,
-                                                df_yandex_data)
+                                                df_ya_rating)
             
             self.load_ya_image.start(df_ya_image_params)
 
@@ -244,7 +263,7 @@ def get_arguments():
     args = parser.parse_args()
     return args
 
-VERSION = '0.1.10'
+VERSION = '0.2.10'
 
 if __name__ == '__main__':
     print(f'VERSION = {VERSION}')

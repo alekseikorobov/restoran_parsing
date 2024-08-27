@@ -1,0 +1,14 @@
+import requests
+
+url='https://yandex.ru/maps/org/svoya_kompaniya/1094622728/gallery/'
+headers={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'Accept-Encoding': 'gzip, deflate, br', 'Accept-Language': 'en-US,en;q=0.9', 'Cache-Control': 'max-age=0', 'Cookie': 'receive-cookie-deprecation=1; is_gdpr_b=CKqicxDgigIoAg==; is_gdpr=0; i=HXQHywaXt7/8l0JvOMpexxGKF5I3uV+7rCRk6E/5uJNiV8DuUHVQZV2WYSu6U3FAnbYXHCzXPWH9A8Te8UQAtab1y6A=; yandexuid=3514283331722589791; yashr=8402349981722589791; yuidss=3514283331722589791; ymex=2037949799.yrts.1722589799; gdpr=0; _ym_uid=1722589798270068554; _ym_isad=2; ys=c_chck.1724295713; _ym_d=1722589949; _ym_visorc=b; spravka=dD0xNzIyNTkwMDgzO2k9MTg4LjY0LjE0OS41NDtEPTRFODhDMjE0QTYyNDYyN0I0MUI0MjE1RUQ3MkVDRTg4QjcwMjE4N0VBQUIyOTdFNEE0MjkxODE3M0VDREE1Qjk4QjZGNUUyN0M5QzVGMTFEOUIxMjlEMzcwNzlEQUI0ODNDQjM2NjVFQ0FFQjEwOEUwRDkyN0UzMEQzNTJCQjg3RUQxMDU3RjlDMkJDNzBDNjdEMTk7dT0xNzIyNTkwMDgzNDk5NzIwMzk5O2g9MGM3MDc3MmFhNTNjZWUwZmRiMThlZDkzOGUxNjNjNDE=; _yasc=zvURwUM8OY+naBjBeL5KsVZEo2ed/CQMMCdDNjITSmdKMal30v7GgM/94cf5Up2w5mxfjfIS; bh=EkAiTm90L0EpQnJhbmQiO3Y9IjgiLCAiQ2hyb21pdW0iO3Y9IjEyNiIsICJHb29nbGUgQ2hyb21lIjt2PSIxMjYiGgUieDg2IiIQIjEyNi4wLjY0NzguMTI4IioCPzAyAiIiOgkiV2luZG93cyJCCCIxMC4wLjAiSgQiNjQiUlwiTm90L0EpQnJhbmQiO3Y9IjguMC4wLjAiLCAiQ2hyb21pdW0iO3Y9IjEyNi4wLjY0NzguMTI4IiwgIkdvb2dsZSBDaHJvbWUiO3Y9IjEyNi4wLjY0NzguMTI4IloCPzBgg8eytQZqHtzK4f8IktihsQOfz+HqA/v68OcN6//99g/9scyHCA==', 'Device-Memory': '8', 'Downlink': '10', 'Dpr': '1.25', 'Ect': '4g', 'Rtt': '0', 'Sec-Ch-Ua': '"Microsoft Edge";v="119", "Chromium";v="119", "Not?A_Brand";v="24"', 'Sec-Ch-Ua-Arch': '"x86"', 'Sec-Ch-Ua-Bitness': '"64"', 'Sec-Ch-Ua-Full-Version': '"119.0.2151.44"', 'Sec-Ch-Ua-Full-Version-List': '"Microsoft Edge";v="119.0.2151.44", "Chromium";v="119.0.6045.105", "Not?A_Brand";v="24.0.0.0"', 'Sec-Ch-Ua-Mobile': '?0', 'Sec-Ch-Ua-Model': '""', 'Sec-Ch-Ua-Platform': '"Windows"', 'Sec-Ch-Ua-Platform-Version': '"10.0.0"', 'Sec-Ch-Ua-Wow64': '?0', 'Sec-Fetch-Dest': 'document', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'same-origin', 'Sec-Fetch-User': '?1', 'Upgrade-Insecure-Requests': '1', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0', 'Viewport-Width': '1528'}
+proxies={'http': 'http://proxy-dev.dcld.ecloud:3128', 'https': 'http://proxy-dev.dcld.ecloud:3128'}
+timeout=120
+
+res = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
+result_html = res.text
+print(res.status_code)
+print(len(result_html))
+
+with open('result.html','w',encoding='UTF-8') as f:
+  f.write(result_html)

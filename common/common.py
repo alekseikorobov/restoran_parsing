@@ -11,8 +11,58 @@ import geopy
 import common.my_language_ru_pack as my_language_ru_pack 
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 
-# import importlib
-# importlib.reload(dict_city)
+import logging
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+from params import Params
+
+
+def get_global_driver(params) -> WebDriver:
+    _driver = None 
+
+    proxy = params.proxy
+    browser = params.zoon_parser_selenium_browser
+    chromedriver_path = params.zoon_parser_selenium_chromedriver_path
+    log_level = params.log_level_selenium
+    param_headless = params.ya_parser_selenium_browser_param_headless
+
+    if browser == 'firefox':
+        if proxy is not None:
+            logging.warn('proxy not using!')
+        options = webdriver.FirefoxOptions()
+        if param_headless:
+            options.add_argument("--headless")
+        options.add_argument('--marionette')
+        _driver = webdriver.Firefox(options=options)
+    elif browser == 'chrome':
+        service = None
+        if chromedriver_path is not None:
+            if not os.path.isfile(chromedriver_path):
+                raise(Exception(f'driver not found from {chromedriver_path=}'))
+            service = webdriver.ChromeService(executable_path=chromedriver_path)
+        chrome_options = webdriver.ChromeOptions()
+        if param_headless:
+            chrome_options.add_argument("--headless")
+        if proxy is not None:
+            chrome_options.add_argument(f'--proxy-server={proxy}')
+        _driver = webdriver.Chrome(options=chrome_options,service=service)
+
+    if not isinstance(logging.getLevelName(log_level.upper()),int):
+        raise(Exception(f'Not correct log level in param value - {log_level}'))
+    
+    level=logging.getLevelName(log_level.upper())
+
+    LOGGER.setLevel(level)
+
+    return _driver
 
 def normalize_z_source_url(url:str):
     if is_nan(url): return url
@@ -75,7 +125,7 @@ def get_rectangle_bounds(coordinates, width=314, length=314):
     return bounds
 
 def get_folder(base_folder, city: str, fold: str) -> str:
-    path = f'{base_folder}/{city}/{fold}'.rstrip('/\\')
+    path = f'{base_folder}/{city}/{fold}'.replace('//','/').rstrip('/\\')
     if not os.path.isdir(path):
         os.makedirs(path)
     return path

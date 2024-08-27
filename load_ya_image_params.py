@@ -5,7 +5,7 @@
 import pandas as pd
 import common.dict_city as dict_city
 import common.common as common
-import ya_parser.load_ya_raiting as load_ya_raiting
+import ya_parser.load_ya_rating as load_ya_rating
 import random
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
@@ -80,7 +80,7 @@ class LoadYaImageParams:
 
 
     def get_gallery_html_by_org(self, url, city_code, ya_id):
-      path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code,'gallery_html')
+      path = common.get_folder(self.params.cache_data_folder.rstrip('/\\') + '/yandex_r', city_code,'gallery_html')
       full_name = f'{path}/{ya_id}.html'
       result_html = ''
       if self.params.is_ya_param_g_replace_html_request or not os.path.isfile(full_name):
@@ -178,7 +178,7 @@ class LoadYaImageParams:
       return json_result
 
     def get_param_from_gallery(self, url,city_code, ya_id):
-      path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code, 'gallery_param_json')
+      path = common.get_folder(self.params.cache_data_folder.rstrip('/\\') + '/yandex_r', city_code, 'gallery_param_json')
       full_name = f'{path}/{ya_id}.json'
       json_result = None
       system_links = []
@@ -271,25 +271,17 @@ class LoadYaImageParams:
         full_params = f'{param_str}&s={param_s}'
         return full_params
 
-    def load_param_image_by_id(self, city_name, ya_id):
+    def load_param_image_by_id(self, city_name, ya_id, ya_link_org):
       logging.debug(f'start {city_name=} {ya_id=}')
 
       city_line = dict_city.get_line_by_city_name(city_name,city_list=self.params.city_list)
       city_code = city_line['city']
-      path = load_ya_raiting.get_folder(self.params.cache_data_folder, city_code, 'gallery_json')
+      path = common.get_folder(self.params.cache_data_folder.rstrip('/\\') + '/yandex_r', city_code, 'gallery_json')
       full_name = f'{path}/{ya_id}.json'
       json_result = None
       if self.params.is_ya_param_replace_json_request or not os.path.isfile(full_name):
-        json_result = load_ya_raiting.get_json_ya_raiting(
-            city_code,
-            ya_id,
-            self.params
-        )
-        ya_link_org = json_result['ya_link_org']
         if ya_link_org == '' or ya_link_org is None:
           raise(Exception(f'link not correct by id {ya_id}'))
-        
-        logging.debug(f'get {ya_link_org=}')
         ya_link_org_gallery = ya_link_org.strip('/') + '/gallery/'
         logging.debug(f'get param from {ya_link_org_gallery=}')
         session_id, system_links = self.get_param_from_gallery(ya_link_org_gallery,city_code, ya_id)
@@ -368,8 +360,9 @@ class LoadYaImageParams:
       for i, row in df.iterrows():
         city_name = row['location_nm_rus']
         ya_id = str(row['ya_id']).replace('.0','')
+        ya_link_org = row['ya_link_org']
         logging.debug(f"{city_name=},{ya_id=}")
-        json_result = self.load_param_image_by_id(city_name, ya_id)
+        json_result = self.load_param_image_by_id(city_name, ya_id, ya_link_org)
 
         for data_json in self.get_obj_iterator(json_result, ya_id, city_name):
           data_json_list.append(data_json)

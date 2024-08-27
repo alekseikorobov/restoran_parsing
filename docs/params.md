@@ -112,6 +112,6 @@ domain прокси для парсинга
 #### `ya_parser_headers_token`
 #### `ta_parser_headers`
 #### `ta_parser_headers_search`
-#### `ya_parser_headers_raiting`
+#### `ya_parser_headers_rating`
 #### `zoon_parser_headers`
 #### `zoon_parser_headers_search`

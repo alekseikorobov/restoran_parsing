@@ -4,7 +4,7 @@
 import pandas as pd
 import common.dict_city as dict_city
 import common.common as common
-import ya_parser.load_ya_raiting as load_ya_raiting
+import ya_parser.load_ya_rating as load_ya_rating
 import random
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json

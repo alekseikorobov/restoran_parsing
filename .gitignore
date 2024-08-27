@@ -7,3 +7,9 @@ tables
 test.ipynb
 tables
 data_old1
+.ssh
+init_env.sh
+set_env.bat
+params_prod.json
+test.html
+result.html

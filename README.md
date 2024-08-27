@@ -93,3 +93,6 @@ tree /base/path/folder
         zoon_select_best.hd
 
 ```
+
+
+## Отправка на сервер по SSH

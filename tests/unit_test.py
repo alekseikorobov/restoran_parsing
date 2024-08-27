@@ -7,7 +7,7 @@ import zoon_parser.parse_data as parse_data
 import zoon_parser.select_best_zoon_search as select_best_zoon_search
 import ta_parser.load_data as ta_load_data
 import pandas as pd
-import ya_parser.load_ya_raiting as load_ya_raiting
+import ya_parser.load_ya_rating as load_ya_rating
 from params import Params
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
@@ -150,9 +150,7 @@ class MyTest(unittest.TestCase):
             ('Восход, 28. Дополнительную информацию вы можете узнать по телефону или на сайте: Zoon.ru.','Восход, 28.'),
             ('Восход, 28. Дополнительную информацию вы можете узнать по телефону или на сайте: Zoon.ru. rfr','Восход, 28. rfr'),
             ('страсти. Узнать более детальную информацию о предлагаемой программе и наличии свободных столиков вы можете на сайте Zoon.ru. Всех','страсти. Всех'),
-            ('Буфет предлагает вам окунуться в атмосферу вкусной еды и прохладных напитков. Заведения общепита не случайно являются неотъемлемой частью современного мира. Не хотите тратить на приготовление еды драгоценное время? Нет ничего проще: найдите ресторан или кафе по душе и выберите блюдо из меню! Рейтинг буфета на Zoon - 2, однако вы можете поделиться вашим личным мнением о заведении, написав отзыв о нём, и повлиять на эту оценку. Здоровая конкуренция и неравнодушные посетители — вот две вещи, приводящие к тому, что уровень еды, которую предлагают для нас повара за деньги, продолжает расти. Всех гостей ждут по адресу: Ворошилова, 16. Для гостей заведение работает Пн-пт: 09:00 - 18:00. '
-             ,'Буфет предлагает вам окунуться в атмосферу вкусной еды и прохладных напитков. Заведения общепита не случайно являются неотъемлемой частью современного мира. Не хотите тратить на приготовление еды драгоценное время? Нет ничего проще: найдите ресторан или кафе по душе и выберите блюдо из меню! Всех гостей ждут по адресу: Ворошилова, 16. Для гостей заведение работает Пн-пт: 09:00 - 18:00.'
-            ),
+            
 
             ('необходимость. Оценка пользователей на сайте Zoon.ru — 5. Вы','необходимость. Вы'),
             ('необходимость. Оценка пользователей на сайте Zoon.ru — 4.5. Вы','необходимость. Вы'),
@@ -408,10 +406,10 @@ class MyTest(unittest.TestCase):
                 assert expect_value == rating_value, f'{expect_value=} != {rating_value=} by {full_name=}'
                 break
 
-    def test_ya_raiting_parse_html_get_json(self):
+    def test_ya_rating_parse_html_get_json(self):
 
         with open(r"data_unit_test\yandex_r\ekb\html\1305638501.html",'r',encoding='UTF-8') as f:
-            json_res = load_ya_raiting.parse_html_get_json(f.read())
+            json_res = load_ya_rating.parse_html_get_json(f.read())
 
             self.assertIsNotNone(json_res)
             self.assertEqual(len(json_res),4)
