@@ -12,6 +12,9 @@ from params import Params
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
 
+#from datetime import datetime, timezone, timedelta
+import datetime
+
 import load_ya_image_params
 
 class MyTest(unittest.TestCase):
@@ -262,9 +265,9 @@ class MyTest(unittest.TestCase):
     def test_zoon_parse_data_og_url_from_html(self):
         print()
         for file,expect in [
-            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
-            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
-            (r'data_unit_test\zoon\msk\search_p\18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
         ]:
             with open(file,'r',encoding='UTF-8') as f:
                 res_json = json.load(f)
@@ -276,8 +279,8 @@ class MyTest(unittest.TestCase):
                 assert z_source_url == expect,f'{file=},{expect=},{z_source_url=}'
                 #print(f'{file=} {z_source_url=}')
         for full_name,expect in [
-            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
-            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
+            (r'data_unit_test//zoon//ekb//search_p//18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
+            (r'data_unit_test//zoon//ekb//search_p//18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_ruki_vverh_na_ulitse_radischeva/'),
         ]:
             html_str = ''
             with open(full_name,'r',encoding='utf-8') as f:
@@ -290,7 +293,7 @@ class MyTest(unittest.TestCase):
     
     def test_zoon_parse_data_owner_id_from_html(self):
         
-        full_name = r'data_unit_test\zoon\ekb\pages\pages\kafe_na_pervomajskoj'
+        full_name = r'data_unit_test//zoon//ekb//pages//pages//kafe_na_pervomajskoj'
         html_str = ''
         with open(full_name,'r',encoding='utf-8') as f:
             html_str = f.read()
@@ -302,8 +305,8 @@ class MyTest(unittest.TestCase):
     
     def test_parset_html_details_get_rating_value(self):
         params = [
-            ('5,0',r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old'),
-            ('5,0',r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new'),
+            ('5,0',r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old'),
+            ('5,0',r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new'),
         ]
         for expect_value, full_name in params:
             html_str = ''
@@ -317,12 +320,12 @@ class MyTest(unittest.TestCase):
     
     def test_parset_html_details_get_rest_param(self):
         params = [
-            (r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
+            (r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
             'кафе,кофейня,пекарня,шашлычная,банкетный зал,гриль-бар,стейк-хаус,фастфуд',
             'домашняя кухня,восточная кухня,авторская кухня,грузинская кухня',
             'кухня,рестораны,тип,тип заведения,кавказская кухня,фастфуд,доставка еды,безалкогольный бар,дополнительные опции меню,доставка кавказской еды,доставка фастфуда,особенности заведения,ресторан'            
             ),
-            (r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
+            (r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
             'кафе,кофейня,пекарня,шашлычная,банкетный зал,гриль-бар,стейк-хаус,фастфуд',
             'домашняя кухня,восточная кухня,авторская кухня,грузинская кухня',
             'кухня,рестораны,тип,тип заведения,кавказская кухня,фастфуд,доставка еды,безалкогольный бар,дополнительные опции меню,доставка кавказской еды,доставка фастфуда,особенности заведения,ресторан'            
@@ -344,8 +347,8 @@ class MyTest(unittest.TestCase):
     def test_zoon_parse_description_element(self):
         
         params = [
-            r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
-            r'data_unit_test\zoon\volgograd\pages\pages\kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
+            r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_old',
+            r'data_unit_test//zoon//volgograd//pages//pages//kafe_epitsentr_vkusa_-_lavashok_na_angarskoj_ulitse_new',
         ]
         for full_name in params:
             html_str = ''
@@ -359,9 +362,9 @@ class MyTest(unittest.TestCase):
     def test_get_data_from_item_z_source_url(self):
         print()
         for file,expect in [
-            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
-            (r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
-            (r'data_unit_test\zoon\msk\search_p\18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_new.json','https://zoon.ru/msk/restaurants/launzh-restoran_tangiers_lounge_na_ulitse_pokrovka/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_old.json','https://zoon.ru/msk/restaurants/stejk_haus_butcher_na_profsoyuznoj_ulitse/'),
+            (r'data_unit_test//zoon//msk//search_p//18_55.771585_37.604997_new1.json','https://zoon.ru/msk/restaurants/antikafe_ros_na_ulitse_malaya_dmitrovka/'),
         ]:
             with open(file,'r',encoding='UTF-8') as f:
                 res_json = json.load(f)
@@ -375,8 +378,8 @@ class MyTest(unittest.TestCase):
                     #break
                 #print(f'{file=} {z_source_url=}')
         for full_name,expect in [
-            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
-            (r'data_unit_test\zoon\ekb\search_p\18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
+            (r'data_unit_test//zoon//ekb//search_p//18_56.837496_60.582229_old.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
+            (r'data_unit_test//zoon//ekb//search_p//18_56.837496_60.582229_new.html','https://zoon.ru/ekb/restaurants/bar_nebar_na_ulitse_radischeva/'),
         ]:
             html_str = ''
             with open(full_name,'r',encoding='utf-8') as f:
@@ -392,8 +395,8 @@ class MyTest(unittest.TestCase):
 
     def test_get_data_from_item_rating_value(self):
         params = [
-            ('4,9',r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_new.json'),
-            ('3,8',r'data_unit_test\zoon\msk\search_p\18_55.666788_37.551627_old.json'),
+            ('4,9',r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_new.json'),
+            ('3,8',r'data_unit_test//zoon//msk//search_p//18_55.666788_37.551627_old.json'),
         ]
         for expect_value,full_name in params:
             html_str = parse_data.get_html_from_json_file(full_name)
@@ -407,9 +410,9 @@ class MyTest(unittest.TestCase):
                 break
 
     def test_ya_rating_parse_html_get_json(self):
-
-        with open(r"data_unit_test\yandex_r\ekb\html\1305638501.html",'r',encoding='UTF-8') as f:
-            json_res = load_ya_rating.parse_html_get_json(f.read())
+        _load_ya_rating = load_ya_rating.LoadYaRating({})
+        with open(r"data_unit_test//yandex_r//ekb//html//1305638501.html",'r',encoding='UTF-8') as f:
+            json_res = _load_ya_rating.parse_html_get_json(f.read())
 
             self.assertIsNotNone(json_res)
             self.assertEqual(len(json_res),4)
@@ -454,6 +457,19 @@ class MyTest(unittest.TestCase):
             for e,f in zip(cookies_dict_exp.items(),cookies_dict_fact.items()):
                 assert e[0] == f[0], f'key not equal {e[0]=},{f[0]=}'
                 assert e[1] == f[1], f'val not equal {e[1]=},{f[1]=}'
+
+    def test_unix_timestamp_date(self):
+        '''
+        в js:
+        >> new Date(1725525934*1000)
+        Thu Sep 05 2024 11:45:34 GMT+0300 (Moscow Standard Time)
+        '''
+        timestamp = 1725525934
+        dt = common.from_unix_timestamp_to_date(timestamp)
+        assert dt == datetime.datetime(2024, 9, 5, 11, 45, 34, tzinfo=datetime.timezone(datetime.timedelta(seconds=10800)))
+        unix_timestamp = common.from_date_to_unix_timestamp(dt)
+        assert unix_timestamp == timestamp
+
 
 # if __name__ == '__main__':
 #     unittest.main()

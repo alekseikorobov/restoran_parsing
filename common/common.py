@@ -29,8 +29,8 @@ def get_global_driver(params) -> WebDriver:
     _driver = None 
 
     proxy = params.proxy
-    browser = params.zoon_parser_selenium_browser
-    chromedriver_path = params.zoon_parser_selenium_chromedriver_path
+    browser = params.ya_parser_selenium_browser
+    chromedriver_path = params.ya_parser_selenium_chromedriver_path
     log_level = params.log_level_selenium
     param_headless = params.ya_parser_selenium_browser_param_headless
 
@@ -104,6 +104,18 @@ def get_id_from_ya_image_url(url:str):
     urls = url.split('/')
     parts = urls[-3:-1]
     return '_'.join(parts)
+
+from datetime import datetime, timezone, timedelta
+
+def from_unix_timestamp_to_date(timestamp:int):
+    dt = datetime.fromtimestamp(timestamp, tz=timezone(timedelta(hours=3)))
+    return dt
+
+def from_date_to_unix_timestamp(dt):
+    unix_timestamp = int(dt.astimezone(timezone.utc).timestamp())
+    return unix_timestamp
+
+
 
 def get_rectangle_bounds(coordinates, width=314, length=314):
 

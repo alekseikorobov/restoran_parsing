@@ -140,7 +140,7 @@ class Params:
     '''Перезатирать html со страницы рейтинга для получения картинок из яндекса'''
 
     is_ya_using_cookies:bool = False
-    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_headers_gallery, для того чтобы сделать запрос через selenium. Если false, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
+    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_headers_gallery, для того чтобы сделать запрос через selenium. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
 
     load_from_trip:bool = False
     '''делать парсинг по trip advisor или нет. На данный момент отключено (False)
@@ -412,7 +412,84 @@ class Params:
 
     ta_parser_headers:dict = field(default_factory=lambda:{})
     ta_parser_headers_search:dict = field(default_factory=lambda:{})
-
+    
+    ya_parser_headers_features:dict = field(default_factory=lambda:{
+        "accept":'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        "accept-encoding":'gzip, deflate, br, zstd',
+        "accept-language":'en-US,en;q=0.9',
+        "cache-control":'max-age=0',
+        "device-memory":'8',
+        "downlink":'10',
+        "dpr":'1',
+        "ect":'4g',
+        "priority":'u=0, i',
+        "rtt":'50',
+        "sec-ch-ua":'"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"',
+        "sec-ch-ua-arch":'"x86"',
+        "sec-ch-ua-bitness":'"64"',
+        "sec-ch-ua-full-version":'"127.0.6533.119"',
+        "sec-ch-ua-full-version-list":'"Not)A;Brand";v="99.0.0.0", "Google Chrome";v="127.0.6533.119", "Chromium";v="127.0.6533.119"',
+        "sec-ch-ua-mobile":'?0',
+        "sec-ch-ua-model":'""',
+        "sec-ch-ua-platform":'"Linux"',
+        "sec-ch-ua-platform-version":'"6.8.0"',
+        "sec-ch-ua-wow64":'?0',
+        "sec-fetch-dest":'document',
+        "sec-fetch-mode":'navigate',
+        "sec-fetch-site":'same-origin',
+        "sec-fetch-user":'?1',
+        "upgrade-insecure-requests":'1',
+        "user-agent":'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+        "viewport-width":'702',
+    })
+    ya_parser_cookies_features:list = field(default_factory=lambda:[
+        {"domain": ".yandex.ru", "expiry": 1759513924, "httpOnly": False,"name": "yp", "path": "/", "sameSite": "None", "secure": True, "value": "2040313924.udn.cDphbGVrc2VpLWFsZWtzZWktMjAyN1A%3D%3D"}, 
+        {"domain": ".yandex.ru", "expiry": 1759513924, "httpOnly": True, "name": "sessar", "path": "/", "sameSite": "None", "secure": True, "value": "1.1193.CiA9g4Z0SeQbSRaGhLdK6iazUwMvG2GolLkS0e1xJiv14ng.U3I_mtK-GStqEr0wGaYciGJ7-9ykO6XrYlftFdc3gjc"},
+        {"domain": ".yandex.ru", "expiry": 1759513926, "httpOnly": False,"name": "bh", "path": "/", "sameSite": "None", "secure": True, "value": "EkEiTm90KUE7QnJh1bmQiO3Y9Ijk5IiwgIkdvb2dsZSBDaHJvbWUiO3Y9IjEyNyIsICJ1DaHJvbWl1bSI7dj0iMTI3IhoFIng4NiIiECIxMjcuMC42NTMzLjExOSIqAj8wMgIiIjoHIkxpbnV4IkIHIjYuOC4wIkoEIjY0IlJdIk5vdClBO0JyYW5kIjt2PSI5OS4wLjAuMCIsICJHb29nbGUgQ2hyb21lIjt2PSIxMjcuMC42NTMzLjExOSIsICJDaHJvbWl1bSI7dj0iMTI3LjAuNjUzMy4xMTkiWgI/MGDG6sK2BmoZ3MrpiA7yrLelC/v68OcN6//99g/+4c2HCA=="},
+        {"domain": ".yandex.ru", "expiry": 1759513765, "httpOnly": False,"name": "_yasc", "path": "/", "sameSite": "Lax", "secure": True, "value": "X+PCVBuoRaVrCS325VG1h5HmyWDVa2c3pXsGlDzCitBOXTsu6/6xAPsHuMNLKKmW4Ky1WPWF7"},
+        {"domain": ".yandex.ru", "expiry": 1759513924, "httpOnly": True, "name": "Session_id", "path": "/", "sameSite": "None", "secure": True, "value": "3:17249513924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:17249153924|3:102941491.662294.nTHIeUS5ibrUYA1Df3_SLb8VpoI"},
+        {"domain": ".yandex.ru", "expiry": 1759481082, "httpOnly": False,"name": "zen_gid", "path": "/", "sameSite": "Lax", "secure": True, "value": "10738"},
+        {"domain": ".yandex.ru", "expiry": 1724964281, "httpOnly": True, "name": "zen_sso_checked", "path": "/", "sameSite": "Lax", "secure": True, "value": "1"},
+        {"domain": ".yandex.ru", "expiry": 1756457081, "httpOnly": False,"name": "_ym_uid", "path": "/", "sameSite": "None", "secure": True, "value": "17249210824131761582"},
+        {"domain": ".yandex.ru", "expiry": 1725007481, "httpOnly": True, "name": "zen_vk_sso_checked", "path": "/", "sameSite": "Lax", "secure": True, "value": "1"},
+        {"domain": ".yandex.ru", "expiry": 1725007534, "httpOnly": False, "name": "is_online_stat", "path": "/", "sameSite": "Lax", "secure": True, "value": "False"},
+        {"domain": ".yandex.ru", "expiry": 1759513924, "httpOnly": False, "name": "L", "path": "/", "sameSite": "Lax", "secure": False, "value": "AFkAe2BqUUpEcWRfZ0dlX34DUgdRBwFWJiQsHTUEOl0sBDRYAzMHZVF4RlA=.1724953924.15868.388231.0958e1166491a05ab27691c1a06331f3"},
+        {"domain": ".yandex.ru", "expiry": 1725007534, "httpOnly": False, "name": "is_auth_through_phone", "path": "/", "sameSite": "Lax", "secure": True, "value": "True"},
+        {"domain": ".yandex.ru", "expiry": 1753692334, "httpOnly": False, "name": "tmr_lvid", "path": "/", "sameSite": "Lax", "secure": True, "value": "b7f6eda54ac5ecd3708f9e4b6d2a8e55"},
+        {"domain": ".yandex.ru", "expiry": 1759481082, "httpOnly": False, "name": "vid", "path": "/", "sameSite": "Lax", "secure": True, "value": "9cebcb58b08597e2"},
+        {"domain": ".yandex.ru", "expiry": 1725007537, "httpOnly": False, "name": "tmr_detect", "path": "/", "sameSite": "Lax", "secure": True, "value": "0%7C17249211317812"},
+        {"domain": ".yandex.ru", "expiry": 1740473083, "httpOnly": False, "name": "rec-tech", "path": "/", "sameSite": "Lax", "secure": True, "value": "True"},
+        {"domain": ".yandex.ru", "expiry": 1759481081, "httpOnly": False, "name": "zencookie", "path": "/", "sameSite": "Lax", "secure": True, "value": "75266771117241921081"},
+        {"domain": ".yandex.ru", "expiry": 1725007534, "httpOnly": False, "name": "front_fpid", "path": "/", "sameSite": "Lax", "secure": True, "value": "5cZ4pA6xFZVLZeaaRHN22"},
+        {"domain": ".yandex.ru", "expiry": 1756489924, "httpOnly": False, "name": "yandex_login", "path": "/", "sameSite": "None", "secure": True, "value": "aleksei-aleksei-2024"},
+        {"domain": ".yandex.ru", "expiry": 1724993081, "httpOnly": False, "name": "_ym_isad", "path": "/", "sameSite": "None", "secure": True, "value": "2"},
+        {"domain": ".yandex.ru", "expiry": 1756025082, "httpOnly": False, "name": "stable_city", "path": "/", "sameSite": "Lax", "secure": True, "value": "0"},
+        {"domain": ".yandex.ru", "expiry": 1759481082, "httpOnly": False, "name": "Zen-User-Data", "path": "/", "sameSite": "Lax", "secure": True, "value": "{%22zen-theme%22:%22light%22}"},
+        {"domain": ".yandex.ru", "expiry": 1756457132, "httpOnly": True, "name": "zen_session_id", "path": "/", "sameSite": "Lax", "secure": True, "value": "m5t2lJCkxRA4qqqueIoE7sH0bvgWWTrTb5x.17214921132819"},
+        {"domain": ".yandex.ru", "expiry": 1725525934, "httpOnly": False, "name": "domain_sid", "path": "/", "sameSite": "Lax", "secure": True, "value": "5cZ4pA6xFZVLZeaaRHN22%31A1724921134245"},
+        {"domain": ".yandex.ru", "expiry": 1724955664, "httpOnly": False, "name": "_ym_visorc", "path": "/", "sameSite": "None", "secure": True, "value": "b"},
+        {"domain": ".yandex.ru", "expiry": 1725558619, "httpOnly": False, "name": "yabs-vdrf", "path": "/", "sameSite": "None", "secure": True, "value": "A0"},
+        {"domain": ".yandex.ru", "expiry": 1759513924, "httpOnly": True, "name": "sessionid2", "path": "/", "sameSite": "None", "secure": True, "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939181520.0.2.3:1724953924|3:10294491.662294.fakesign0000000000000000000"},
+        {"domain": ".yandex.ru", "expiry": 1759481132, "httpOnly": False, "name": "mda2_beacon", "path": "/", "sameSite": "None", "secure": True, "value": "1724921132892"},
+        {"domain": ".yandex.ru", "expiry": 1759513746, "httpOnly": False, "name": "is_gdpr_b", "path": "/", "sameSite": "None", "secure": True, "value": "CI6GJBCEkAIoAg=="},
+        {"domain": ".yandex.ru", "expiry": 1725007482, "httpOnly": False, "name": "has_stable_city", "path": "/", "sameSite": "Lax", "secure": True, "value": "True"},
+        {"domain": ".yandex.ru", "expiry": 1756489926, "httpOnly": False, "name": "gdpr", "path": "/", "sameSite": "Lax", "secure": False, "value": "0"},
+        {"domain": ".yandex.ru", "expiry": 1756457081, "httpOnly": False, "name": "_ym_d", "path": "/", "sameSite": "None", "secure": True, "value": "1724921082"},
+        {"domain": ".yandex.ru", "expiry": 1759481082, "httpOnly": False, "name": "zen_vk_gid", "path": "/", "sameSite": "Lax", "secure": True, "value": "759"},
+        {"domain": ".yandex.ru", "expiry": 1759481082, "httpOnly": False, "name": "ys", "path": "/", "sameSite": "None", "secure": True, "value": "udn.cDphbGVrc21VpLWFsZ1WtzZWktMjAyNA%3D%3D#c_chck.2795292074"},
+        {"domain": ".yandex.ru", "expiry": 1756489926, "httpOnly": True, "name": "receive-cookie-deprecation", "path": "/", "sameSite": "None", "secure": True, "value": "1"},
+        {"domain": ".yandex.ru", "expiry": 1759513730, "httpOnly": False, "name": "is_gdpr", "path": "/", "sameSite": "None", "secure": True, "value": "0"},
+        {"domain": ".yandex.ru", "expiry": 1725007483, "httpOnly": False, "name": "one_day_socdem", "path": "/", "sameSite": "Lax", "secure": True, "value": "+"},
+        {"domain": ".yandex.ru", "expiry": 1725525883, "httpOnly": False, "name": "zen_ms_socdem_pixels", "path": "/", "sameSite": "Lax", "secure": True, "value": "2480393"},
+        {"domain": ".yandex.ru", "expiry": 1756489716, "httpOnly": False, "name": "ymex", "path": "/", "sameSite": "None", "secure": True, "value": "2040313716.yrts.1724953716"},
+        {"domain": ".yandex.ru", "expiry": 1753692334, "httpOnly": False, "name": "tmr_lvidTS", "path": "/", "sameSite": "Lax", "secure": True, "value": "17249121082828"},
+        {"domain": ".yandex.ru", "expiry": 1756489716, "httpOnly": True, "name": "yashr", "path": "/", "sameSite": "None", "secure": True, "value": "41796516121724953716"},
+        {"domain": ".yandex.ru", "expiry": 1759513716, "httpOnly": False, "name": "yuidss", "path": "/", "sameSite": "None", "secure": True, "value": "4585938531724953715"},
+        {"domain": ".yandex.ru", "expiry": 1759513763, "httpOnly": False, "name": "yandexuid", "path": "/", "sameSite": "None", "secure": True, "value": "45859385311724953715"},
+        {"domain": ".yandex.ru", "expiry": 1759513715, "httpOnly": True, "name": "i", "path": "/", "sameSite": "None", "secure": True, "value": "s0rMRqmF/2WL7BPTWb21KwQap9QO0Jm0sxdQWCPpREkxK6a4Yvf0BJa981TRGtO79wmtjhgpwfGMPoi/kRkH3BTc0VRI="},
+        {"domain":  "yandex.ru", "expiry": 1730137850, "httpOnly": False, "name": "maps_los", "path": "/maps", "sameSite": "Lax", "secure": False, "value": "0"}
+    ])
+    
     ya_parser_headers_rating:dict = field(default_factory=lambda:{
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate, br',

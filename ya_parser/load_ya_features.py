@@ -12,10 +12,14 @@ import logging
 warnings.filterwarnings("ignore")
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.remote_connection import LOGGER
+
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 LOGGER.setLevel(logging.INFO)
 
 from params import Params
@@ -35,6 +39,13 @@ import common.common as common
 #кеш отключил
 #cache_stor = CacheStor(db_file='data/my.db',type_storage=TypeStorage.IN_DISK,is_debug_log=False)
 
+from enum import Enum
+
+
+class StatusCheckHtml(Enum):
+    OK = 'OK'
+    ERROR_CAPCHA = 'Требуется ввод капчи'
+    EMPTY = ''
 
 class LoadYaFeatures:
     def __init__(self, params: Params) -> None:
@@ -60,24 +71,90 @@ class LoadYaFeatures:
             'main_info:Трансфер':'Трансфер',
         }
 
+    def get_random_second(self):
+        time.sleep(random.choice([2,3, 1]))
+        
     @property
     def driver(self) -> WebDriver:
         if self._driver is not None:
             return self._driver 
         self._driver = common.get_global_driver(self.params)
-
+        
+        if self.params.is_ya_using_cookies:
+          self._driver.get('https://yandex.ru/maps/')
+                            
+          cookies_dict = self.params.ya_parser_cookies_features
+          for cookie in cookies_dict:
+            self._driver.add_cookie(cookie)
+            
         return self._driver
 
-    def get_heares(self):
-        t = r'yandex_api\headers_features.txt'
-        heares = {}
+    def get_headers_from_line(self, line:str):
+        
+        if line is None or line.strip() == '':
+          return None,None
+        
+        if ':' not in line:
+            raise(AttributeError(f'not exits : {line=}'))
+        left_index = line.find(':')
+        k,v = line[0:left_index].strip(),line[left_index+1:].strip()
+        if k == '': k = None
+        if v == '': v = None
+        return k,v
+            
+    def get_headers_from_lines(self, lines:list):
+        headers = {}
+        for line in lines:
+            k,v = self.get_headers_from_line(line)
+            if k is None or v is None:
+              continue
+            if k in headers:
+              raise(AttributeError(f'key {k} already exists in dict'))
+            headers[k] = v
+        return headers
+
+    def get_headers(self):
+        t = 'ya_parser/headers_features.txt'
         with open(t,'r') as f:
-            for line in f.readlines():
-                line = line.strip()
-                k,v = line.split(':')
-                k,v = k.strip(),v.strip()
-                heares[k] = v
-        return heares
+            lines = [l.strip() for l in f.readlines()]
+            return self.get_headers_from_lines(lines)
+
+    
+    def get_ya_features_html_src(self, full_url):
+        '''Получение html по ссылке из источника (без кеша)
+        '''
+        # raise(Exception(f'Нельзя скачивать, берем из кеша! {full_url}'))
+        # not work:
+        # headers = get_headers()
+        # res = requests.get(full_url, headers=headers, verify=False, timeout=5)
+        # return res.text #return code 403!!!!
+        
+        proxy=self.params.proxy
+        timeout=self.params.timeout_load_ya_image_params
+        headers=self.params.ya_parser_headers_features
+        http_client = self.params.ya_parser_http_client
+        proxies = {'http': proxy,'https': proxy}
+        logging.debug(f'load from url - {full_url}')
+        html_result = None
+        if http_client == 'requests':
+            headers['Cookie'] = '; '.join(
+              [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
+            )
+            res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
+            logging.debug(res.status_code)
+            html_result = res.text
+            self.get_random_second()
+        elif http_client == 'selenium':
+            self.driver.get(full_url)
+            second_wait = 30
+            element = WebDriverWait(self.driver, second_wait).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "business-card-view__main-wrapper"))
+            )
+            html_result = self.driver.page_source
+            self.get_random_second()
+        
+        return html_result
+      
 
 
     #@cache_stor.cache(folder='data/yandex_features_html')
@@ -89,14 +166,9 @@ class LoadYaFeatures:
         full_name = f'{path}/{ya_id}.html'
         html_result = ''
         if is_replase or not common.isfile(full_name):
-          # raise(Exception(f'Нельзя скачивать, берем из кеша! {full_url}'))
-          # not work:
-          # headers = get_heares()
-          # res = requests.get(full_url, headers=headers, verify=False, timeout=5)
-          # return res.text #return code 403!!!!
-          self.driver.get(full_url)
-          html_result = self.driver.page_source
-
+          
+          html_result = self.get_ya_features_html_src(full_url)
+          
           with open(full_name,'w',encoding='UTF-8') as f:
             f.write(html_result)
           logging.debug(f'write to file {full_name=}')
@@ -147,15 +219,33 @@ class LoadYaFeatures:
                         })
         return json_result
 
+    def check_html_features(self, html_str:str)->StatusCheckHtml:
+        if '<div class="content-panel-error-view__title">Ничего не найдено.</div>' in html_str:
+          return StatusCheckHtml.EMPTY
+        
+        if 'Подтвердите, что запросы отправляли вы, а не робот' in html_str or 'checkcaptcha' in html_str:
+          return StatusCheckHtml.ERROR_CAPCHA
+                
+        return StatusCheckHtml.OK
+      
+    
+    
     def get_feature_from_ya_json(self,ya_link_org:str,ya_id:str):
         try:
             if common.is_nan(ya_link_org): return ya_link_org
             url = f'{ya_link_org}/features/'
             html = self.get_ya_features_html(url,ya_id)
-            if '<div class="content-panel-error-view__title">Ничего не найдено.</div>' in html:
+            
+            status = self.check_html_features(html)
+            
+            if status == StatusCheckHtml.ERROR_CAPCHA:
+              raise(Exception(status.value))
+            
+            if status == StatusCheckHtml.EMPTY:
               return {}
-            json_result = self.get_feature_from_html_json(url, ya_id)
-            return json_result
+            if status == StatusCheckHtml.OK:
+              json_result = self.get_feature_from_html_json(html, ya_id)
+              return json_result
         except Exception as ex:
           print(ya_link_org)
           raise(ex)
@@ -208,7 +298,7 @@ class LoadYaFeatures:
         services_result = [self.dict_services[s] for s in services if s in self.dict_services]
         return ','.join(sorted(set(services_result)))
 
-    def get_feature_ya(self,row):
+    def get_feature_ya_hotel(self,row):
       result = self.get_feature_from_ya_json(row['ya_link_org'],row['ya_id'])
 
       row['ya_f_price'] = self.extract_key('Прочее/other/@Цена номера:',result)
@@ -225,6 +315,14 @@ class LoadYaFeatures:
       row['ya_f_services_num'] = ';'.join(services_num)
 
       return row
+    
+    def get_feature_ya_rest(self,row):
+      result = self.get_feature_from_ya_json(row['ya_link_org'],row['ya_id'])
+
+      row['ya_f_avg_price'] = self.extract_key("Цены/other/@Средний счёт", result)
+      row['ya_f_cuisine'] = self.extract_key("Общая информация/other/@Кухня", result)
+      
+      return row
 
     def start(self, df_source:pd.DataFrame) -> pd.DataFrame:
         '''
@@ -234,7 +332,7 @@ class LoadYaFeatures:
         '''
 
         df_source['ya_id'] = df_source['ya_id'].astype(str)
-        df_result = df_source.apply(self.get_feature_ya,axis=1)
+        df_result = df_source.apply(self.get_feature_ya_rest,axis=1)
         df_result = pd.DataFrame(df_result)
         
         return df_result

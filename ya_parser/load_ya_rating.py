@@ -33,6 +33,13 @@ class LoadYaRating:
         if self._driver is not None:
             return self._driver 
         self._driver = common.get_global_driver(self.params)
+        
+        if self.params.is_ya_using_cookies:
+          self._driver.get('https://yandex.ru/maps/')
+                            
+          cookies_dict = self.params.ya_parser_cookies_features
+          for cookie in cookies_dict:
+            self._driver.add_cookie(cookie)
 
         return self._driver
     
@@ -70,18 +77,6 @@ class LoadYaRating:
         elif http_client == 'selenium':
           self.driver.get(full_url)
 
-          if params.is_ya_using_cookies:
-              logging.debug('set parameters cookies')
-              if 'Cookie' in headers:
-                cookies_str = headers["Cookie"]
-                cookies_dict = common.cookies_str_to_dict(cookies_str)
-                self.driver.delete_all_cookies()
-                for k,v in cookies_dict.items():
-                  cookie = {'name':k,'value':v}
-                  #logging.debug(f'add {cookie=}')
-                  self.driver.add_cookie(cookie)
-              else:
-                logging.warn('in headers (params ya_parser_headers_rating) not found key by name Cookie')
 
           try:
             logging.debug('start wait element from page')
