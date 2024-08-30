@@ -135,7 +135,12 @@ class LoadYaFeatures:
         http_client = self.params.ya_parser_http_client
         proxies = {'http': proxy,'https': proxy}
         logging.debug(f'load from url - {full_url}')
-        html_result = None
+        logging.debug(f'{headers=}')
+        logging.debug(f'{proxy=}')
+        logging.debug(f'{timeout=}')
+        logging.debug(f'{http_client=}')
+        
+        html_result = ''
         if http_client == 'requests':
             headers['Cookie'] = '; '.join(
               [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
@@ -146,12 +151,28 @@ class LoadYaFeatures:
             self.get_random_second()
         elif http_client == 'selenium':
             self.driver.get(full_url)
-            second_wait = 30
-            element = WebDriverWait(self.driver, second_wait).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "business-card-view__main-wrapper"))
-            )
+            try:
+              logging.debug('start wait element from page')
+              second_wait = 30
+              element = WebDriverWait(self.driver, second_wait).until(
+                  EC.presence_of_element_located((By.CLASS_NAME, "business-card-view__main-wrapper"))
+              )
+              logging.debug('end wait element from page')
+            except Exception as e:
+              logging.error('NOT CORRECT PAGE:')
+              logging.error(f"{self.driver.page_source}", exc_info=True)
+              raise(Exception(e))
+            
             html_result = self.driver.page_source
+            
+            if params.log_level_selenium == 'DEBUG':
+              self.driver.get_log('browser')
+              self.driver.get_log('driver')
+              
             self.get_random_second()
+        
+        if html_result == '':
+          raise(Exception('not correct data html is empty!'))
         
         return html_result
       
@@ -181,42 +202,47 @@ class LoadYaFeatures:
 
 
     def get_feature_from_html_json(self,html:str,ya_id:str):
-        #
+        logging.debug('get_feature_from_html_json')
         soup = BeautifulSoup(html,"html.parser")
         elements = soup.find(class_='business-features-view')
 
         curr_title = 'main_info'
         json_result = {curr_title:{}}
-        if elements is not None:
-            for element in elements:
-                if not hasattr(element,'attrs'):
-                  continue
+        if elements is None:
+          logging.warn(f'element by business-features-view is null')
+          return json_result
+        for element in elements:
+            if not hasattr(element,'attrs'):
+              logging.warn(f'element has not contains attribute attrs {element=}. Skip element')
+              continue
 
-                if 'features-cut-view' in element.attrs['class']:
-                    all_text = element.find_all(class_='business-features-view__bool-text')
+            if 'features-cut-view' in element.attrs['class']:
+                all_text = element.find_all(class_='business-features-view__bool-text')
 
-                    json_result[curr_title]['list'] = [common.get_normal_text_from_element(f) for f in all_text]
+                json_result[curr_title]['list'] = [common.get_normal_text_from_element(f) for f in all_text]
 
-                elif 'business-features-view__group-title' in element.attrs['class']:
-                    el = element.find(class_='business-features-view__group-name')
-                    curr_title = common.get_normal_text_from_element(el).strip(' :')
-                    json_result[curr_title] = {}
-                
-                # elif 'business-feature-a11y-group-view' in element.attrs['class']:
-                #     el = element.find(class_='business-feature-a11y-group-view__name')
-                #     json_result[el.text] = {}
+            elif 'business-features-view__group-title' in element.attrs['class']:
+                el = element.find(class_='business-features-view__group-name')
+                curr_title = common.get_normal_text_from_element(el).strip(' :')
+                json_result[curr_title] = {}
+            
+            # elif 'business-feature-a11y-group-view' in element.attrs['class']:
+            #     el = element.find(class_='business-feature-a11y-group-view__name')
+            #     json_result[el.text] = {}
 
-                elif 'business-features-view__cut' in element.attrs['class']:
-                    if 'other' not in json_result[curr_title]:
-                        json_result[curr_title]['other'] = []
-                    valued_content = element.find_all(class_='business-features-view__valued-content')
+            elif 'business-features-view__cut' in element.attrs['class']:
+                if 'other' not in json_result[curr_title]:
+                    json_result[curr_title]['other'] = []
+                valued_content = element.find_all(class_='business-features-view__valued-content')
 
-                    for valued_content_item in valued_content:
-                        el = valued_content_item.find(class_='business-features-view__valued-title')
-                        el_val = valued_content_item.find(class_='business-features-view__valued-value')
-                        json_result[curr_title]['other'].append({
-                            common.get_normal_text_from_element(el).strip(' :'):common.get_normal_text_from_element(el_val)
-                        })
+                for valued_content_item in valued_content:
+                    el = valued_content_item.find(class_='business-features-view__valued-title')
+                    el_val = valued_content_item.find(class_='business-features-view__valued-value')
+                    json_result[curr_title]['other'].append({
+                        common.get_normal_text_from_element(el).strip(' :'):common.get_normal_text_from_element(el_val)
+                    })
+          
+        logging.debug(f'{len(json_result)=}')
         return json_result
 
     def check_html_features(self, html_str:str)->StatusCheckHtml:
@@ -237,6 +263,7 @@ class LoadYaFeatures:
             html = self.get_ya_features_html(url,ya_id)
             
             status = self.check_html_features(html)
+            logging.debug(f'check_html_features - {status}')
             
             if status == StatusCheckHtml.ERROR_CAPCHA:
               raise(Exception(status.value))
@@ -354,8 +381,8 @@ class LoadYaFeatures:
 #     print(f'{ya_id}, {len(json_result)}')
 #     # patern = 'Количество звёзд'
 #     # # 'Количество звёзд<!-- -->:</span><span class="business-features-view__valued-value">4</span></div>'
-#     # a = result_html.find(patern)
+#     # a = html_result.find(patern)
 #     # if a != -1:
-#     #     print(f'{ya_id} {len(result_html)}, {a},{result_html[a:a+98]}')
+#     #     print(f'{ya_id} {len(html_result)}, {a},{html_result[a:a+98]}')
 #     # else:
-#     #      print(f'{ya_id} {len(result_html)}, {a}')
+#     #      print(f'{ya_id} {len(html_result)}, {a}')

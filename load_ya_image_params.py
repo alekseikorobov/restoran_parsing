@@ -82,7 +82,7 @@ class LoadYaImageParams:
     def get_gallery_html_by_org(self, url, city_code, ya_id):
       path = common.get_folder(self.params.cache_data_folder.rstrip('/\\') + '/yandex_r', city_code,'gallery_html')
       full_name = f'{path}/{ya_id}.html'
-      result_html = ''
+      html_result = ''
       if self.params.is_ya_param_g_replace_html_request or not os.path.isfile(full_name):
         headers = self.params.ya_parser_headers_gallery
         
@@ -99,7 +99,7 @@ class LoadYaImageParams:
         if http_client == 'requests':
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
           if response.status_code == 200:
-            result_html = response.text
+            html_result = response.text
             logging.debug(f'{response.headers=}')
             self.get_random_second()
           else:
@@ -133,7 +133,7 @@ class LoadYaImageParams:
                 logging.error(f"{driver.page_source}", exc_info=True)
                 raise(Exception(e))
 
-            result_html = driver.page_source
+            html_result = driver.page_source
 
             if hasattr(driver,'requests'):
               #DEBUG if using https://pypi.org/project/selenium-wire/
@@ -156,19 +156,19 @@ class LoadYaImageParams:
                 #driver.get_log('client') #error - not found 'client'
                 #driver.get_log('server') #error - not found 'server'
 
-        if 'Please confirm that you and not a robot are sending requests' in result_html:
+        if 'Please confirm that you and not a robot are sending requests' in html_result:
           raise(Exception('need capcha. Update - parameter headers_gallery'))
         
         
         with open(full_name,'w',encoding='UTF-8') as f:
-          f.write(result_html)
+          f.write(html_result)
           logging.debug(f'save to {full_name=}')
             
       else:
         logging.debug(f'get from {full_name=}')
         with open(full_name,'r',encoding='UTF-8') as f:
-          result_html = f.read()
-      return result_html
+          html_result = f.read()
+      return html_result
 
     def get_full_json_from_gallery(self, html_str):
       soup = BeautifulSoup(html_str,"html.parser")
@@ -186,11 +186,11 @@ class LoadYaImageParams:
       system_links = []
       session_id = None
       if self.params.is_ya_param_g_replace_json_request or not os.path.isfile(full_name):
-        result_html = self.get_gallery_html_by_org(url,city_code, ya_id)
-        if result_html == '':
+        html_result = self.get_gallery_html_by_org(url,city_code, ya_id)
+        if html_result == '':
           logging.warning('not exists html')
           return session_id, system_links
-        json_result  = self.get_full_json_from_gallery(result_html)
+        json_result  = self.get_full_json_from_gallery(html_result)
         logging.debug(f'write - {full_name}')
         with open(full_name,'w',encoding='UTF-8') as f:
           f.write(json.dumps(json_result))

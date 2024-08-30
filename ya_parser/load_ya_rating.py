@@ -65,14 +65,14 @@ class LoadYaRating:
 
       path = common.get_folder(base_folder.rstrip('/\\') + '/yandex_r',city_code,'html')
       full_name = f'{path}/{id}.html'
-      result_html = ''
+      html_result = ''
       if is_replase or not common.isfile(full_name):
         full_url = f'https://yandex.ru/maps-reviews-widget/{id}?size=m&comments'
         logging.debug(f'load from {full_url=}')
 
         if http_client == 'requests':
           res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
-          result_html = res.text
+          html_result = res.text
           self.get_random_second()
         elif http_client == 'selenium':
           self.driver.get(full_url)
@@ -90,7 +90,7 @@ class LoadYaRating:
             logging.error(f"{self.driver.page_source}", exc_info=True)
             raise(Exception(e))
 
-          result_html = self.driver.page_source
+          html_result = self.driver.page_source
 
           all_cookies = self.driver.get_cookies()
           cookies_str = ';'.join(
@@ -106,17 +106,17 @@ class LoadYaRating:
               #driver.get_log('client') #error - not found 'client'
               #driver.get_log('server') #error - not found 'server'
         
-        if result_html == '':
+        if html_result == '':
           raise(Exception('not correct data html is empty!'))
         with open(full_name,'w',encoding='UTF-8') as f:
-          f.write(result_html)
+          f.write(html_result)
         logging.debug(f'write to file {full_name=}')
       else:
         with open(full_name,'r',encoding='UTF-8') as f:
-          result_html = f.read()
+          html_result = f.read()
         logging.debug(f'read from file {full_name=}')
 
-      return result_html
+      return html_result
 
     def parse_html_get_json(self, html_str:str) -> dict:
       result_data = {

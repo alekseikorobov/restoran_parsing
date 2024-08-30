@@ -6,9 +6,9 @@ proxies={'http': 'http://proxy-dev.dcld.ecloud:3128', 'https': 'http://proxy-dev
 timeout=120
 
 res = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
-result_html = res.text
+html_result = res.text
 print(res.status_code)
-print(len(result_html))
+print(len(html_result))
 
 with open('result.html','w',encoding='UTF-8') as f:
-  f.write(result_html)
+  f.write(html_result)
