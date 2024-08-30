@@ -23,6 +23,9 @@ from params import Params
 import datetime
 from string import Template
 
+VERSION = '0.2.10'
+SCHEMA_VERSION = '0.2.10'
+
 class LoadData:
     def __init__(self, params: Params) -> None:
         self.params = params
@@ -46,13 +49,13 @@ class LoadData:
         self.config_logging()
 
         self.columns_ya_for_zoon_search = [
-            'ignor_load', 'is_fix', 'is_map', 'location_nm_rus', 'source_id', 'transaction_info', 'transaction_info_new','transaction_info_norm', 
-            'v_zoon_id', 'ya_status', 'ya_address_n', 'ya_cnt_category_match', 'ya_company_name', 'ya_company_name_norm', 'ya_id', 
+            'ignor_load', 'is_fix', 'is_map', 'location_nm_rus', 'source_id', 'transaction_info_new','transaction_info_norm', 
+            'v_zoon_id', 'ya_status', 'ya_address_n', 'ya_cnt_category_match', 'ya_company_name_norm', 'ya_id', 
             'ya_is_match_address', 'ya_point', 'url_zoon', 'z_query'
         ]
         self.columns_ya_for_trip_search = [
-            'ignor_load', 'is_fix', 'is_map', 'location_nm_rus', 'source_id', 'transaction_info', 'transaction_info_new','transaction_info_norm', 
-            'v_ta_id', 'ya_status', 'ya_address_n', 'ya_cnt_category_match', 'ya_company_name', 'ya_company_name_norm', 
+            'ignor_load', 'is_fix', 'is_map', 'location_nm_rus', 'source_id', 'transaction_info_new','transaction_info_norm', 
+            'v_ta_id', 'ya_status', 'ya_address_n', 'ya_cnt_category_match', 'ya_company_name_norm', 
             'ya_id', 'ya_is_match_address', 'ya_point', 'url_ta', 'ta_query'
         ]
 
@@ -198,7 +201,8 @@ class LoadData:
         df_yandex_data['ta_query'] = ''
         
         logging.debug(f'get df_yandex_data table {df_yandex_data.shape=}')
-
+        
+        df_yandex_data['source_id'] = df_yandex_data.index
         control_count = df_yandex_data['source_id'].nunique()
 
         if self.params.load_from_zoon:
@@ -244,6 +248,12 @@ class LoadData:
             
             self.load_ya_image.start(df_ya_image_params)
 
+        self.packing_data_to_output([
+            self.params.yandex_data_file,
+            self.params.ya_rating_file,
+            self.params.ya_features_file,
+        ])
+
         logging.debug(f'DONE')
 
         end_all = time.time()
@@ -259,11 +269,12 @@ def get_arguments():
     parser.add_argument('-b', '--base_path',help='Базовый путь для всех файлов, откуда забираются данные для парсинга и куда кладутся вспомогательные и выходные файлы. Если не указано, используйте base_path из params.json. ', default = None)
     parser.add_argument('-p', '--proxy', help='Прокси для всех http-запросов requests. См. proxy в params.json. По умолчанию None', default = None)
     parser.add_argument('-r', '--replace', help='если использовать этот флаг, то все файлы будут удалены перед запуском. По умолчанию false', default = False, action='store_true')
+    parser.add_argument('-rr', '--replaceall', help='перезапись абслютно всего, включая зекешированные файлы. По умолчанию false', default = False, action='store_true')
 
     args = parser.parse_args()
     return args
 
-VERSION = '0.2.10'
+
 
 if __name__ == '__main__':
     print(f'VERSION = {VERSION}')
@@ -293,6 +304,17 @@ if __name__ == '__main__':
         param.base_path = args.base_path
 
     param.is_replace_file = args.replace
+
+    if args.replaceall:
+        param.is_replace_file = True
+        
+    param.is_ya_param_replace_json_request = args.replaceall
+    param.is_ya_param_g_replace_json_request = args.replaceall
+    param.is_ya_param_g_replace_html_request = args.replaceall
+    param.is_ya_rating_replace_html_request = args.replaceall
+    param.zoon_details_replace_json = args.replaceall
+    param.is_zoon_search_replace_html_request = args.replaceall
+    param.is_zoon_search_replace_json_request = args.replaceall
     
     print(f'{args=}')
     ld = LoadData(param)

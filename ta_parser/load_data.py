@@ -56,9 +56,9 @@ def get_trip_query_pretty(query:str):
     query_res = pretty_file_name(query.lower().replace(',','').replace(' ',''))
     return query_res
 
-def get_trip_query(city_name:str,ya_company_name:str):
-    if common.is_nan(ya_company_name): return ''
-    query = f"{ya_company_name} {city_name}"
+def get_trip_query(city_name:str,ya_company_name_norm:str):
+    if common.is_nan(ya_company_name_norm): return ''
+    query = f"{ya_company_name_norm} {city_name}"
     return query
 
 

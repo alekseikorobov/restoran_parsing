@@ -63,7 +63,7 @@ class LoadTripSearch:
             city_name = row['location_nm_rus']
             city_line = dict_city.get_line_by_city_name(city_name, self.params.city_list)
 
-            query = lbyd.get_trip_query(city_name, row['ya_company_name']) 
+            query = lbyd.get_trip_query(city_name, row['ya_company_name_norm']) 
             row['ta_query'] = lbyd.get_trip_query_pretty(query)
             full_name_param = lbyd.get_full_name_by_query_json(self.params.cache_data_folder, city_line['city'], query, page_offset=0)
             row['ta_path_source'] = full_name_param
