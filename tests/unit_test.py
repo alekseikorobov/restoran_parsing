@@ -91,7 +91,7 @@ class MyTest(unittest.TestCase):
             's_point':'55.01,37.01','s_location_nm_rus':'Москва',
             's_address':'adr1',
             's_company_name_norm':'chaihana granat',
-            'transaction_info_new':'chayhana granat',
+            'transaction_info':'chayhana granat',
             'is_map':False
         }
         json_result_list = [{
