@@ -11,10 +11,12 @@ import ya_parser.load_ya_rating as load_ya_rating
 from params import Params
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
+import pandas as pd
 
 #from datetime import datetime, timezone, timedelta
 import datetime
 
+from LoadData import LoadData
 import load_ya_image_params
 
 class MyTest(unittest.TestCase):
@@ -469,6 +471,44 @@ class MyTest(unittest.TestCase):
         assert dt == datetime.datetime(2024, 9, 5, 11, 45, 34, tzinfo=datetime.timezone(datetime.timedelta(seconds=10800)))
         unix_timestamp = common.from_date_to_unix_timestamp(dt)
         assert unix_timestamp == timestamp
+
+
+
+    def test_LoadData_packing_data_to_output(sefl):
+        _load_data = LoadData({},is_test=True)
+
+        test_input_file = 'data_unit_test/test_input_file.csv'
+        df_test_input_file = pd.DataFrame([
+                {'key1':1,'key2':2,'key3':3,'f1':'f1_1','f2':'f2_1'},
+                {'key1':1,'key2':2,'key3':4,'f1':'f1_2','f2':'f2_2'},
+        ])
+        df_test_input_file.to_csv(test_input_file,index=False)
+        
+        test_output_file1 = 'data_unit_test/test_output_file1.csv'
+        df_test_output_file1 = pd.DataFrame([
+                {'key1':1,'key2':2,'key3':3,'f3':'f3_1','f4':'f4_1'},
+                {'key1':1,'key2':2,'key3':4,'f3':'f3_2','f4':'f4_2'},
+        ])
+        df_test_output_file1.to_csv(test_output_file1,index=False)
+        
+        test_output_file2 = 'data_unit_test/test_output_file2.csv'
+        df_test_output_file2 = pd.DataFrame([
+                {'key1':1,'key2':2,'key3':3,'f5':'f5_1','f6':'f6_1'},
+                {'key1':1,'key2':2,'key3':4,'f5':'f5_2','f6':'f6_2'},
+        ])
+        df_test_output_file2.to_csv(test_output_file2,index=False)
+
+
+        key = "key1,key2,key3"
+        input_file = (test_input_file,"key1,key2,key3,f1")
+        output_files = [
+            (test_output_file1,"data1","f3,f4"),
+            (test_output_file2,"data1","f5,f6"),
+        ]
+
+        result_df = _load_data.packing_data_to_output(key,input_file,output_files)
+
+        result_df.to_excel('data_unit_test/result_df.xlsx')
 
 
 # if __name__ == '__main__':

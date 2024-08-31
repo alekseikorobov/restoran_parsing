@@ -27,7 +27,7 @@ VERSION = '0.2.10'
 SCHEMA_VERSION = '0.2.10'
 
 class LoadData:
-    def __init__(self, params: Params) -> None:
+    def __init__(self, params: Params,is_test=False) -> None:
         self.params = params
 
 
@@ -45,8 +45,8 @@ class LoadData:
         self.load_ya_image_params = load_ya_image_params.LoadYaImageParams(self.params)
         self.load_ya_image = load_ya_image.LoadYaImage(self.params)
 
-
-        self.config_logging()
+        if not is_test:
+            self.config_logging()
 
         self.columns_ya_for_zoon_search = [
             'ignor_load', 'is_fix', 'is_map', 'location_nm_rus', 'source_id', 'transaction_info','transaction_info_norm', 
@@ -78,6 +78,38 @@ class LoadData:
             ]
         )
 
+    def df_write(self, df, path_file):
+        _,ext = os.path.splitext(path_file)
+        if ext == '.pik':
+            df.to_pickle(path_file)
+        elif ext == '.parquet':
+            df.to_parquet(path_file)
+        elif ext == '.csv':
+            df.to_csv(path_file,index=False)
+        elif ext == '.xlsx':
+            df.to_excel(path_file,index=False)
+        elif ext == '.hd':
+            df.to_hdf(path_file,'DATA')
+        else:
+            raise(Exception(f'not support extention {ext}'))
+
+    def df_read(self, path_file):
+        _,ext = os.path.splitext(path_file)
+        df_result = None
+        if ext == '.pik':
+            df_result = pd.read_pickle(path_file)
+        elif ext == '.hd':
+            df_result = pd.read_hdf(path_file,'DATA')
+        elif ext == '.xlsx':
+            df_result = pd.read_excel(path_file,engine='openpyxl')
+        elif ext == '.csv':
+            df_result = pd.read_csv(path_file)
+        elif ext == '.parquet':
+            df_result = pd.read_parquet(path_file)
+        else:
+            raise(Exception(f'not support extention {ext} for file {path_file=}'))
+        logging.debug(f'{df_result.shape=}, {df_result.columns=}, from file {path_file=}')
+        return df_result
 
     def get_or_action(self, path_file:str, action, *args):
         
@@ -85,34 +117,14 @@ class LoadData:
 
         logging.debug(f'start {action.__self__.__class__}: {df_input.shape=} {df_input.columns=}')
 
-        _,ext = os.path.splitext(path_file)
         if common.isfile(path_file):
-            df_result = None
-            if ext == '.pik':
-                df_result = pd.read_pickle(path_file)
-            elif ext == '.hd':
-                df_result = pd.read_hdf(path_file,'DATA')
-            elif ext == '.xlsx':
-                df_result = pd.read_excel(path_file,engine='openpyxl')
-            elif ext == '.parquet':
-                df_result = pd.read_parquet(path_file)
-            else:
-                raise(Exception(f'not support extention {ext} for file {path_file=}'))
+            df_result = self.df_read(path_file)
             logging.debug(f'{df_result.shape=}, {df_result.columns=}, from file {path_file=}')
             return df_result
 
         #print(type(args))
         df = action(*args)
-        if ext == '.pik':
-            df.to_pickle(path_file)
-        elif ext == '.parquet':
-            df.to_parquet(path_file)
-        elif ext == '.xlsx':
-            df.to_excel(path_file,index=False)
-        elif ext == '.hd':
-            df.to_hdf(path_file,'DATA')
-        else:
-            raise(Exception(f'not support extention {ext}'))
+        self.df_write(df, path_file)
         logging.debug(f'{df.shape=}, {df.columns}, saved to {path_file=}')
         return df
     
@@ -248,16 +260,45 @@ class LoadData:
             
             self.load_ya_image.start(df_ya_image_params)
 
-        self.packing_data_to_output([
-            self.params.yandex_data_file,
-            self.params.ya_rating_file,
-            self.params.ya_features_file,
-        ])
+        df_result = self.packing_data_to_output(
+            key = "ya_id,location_nm_rus,transaction_info",
+            input_file = (self.params.yandex_data_file,"ya_id,location_nm_rus,transaction_info"),
+            output_files = [
+                (self.params.ya_rating_file,"ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
+                (self.params.ya_features_file,"ya_f_avg_price,ya_f_cuisine"),
+            ])
+
+        #TODO SAVE df_result
+        #self.df_write(df_result,self.params.)
 
         logging.debug(f'DONE')
 
         end_all = time.time()
         logging.info(f'all time - {end_all - start_all}')
+    
+    def packing_data_to_output(self,key,input_file,output_files):
+        
+        key_cols = key.split(',')
+        input_file_path,cols_str = input_file
+        cols = cols_str.split(',')
+        df_input = self.df_read(input_file_path)[cols]
+
+        df_result = df_input
+        for output_file in output_files:
+            output_file_path, name_field, cols_str = output_file
+            cols = cols_str.split(',')
+            df_output = self.df_read(output_file_path)[[*key_cols,*cols]]
+
+            df_output_j = df_output.to_json(orient='records')
+            df_output['data'] = [json.dumps(j) for j in json.loads(df_output_j)]
+            
+            if 'data' not in df_result.columns:
+                df_result['data'] = 
+
+
+            df_result = df_result.merge(df_output,how='inner',on = key_cols)
+
+        return df_result
 
 import argparse
 def get_arguments():

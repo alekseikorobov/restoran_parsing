@@ -124,7 +124,7 @@ class LoadYaFeaturesTest(unittest.TestCase):
       with open(html_file,'r',encoding='UTF-8') as f:
         html_str = f.read()
         
-        fact_status,_ = _load_ya_features.check_html_features(html_str)
+        fact_status = _load_ya_features.check_html_features(html_str)
         
         assert fact_status == expect_status
   
