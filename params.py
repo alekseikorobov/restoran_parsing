@@ -62,6 +62,11 @@ class Params:
     def ya_features_file(self):
         '''Возвращает _ya_features_file с подстановкой параметра base_path'''
         return Template(self._ya_features_file).substitute({'base_path':self.base_path.rstrip('/\\')})
+    
+    @property
+    def result_data_file(self):
+        '''Возвращает _result_data_file с подстановкой параметра base_path'''
+        return Template(self._result_data_file).substitute({'base_path':self.base_path.rstrip('/\\')})
 
     @property
     def logs_path(self):
@@ -79,6 +84,9 @@ class Params:
 
     _yandex_data_file: str = '$base_path/tables/dm_rest_yandex_data.parquet'
     '''таблица входного фала для поиска'''
+    
+    _result_data_file: str = '$base_path/tables/dm_result_data.parquet'
+    '''таблица выходного файла с результатом парсинга по всем источникам'''
 
     _temp_zoon_search_file: str = '$base_path/tables/zoon_search.pik'
     '''временный файл результата парсинга со страницы поиска из zoon.ru'''

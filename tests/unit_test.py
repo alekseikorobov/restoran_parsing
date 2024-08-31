@@ -1,5 +1,5 @@
 
-
+import os
 import unittest
 import common.common as common
 from common import my_language_ru_pack
@@ -472,43 +472,121 @@ class MyTest(unittest.TestCase):
         unix_timestamp = common.from_date_to_unix_timestamp(dt)
         assert unix_timestamp == timestamp
 
+    
+    def test_LoadData_combine_json_fields(self):
+        _load_data = LoadData({},is_test=True)
+        test_cases = [
+            ({
+            'data_0_data1':json.dumps([{'f1':1,}])
+            }, '{"data1": [{"f1": 1}]}'),
+            ({
+            'data_0_data1':json.dumps([{'f1':1,}]),
+            'data_1_data1':json.dumps([{'f3':1,}])
+            }, '{"data1": [{"f1": 1, "f3": 1 }]}'),
+            ({
+            'data_0_data1':json.dumps([{'f1':1,}]),
+            'data_1_data2':json.dumps([{'f3':1,}])
+            }, '{"data1":[{"f1": 1}],"data2":[{"f3": 1 }]}'),
+            ({
+            'data_0_data1':json.dumps([{'f1':1,}]),
+            'data_1_data1':json.dumps([{'f1':2,}])
+            }, '{"data1": [{"f1": 2}]}'),
+            ({
+            'data_0_data1':json.dumps([{'f1':1,},{'f1':2,}]),
+            'data_1_data1':json.dumps([{'f2':3,}])
+            }, '{"data1": [{"f1": 1,"f2": 3},{"f1": 2}]}'),
+        ]
+        for row,result_expect in test_cases:            
+            result_fact = _load_data.combine_json_fields(row)
+            
+            result_expect = result_expect.replace(' ','')
+            result_fact = result_fact.replace(' ','')
+            print('result',type(result_fact),f'{result_fact=}')
+            assert result_expect == result_fact,f'{result_expect=}, {result_fact=}'
 
 
     def test_LoadData_packing_data_to_output(sefl):
         _load_data = LoadData({},is_test=True)
 
         test_input_file = 'data_unit_test/test_input_file.csv'
-        df_test_input_file = pd.DataFrame([
-                {'key1':1,'key2':2,'key3':3,'f1':'f1_1','f2':'f2_1'},
-                {'key1':1,'key2':2,'key3':4,'f1':'f1_2','f2':'f2_2'},
-        ])
-        df_test_input_file.to_csv(test_input_file,index=False)
-        
         test_output_file1 = 'data_unit_test/test_output_file1.csv'
-        df_test_output_file1 = pd.DataFrame([
-                {'key1':1,'key2':2,'key3':3,'f3':'f3_1','f4':'f4_1'},
-                {'key1':1,'key2':2,'key3':4,'f3':'f3_2','f4':'f4_2'},
-        ])
-        df_test_output_file1.to_csv(test_output_file1,index=False)
-        
         test_output_file2 = 'data_unit_test/test_output_file2.csv'
-        df_test_output_file2 = pd.DataFrame([
-                {'key1':1,'key2':2,'key3':3,'f5':'f5_1','f6':'f6_1'},
-                {'key1':1,'key2':2,'key3':4,'f5':'f5_2','f6':'f6_2'},
-        ])
-        df_test_output_file2.to_csv(test_output_file2,index=False)
+        try:
+            df_test_input_file = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f1':'f1_1','f2':'f2_1'},
+                    {'key1':1,'key2':2,'key3':4,'f1':'f1_2','f2':'f2_2'},
+            ])
+            df_test_input_file.to_csv(test_input_file,index=False)
+            
+            df_test_output_file1 = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f3':'f3_1','f4':'f4_1'},
+                    {'key1':1,'key2':2,'key3':4,'f3':'f3_2','f4':'f4_2'},
+            ])
+            df_test_output_file1.to_csv(test_output_file1,index=False)
+            
+            df_test_output_file2 = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f5':'f5_1','f6':'f6_1'},
+                    {'key1':1,'key2':2,'key3':4,'f5':'f5_2','f6':'f6_2'},
+            ])
+            df_test_output_file2.to_csv(test_output_file2,index=False)
 
 
-        key = "key1,key2,key3"
-        input_file = (test_input_file,"key1,key2,key3,f1")
-        output_files = [
-            (test_output_file1,"data1","f3,f4"),
-            (test_output_file2,"data1","f5,f6"),
-        ]
+            key = "key1,key2,key3"
+            input_file = (test_input_file,"key1,key2,key3,f1")
+            output_files = [
+                (test_output_file1,"data1","f3,f4"),
+                (test_output_file2,"data1","f5,f6"),
+            ]
 
-        result_df = _load_data.packing_data_to_output(key,input_file,output_files)
+            result_df = _load_data.packing_data_to_output(key,input_file,output_files)
 
-        result_df.to_excel('data_unit_test/result_df.xlsx')
+            result_df.to_excel('data_unit_test/result_df.xlsx')
+        finally:
+            os.remove(test_input_file)
+            os.remove(test_output_file1)
+            os.remove(test_output_file2)
+    
+    def test_LoadData_packing_data_to_output_1(sefl):
+        _load_data = LoadData({},is_test=True)
+
+        test_input_file = 'data_unit_test/test_input_file.csv'
+        test_output_file1 = 'data_unit_test/test_output_file1.csv'
+        test_output_file2 = 'data_unit_test/test_output_file2.csv'
+        try:
+            df_test_input_file = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f1':'f1_1','f2':'f2_1'},
+                    {'key1':1,'key2':2,'key3':4,'f1':'f1_2','f2':'f2_2'},
+            ])
+            df_test_input_file.to_csv(test_input_file,index=False)
+            
+            df_test_output_file1 = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f3':'f3_11','f4':'f4_11'},
+                    {'key1':1,'key2':2,'key3':3,'f3':'f3_12','f4':'f4_12'},
+                    {'key1':1,'key2':2,'key3':4,'f3':'f3_2','f4':'f4_2'},
+            ])
+            df_test_output_file1.to_csv(test_output_file1,index=False)
+            
+            df_test_output_file2 = pd.DataFrame([
+                    {'key1':1,'key2':2,'key3':3,'f5':'f5_1','f6':'f6_1'},
+                    {'key1':1,'key2':2,'key3':4,'f5':'f5_2','f6':'f6_2'},
+            ])
+            df_test_output_file2.to_csv(test_output_file2,index=False)
+
+
+            key = "key1,key2,key3"
+            input_file = (test_input_file,"key1,key2,key3,f1")
+            output_files = [
+                (test_output_file1,"data1","f3,f4"),
+                (test_output_file2,"data1","f5,f6"),
+            ]
+
+            result_df = _load_data.packing_data_to_output(key,input_file,output_files)
+
+            result_df.to_excel('data_unit_test/result_df.xlsx')
+        finally:
+            os.remove(test_input_file)
+            os.remove(test_output_file1)
+            os.remove(test_output_file2)
 
 
 # if __name__ == '__main__':

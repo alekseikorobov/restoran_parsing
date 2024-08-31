@@ -24,6 +24,9 @@ import datetime
 from string import Template
 
 VERSION = '0.2.10'
+
+#версия схемы упаковщика данных в json
+#эта версия должна быть согласована с ДАГом, который разбирает данные
 SCHEMA_VERSION = '0.2.10'
 
 class LoadData:
@@ -264,12 +267,11 @@ class LoadData:
             key = "ya_id,location_nm_rus,transaction_info",
             input_file = (self.params.yandex_data_file,"ya_id,location_nm_rus,transaction_info"),
             output_files = [
-                (self.params.ya_rating_file,"ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
-                (self.params.ya_features_file,"ya_f_avg_price,ya_f_cuisine"),
+                (self.params.ya_rating_file,"data_ya","ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
+                (self.params.ya_features_file,"data_ya","ya_f_avg_price,ya_f_cuisine"),
             ])
 
-        #TODO SAVE df_result
-        #self.df_write(df_result,self.params.)
+        self.df_write(df_result,self.params.result_data_file)
 
         logging.debug(f'DONE')
 
@@ -277,28 +279,80 @@ class LoadData:
         logging.info(f'all time - {end_all - start_all}')
     
     def packing_data_to_output(self,key,input_file,output_files):
+        '''
+        output_files - должен иметь формат:
+        [
+            (<output_file_path-путь к файлу>, <name_field-название корневого элемента>, <cols_str-колонки из исходго файла>)
+        ]
+        '''
         
         key_cols = key.split(',')
         input_file_path,cols_str = input_file
-        cols = cols_str.split(',')
-        df_input = self.df_read(input_file_path)[cols]
+        input_cols = cols_str.split(',')
+        df_input = self.df_read(input_file_path)[input_cols]
 
         df_result = df_input
-        for output_file in output_files:
+        
+        #проходимся по каждому источнику и собираем все поля в записи в json строку.
+        for i,output_file in enumerate(output_files):
             output_file_path, name_field, cols_str = output_file
-            cols = cols_str.split(',')
-            df_output = self.df_read(output_file_path)[[*key_cols,*cols]]
-
-            df_output_j = df_output.to_json(orient='records')
-            df_output['data'] = [json.dumps(j) for j in json.loads(df_output_j)]
+            result_field = f'data_{i}_{name_field}'
+            output_cols = cols_str.split(',')
             
-            if 'data' not in df_result.columns:
-                df_result['data'] = 
+            df_output = self.df_read(output_file_path)[[*key_cols,*output_cols]]
+            df_output_j = df_output[output_cols].to_json(orient='records')
+            df_output[result_field] = [json.dumps(j) for j in json.loads(df_output_j)]
+            
+            #строки, которые повторяются по ключу, нужно объединить в один массив
+            df_output = df_output.groupby(key_cols).apply(self.combine_lines_to_array_str,result_field).reset_index()
 
+            #добавляем полученое json поле в результатирующий DataFrame
+            df_result = df_result.merge(df_output[[*key_cols,result_field]],how='inner',on = key_cols)
 
-            df_result = df_result.merge(df_output,how='inner',on = key_cols)
+        #теперь собираем по всем источникам в одни json
+        df_result['data'] = df_result.apply(self.combine_json_fields,axis=1)
+        df_result['schema_version'] = SCHEMA_VERSION        
+        
+        return df_result[[*input_cols,'data','schema_version']]
 
-        return df_result
+    def combine_lines_to_array_str(self,row,field_name):
+        compact_data = f"[{','.join(row[field_name])}]"
+        return pd.Series(data={field_name:compact_data})
+
+    def combine_json_fields(self, row):
+        
+        #выбираем все поля с data_
+        field_data = [d for d in row.keys() if d.startswith('data_') ]
+        result_data = {}
+        for d_field in field_data:
+            name_field = d_field.split('_')[-1]
+            index_result = 0
+            datas = json.loads(row[d_field])
+            
+            if name_field in result_data:
+                for curr_index, data in enumerate(datas):
+                    #если элемента в массиве не существут, тогда создаем новую ячейку,
+                    #которую потом будем заполнять
+                    if curr_index > len(result_data[name_field]):
+                        result_data[name_field].append({})
+                    
+                    d = result_data[name_field][curr_index]
+                    keys = set(d.keys())
+                    keys_new = set(data.keys())
+                    
+                    keys_sec = keys.intersection(set(keys_new))
+                    if any(keys_sec):
+                        #множества пересекаются
+                        logging.warn(f'key already exists in result - {keys_sec}')
+                
+                    result_data[name_field][curr_index].update(data)
+            else:
+                result_data[name_field] = datas
+            index_result += 1
+        
+        
+        return json.dumps(result_data)
+        
 
 import argparse
 def get_arguments():
