@@ -26,6 +26,8 @@ ya_id = '44285147668'
 #full_url = 'https://yandex.ru/maps/org/svoya_kompaniya/1094622728/'
 full_url = 'https://yandex.ru/maps/org/boho_chic/1004067747/'
 
+full_url_g = 'https://yandex.ru/maps/org/svoya_kompaniya/1094622728/gallery/'
+
 # 1094622728 - ok
 # 1004067747 - error
 # 1051904212 - ok
@@ -33,11 +35,11 @@ full_url = 'https://yandex.ru/maps/org/boho_chic/1004067747/'
 import json
 _load_ya_features = load_ya_features.LoadYaFeatures({})
 
-headers = _load_ya_features.get_headers()
+headers = None
 
 def get_random_second():
     time.sleep(random.choice([2,1]))
-print(headers)
+
 http_client = 'selenium'
 
 available_commands = ['help','save','set','go','map','home','exit','del','html','run','req']
@@ -114,13 +116,14 @@ if http_client == 'selenium':
         else:
           print('not set cookies')
       elif i == 'go':
-        driver.get(full_url)
-        
-        get_random_second()
-        
-        html_result = driver.page_source
-        status = _load_ya_features.check_html_features(html_result)
-        print(f'{status=}')
+        if params[0] == '':
+          driver.get(full_url)
+          html_result = driver.page_source
+          status = _load_ya_features.check_html_features(html_result)
+          print(f'{status=}')
+        elif params[0] == 'g':
+          driver.get(full_url_g)
+          html_result = driver.page_source
       elif i == 'map':
         driver.get('https://yandex.ru/maps')
       elif i == 'home':
@@ -141,14 +144,20 @@ if http_client == 'selenium':
         else:
           print('not set cookies')
         
-        res = requests.get(full_url, headers=headers, verify=False, timeout=5)
-        get_random_second()
+        res = requests.get(full_url_g, headers=headers, verify=False, timeout=5)
+        #get_random_second()
         print(res.status_code)
         html_result = res.text
+        if not 'orgpage-header-view__header' in html_result:
+          print('not found orgpage-header-view__header')
+        else:
+          print('OK! found orgpage-header-view__header')
+        
+        if 'passport.yandex.ru' in html_result:
+          print('need pass')
+        # status = _load_ya_features.check_html_features(html_result)
 
-        status = _load_ya_features.check_html_features(html_result)
-
-        print(f'{status.value=}')
+        # print(f'{status.value=}')
         
       elif i == 'del':        
         driver.delete_all_cookies()

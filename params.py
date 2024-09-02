@@ -147,8 +147,14 @@ class Params:
     is_ya_rating_replace_html_request:bool = True
     '''Перезатирать html со страницы рейтинга для получения картинок из яндекса'''
 
-    is_ya_using_cookies:bool = False
-    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_headers_gallery, для того чтобы сделать запрос через selenium. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
+    is_ya_using_cookies_feature:bool = True
+    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_cookies_features, для того чтобы сделать запрос через selenium (или requests) в скрипте ya_parser\load_ya_features.py. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
+    
+    is_ya_using_cookies_gallery:bool = False
+    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_cookies_features, для того чтобы сделать запрос через selenium (или requests) в скрипте ya_parser\load_ya_image_params.py. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
+    
+    is_ya_using_cookies_rating:bool = False
+    '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_cookies_features, для того чтобы сделать запрос через selenium в скрипте ya_parser\load_ya_rating.py. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
 
     load_from_trip:bool = False
     '''делать парсинг по trip advisor или нет. На данный момент отключено (False)

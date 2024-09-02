@@ -23,23 +23,25 @@
   "is_ya_param_g_replace_json_request": true,
   "is_ya_param_g_replace_html_request": true,
   "is_ya_rating_replace_html_request": true,
-  "is_ya_using_cookies": false,
+  "is_ya_using_cookies_feature": true,
+  "is_ya_using_cookies_gallery": false,
+  "is_ya_using_cookies_rating": false,
   "load_from_trip": false,
   "load_from_zoon": false,
   "load_from_ya": true,
-  "load_images_from_ya": false,
+  "load_images_from_ya": true,
   "timeout_load_trip_details": 120,
   "timeout_load_zoon_details": 120,
   "timeout_load_trip_search": 120,
   "timeout_load_zoon_search": 120,
   "timeout_load_ya_image_params": 120,
   "timeout_load_ya_image": 120,
-  "top_load_ya_image": 10,
+  "top_load_ya_image": 2,
   "proxy": null,
   "zoon_parser_http_client": "selenium",
   "zoon_parser_selenium_browser": "chrome",
   "zoon_parser_selenium_chromedriver_path": "./lib/chromedriver-win64-126.0.6478.182/chromedriver",
-  "ya_parser_http_client": "selenium",
+  "ya_parser_http_client": "requests",
   "ya_parser_selenium_browser": "chrome",
   "ya_parser_selenium_browser_param_headless": true,
   "ya_parser_selenium_chromedriver_path": "./lib/chromedriver-win64-126.0.6478.182/chromedriver",
@@ -685,6 +687,52 @@
   },
   "ta_parser_headers": {},
   "ta_parser_headers_search": {},
+  "ya_parser_headers_rating": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
+    "Origin": "https://yandex.ru",
+    "Referer": "https://yandex.ru/",
+    "Sec-Ch-Ua": "\"Chromium\";v=\"118\", \"Google Chrome\";v=\"118\", \"Not=A?Brand\";v=\"99\"",
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": "\"Windows\"",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+  },
+  "zoon_parser_headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
+    "Cache-Control": "max-age=0",
+    "Cookie": "locale=ru_RU; AATestGlobal=variation; anon_id=20230920095826SWst.2ddd; _ga=GA1.2.1291800659.1695193108; _ym_uid=1695193108677982975; _ym_d=1695193108; sid=98be808e6516d0244bfc9617793338; _gid=GA1.2.1208684991.1695993893; _ym_isad=2; city=msk; captcha_pass=eb498b420348e75212393672af8aa661; _gat=1; _ga_KK9RGD935B=GS1.2.1695999086.30.0.1695999086.60.0.0",
+    "Referer": "https://zoon.ru/search/",
+    "Sec-Ch-Ua": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"",
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": "\"Windows\"",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
+    "Upgrade-Insecure-Requests": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+  },
+  "zoon_parser_headers_search": {
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Content-Length": "183",
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "Cookie": "anon_id=202405271130152nKR.0227; _ym_uid=1716798616133068309; _ym_d=1716798616; _ga=GA1.2.1399164107.1716798616; AATestGlobal=control; city=msk; _ga_KK9RGD935B=GS1.2.1721218245.4.1.1721218286.19.0.0; locale=ru_RU; sid=31dcf9a466990a0674358796234063",
+    "Origin": "https://zoon.ru",
+    "Priority": "u=1, i",
+    "Referer": "https://zoon.ru/ekb/restaurants/?search_query_form=1&center%5B%5D=56.81553064458854&center%5B%5D=60.72317535354089&zoom=11",
+    "Sec-Ch-Ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
+    "Sec-Ch-Ua-Mobile": "?0",
+    "Sec-Ch-Ua-Platform": "\"Windows\"",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+  },
   "ya_parser_headers_features": {
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "accept-encoding": "gzip, deflate, br, zstd",
@@ -723,7 +771,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "2040313924.udn.cDphbGVrc2VpLWFsZWtzZWktMjAyN1A%3D%3D"
+      "value": "2040313924.udn.cDphbGVrc2VpLWFsZWtzZWktMjAyNA%3D%3D"
     },
     {
       "domain": ".yandex.ru",
@@ -733,7 +781,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "1.1193.CiA9g4Z0SeQbSRaGhLdK6iazUwMvG2GolLkS0e1xJiv14ng.U3I_mtK-GStqEr0wGaYciGJ7-9ykO6XrYlftFdc3gjc"
+      "value": "1.1193.CiA9g4Z0SeQbSRaGhLdK6iazUwMvG2GolLkS0exJiv14ng.U3I_mtK-GStqEr0wGaYciGJ7-9ykO6XrYlftFdc3gjc"
     },
     {
       "domain": ".yandex.ru",
@@ -743,7 +791,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "EkEiTm90KUE7QnJh1bmQiO3Y9Ijk5IiwgIkdvb2dsZSBDaHJvbWUiO3Y9IjEyNyIsICJ1DaHJvbWl1bSI7dj0iMTI3IhoFIng4NiIiECIxMjcuMC42NTMzLjExOSIqAj8wMgIiIjoHIkxpbnV4IkIHIjYuOC4wIkoEIjY0IlJdIk5vdClBO0JyYW5kIjt2PSI5OS4wLjAuMCIsICJHb29nbGUgQ2hyb21lIjt2PSIxMjcuMC42NTMzLjExOSIsICJDaHJvbWl1bSI7dj0iMTI3LjAuNjUzMy4xMTkiWgI/MGDG6sK2BmoZ3MrpiA7yrLelC/v68OcN6//99g/+4c2HCA=="
+      "value": "EkEiTm90KUE7QnJhbmQiO3Y9Ijk5IiwgIkdvb2dsZSBDaHJvbWUiO3Y9IjEyNyIsICJDaHJvbWl1bSI7dj0iMTI3IhoFIng4NiIiECIxMjcuMC42NTMzLjExOSIqAj8wMgIiIjoHIkxpbnV4IkIHIjYuOC4wIkoEIjY0IlJdIk5vdClBO0JyYW5kIjt2PSI5OS4wLjAuMCIsICJHb29nbGUgQ2hyb21lIjt2PSIxMjcuMC42NTMzLjExOSIsICJDaHJvbWl1bSI7dj0iMTI3LjAuNjUzMy4xMTkiWgI/MGDG6sK2BmoZ3MrpiA7yrLelC/v68OcN6//99g/+4c2HCA=="
     },
     {
       "domain": ".yandex.ru",
@@ -753,7 +801,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "X+PCVBuoRaVrCS325VG1h5HmyWDVa2c3pXsGlDzCitBOXTsu6/6xAPsHuMNLKKmW4Ky1WPWF7"
+      "value": "X+PCVBuoRaVrCS325VG1h5HmyWDVa2c3pXsGlDzCitBOXTsu6/6xAPsHuMNLKKmW4KyWPWF7"
     },
     {
       "domain": ".yandex.ru",
@@ -763,7 +811,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "3:17249513924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:17249153924|3:102941491.662294.nTHIeUS5ibrUYA1Df3_SLb8VpoI"
+      "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:1724953924|3:10294491.662294.nTHIeUS5ibrUYA1Df3_SLb8VpoI"
     },
     {
       "domain": ".yandex.ru",
@@ -793,7 +841,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "17249210824131761582"
+      "value": "1724921082413761582"
     },
     {
       "domain": ".yandex.ru",
@@ -863,7 +911,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "0%7C17249211317812"
+      "value": "0%7C1724921137812"
     },
     {
       "domain": ".yandex.ru",
@@ -883,7 +931,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "75266771117241921081"
+      "value": "7526677111724921081"
     },
     {
       "domain": ".yandex.ru",
@@ -943,7 +991,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "m5t2lJCkxRA4qqqueIoE7sH0bvgWWTrTb5x.17214921132819"
+      "value": "m5t2lJCkxRA4qqqueIoE7sH0bvgWWTrTb5x.1724921132819"
     },
     {
       "domain": ".yandex.ru",
@@ -953,7 +1001,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "5cZ4pA6xFZVLZeaaRHN22%31A1724921134245"
+      "value": "5cZ4pA6xFZVLZeaaRHN22%3A1724921134245"
     },
     {
       "domain": ".yandex.ru",
@@ -983,7 +1031,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939181520.0.2.3:1724953924|3:10294491.662294.fakesign0000000000000000000"
+      "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:1724953924|3:10294491.662294.fakesign0000000000000000000"
     },
     {
       "domain": ".yandex.ru",
@@ -1053,7 +1101,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "udn.cDphbGVrc21VpLWFsZ1WtzZWktMjAyNA%3D%3D#c_chck.2795292074"
+      "value": "udn.cDphbGVrc2VpLWFsZWtzZWktMjAyNA%3D%3D#c_chck.2795292074"
     },
     {
       "domain": ".yandex.ru",
@@ -1113,7 +1161,7 @@
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "17249121082828"
+      "value": "1724921082828"
     },
     {
       "domain": ".yandex.ru",
@@ -1123,7 +1171,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "41796516121724953716"
+      "value": "4179656121724953716"
     },
     {
       "domain": ".yandex.ru",
@@ -1143,7 +1191,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "45859385311724953715"
+      "value": "4585938531724953715"
     },
     {
       "domain": ".yandex.ru",
@@ -1153,7 +1201,7 @@
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "s0rMRqmF/2WL7BPTWb21KwQap9QO0Jm0sxdQWCPpREkxK6a4Yvf0BJa981TRGtO79wmtjhgpwfGMPoi/kRkH3BTc0VRI="
+      "value": "s0rMRqmF/2WL7BPTWb2KwQap9QO0Jm0sxdQWCPpREkxK6a4Yvf0BJa981TRGtO79wmtjhgpwfGMPoi/kRkH3BTc0VRI="
     },
     {
       "domain": "yandex.ru",
@@ -1165,51 +1213,5 @@
       "secure": false,
       "value": "0"
     }
-  ],
-  "ya_parser_headers_rating": {
-    "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
-    "Origin": "https://yandex.ru",
-    "Referer": "https://yandex.ru/",
-    "Sec-Ch-Ua": "\"Chromium\";v=\"118\", \"Google Chrome\";v=\"118\", \"Not=A?Brand\";v=\"99\"",
-    "Sec-Ch-Ua-Mobile": "?0",
-    "Sec-Ch-Ua-Platform": "\"Windows\"",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
-  },
-  "zoon_parser_headers": {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
-    "Cache-Control": "max-age=0",
-    "Cookie": "locale=ru_RU; AATestGlobal=variation; anon_id=20230920095826SWst.2ddd; _ga=GA1.2.1291800659.1695193108; _ym_uid=1695193108677982975; _ym_d=1695193108; sid=98be808e6516d0244bfc9617793338; _gid=GA1.2.1208684991.1695993893; _ym_isad=2; city=msk; captcha_pass=eb498b420348e75212393672af8aa661; _gat=1; _ga_KK9RGD935B=GS1.2.1695999086.30.0.1695999086.60.0.0",
-    "Referer": "https://zoon.ru/search/",
-    "Sec-Ch-Ua": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"",
-    "Sec-Ch-Ua-Mobile": "?0",
-    "Sec-Ch-Ua-Platform": "\"Windows\"",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "same-origin",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
-  },
-  "zoon_parser_headers_search": {
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Content-Length": "183",
-    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-    "Cookie": "anon_id=202405271130152nKR.0227; _ym_uid=1716798616133068309; _ym_d=1716798616; _ga=GA1.2.1399164107.1716798616; AATestGlobal=control; city=msk; _ga_KK9RGD935B=GS1.2.1721218245.4.1.1721218286.19.0.0; locale=ru_RU; sid=31dcf9a466990a0674358796234063",
-    "Origin": "https://zoon.ru",
-    "Priority": "u=1, i",
-    "Referer": "https://zoon.ru/ekb/restaurants/?search_query_form=1&center%5B%5D=56.81553064458854&center%5B%5D=60.72317535354089&zoom=11",
-    "Sec-Ch-Ua": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\"",
-    "Sec-Ch-Ua-Mobile": "?0",
-    "Sec-Ch-Ua-Platform": "\"Windows\"",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-origin",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
-  }
+  ]
 }

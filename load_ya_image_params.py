@@ -97,9 +97,10 @@ class LoadYaImageParams:
         logging.debug(f'{timeout=}')
 
         if http_client == 'requests':
-          headers['Cookie'] = '; '.join(
-            [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
-          )
+          if self.params.is_ya_using_cookies_gallery:
+            headers['Cookie'] = '; '.join(
+              [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
+            )
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
           if response.status_code == 200:
             html_result = response.text
@@ -111,7 +112,7 @@ class LoadYaImageParams:
             driver = self.get_driver(self.params)
             driver.get(url)
             
-            if False and self.params.is_ya_using_cookies:
+            if False and self.params.is_ya_using_cookies_gallery:
               # проставление cookies сейчас работает не корректно
               # чтобы работало корректно, нужно переделать согласоно описанию в docs/request_selenium_with_cookies.md
               logging.debug('set parameters cookies')

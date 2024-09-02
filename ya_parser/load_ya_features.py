@@ -80,7 +80,7 @@ class LoadYaFeatures:
             return self._driver 
         self._driver = common.get_global_driver(self.params)
         
-        if self.params.is_ya_using_cookies:
+        if self.params.is_ya_using_cookies_feature:
           self._driver.get('https://yandex.ru/maps/')
                             
           cookies_dict = self.params.ya_parser_cookies_features
@@ -142,9 +142,10 @@ class LoadYaFeatures:
         
         html_result = ''
         if http_client == 'requests':
-            headers['Cookie'] = '; '.join(
-              [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
-            )
+            if self.params.is_ya_using_cookies_feature:
+                headers['Cookie'] = '; '.join(
+                  [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
+                )
             res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
             logging.debug(res.status_code)
             html_result = res.text

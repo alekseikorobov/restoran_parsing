@@ -122,10 +122,6 @@ class LoadData:
         else:
             logging.debug(f'start {action.__self__.__class__}')
 
-        if self.params.is_replace_file:
-            if common.isfile(path):
-                os.remove(path) 
-
         if common.isfile(path_file):
             df_result = self.df_read(path_file)
             logging.debug(f'{df_result.shape=}, {df_result.columns=}, from file {path_file=}')
@@ -199,6 +195,22 @@ class LoadData:
             self.check_request(self.params.url_for_check_request,self.params.proxy)
 
         start_all = time.time()
+
+        if self.params.is_replace_file:
+            for path in [
+                self.params.temp_zoon_search_file,
+                self.params.temp_trip_search_file,
+                self.params.temp_select_best_zoon_search_file,
+                self.params.temp_select_best_trip_search_file,
+                self.params.zoon_details_file,
+                self.params.trip_details_file,
+                self.params.ya_image_params_file,
+                self.params.ya_rating_file,
+                self.params.ya_features_file,
+                self.params.result_data_file,
+            ]:
+                if common.isfile(path):
+                    os.remove(path)
 
         df_yandex_data = pd.read_parquet(self.params.yandex_data_file)
         df_yandex_data['transaction_info_norm'] = df_yandex_data['transaction_info'].apply(common.normalize_company_name)
@@ -398,8 +410,8 @@ if __name__ == '__main__':
 
     param.is_replace_file = args.replace
 
-    if args.replaceall:
-        param.is_replace_file = True
+    # if args.replaceall:
+    #     param.is_replace_file = True
         
     param.is_ya_param_replace_json_request = args.replaceall
     param.is_ya_param_g_replace_json_request = args.replaceall

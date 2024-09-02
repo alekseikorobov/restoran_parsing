@@ -34,7 +34,7 @@ class LoadYaRating:
             return self._driver 
         self._driver = common.get_global_driver(self.params)
         
-        if self.params.is_ya_using_cookies:
+        if self.params.is_ya_using_cookies_rating:
           self._driver.get('https://yandex.ru/maps/')
                             
           cookies_dict = self.params.ya_parser_cookies_features
