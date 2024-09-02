@@ -310,8 +310,10 @@ class LoadData:
             df_result = df_result.merge(df_output[[*key_cols,result_field]],how='inner',on = key_cols)
 
         #теперь собираем по всем источникам в одни json
-        df_result['data'] = df_result.apply(self.combine_json_fields,axis=1)
-        df_result['schema_version'] = SCHEMA_VERSION        
+        df_result['data'] = df_result.apply(self.combine_json_fields, axis=1)
+        
+        df_result['schema_version'] = SCHEMA_VERSION
+        df_result['update_dttm'] = datetime.datetime.now()
         
         return df_result[[*input_cols,'data','schema_version']]
 
@@ -414,4 +416,5 @@ if __name__ == '__main__':
     print(f'{args=}')
     ld = LoadData(param)
     logging.info(f'VERSION = {VERSION}')
+    logging.info(f'VERSION = {SCHEMA_VERSION}')
     ld.start_load()
