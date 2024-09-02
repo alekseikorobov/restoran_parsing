@@ -261,8 +261,8 @@ class LoadData:
                                                 "ya_id,location_nm_rus,transaction_info", #key
                                                 (self.params.yandex_data_file,"ya_id,location_nm_rus,transaction_info"), #input_file
                                                 [
-                                                    (self.params.ya_rating_file,"data_ya","ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
-                                                    (self.params.ya_features_file,"data_ya","ya_f_avg_price,ya_f_cuisine"),
+                                                    (self.params.ya_rating_file,"ya","ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
+                                                    (self.params.ya_features_file,"ya","ya_f_avg_price,ya_f_cuisine"),
                                                 ] #output_files
                                                 ))
 
