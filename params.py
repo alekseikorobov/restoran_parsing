@@ -161,6 +161,9 @@ class Params:
 
     load_images_from_ya:bool = False
     '''скачивать фотки или нет'''
+    
+    is_packing_data:bool = True
+    '''упаковка данных в json файл'''
 
     timeout_load_trip_details:int = 120
     '''таймаут для парсинга по trip advisor на странице деталей'''

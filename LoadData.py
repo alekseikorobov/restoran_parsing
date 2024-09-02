@@ -117,8 +117,14 @@ class LoadData:
     def get_or_action(self, path_file:str, action, *args):
         
         df_input = args[0]
+        if isinstance(df_input, pd.DataFrame):
+            logging.debug(f'start {action.__self__.__class__}: {df_input.shape=} {df_input.columns=}')
+        else:
+            logging.debug(f'start {action.__self__.__class__}')
 
-        logging.debug(f'start {action.__self__.__class__}: {df_input.shape=} {df_input.columns=}')
+        if self.params.is_replace_file:
+            if common.isfile(path):
+                os.remove(path) 
 
         if common.isfile(path_file):
             df_result = self.df_read(path_file)
@@ -192,22 +198,7 @@ class LoadData:
         if self.params.url_for_check_request is not None:
             self.check_request(self.params.url_for_check_request,self.params.proxy)
 
-
         start_all = time.time()
-        if self.params.is_replace_file:
-            for path in [
-                self.params.temp_zoon_search_file,
-                self.params.temp_trip_search_file,
-                self.params.temp_select_best_zoon_search_file,
-                self.params.temp_select_best_trip_search_file,
-                self.params.zoon_details_file,
-                self.params.trip_details_file,
-                self.params.ya_image_params_file,
-                self.params.ya_rating_file,
-                self.params.ya_features_file,
-            ]:
-                if common.isfile(path):
-                    os.remove(path)
 
         df_yandex_data = pd.read_parquet(self.params.yandex_data_file)
         df_yandex_data['transaction_info_norm'] = df_yandex_data['transaction_info'].apply(common.normalize_company_name)
@@ -263,15 +254,18 @@ class LoadData:
             
             self.load_ya_image.start(df_ya_image_params)
 
-        df_result = self.packing_data_to_output(
-            key = "ya_id,location_nm_rus,transaction_info",
-            input_file = (self.params.yandex_data_file,"ya_id,location_nm_rus,transaction_info"),
-            output_files = [
-                (self.params.ya_rating_file,"data_ya","ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
-                (self.params.ya_features_file,"data_ya","ya_f_avg_price,ya_f_cuisine"),
-            ])
+        if self.params.is_packing_data:
+            _ = self.get_or_action(self.params.result_data_file,
+                                                self.packing_data_to_output,
+                                                *(
+                                                "ya_id,location_nm_rus,transaction_info", #key
+                                                (self.params.yandex_data_file,"ya_id,location_nm_rus,transaction_info"), #input_file
+                                                [
+                                                    (self.params.ya_rating_file,"data_ya","ya_org_name,ya_stars_count,ya_rating,ya_link_org"),
+                                                    (self.params.ya_features_file,"data_ya","ya_f_avg_price,ya_f_cuisine"),
+                                                ] #output_files
+                                                ))
 
-        self.df_write(df_result,self.params.result_data_file)
 
         logging.debug(f'DONE')
 
@@ -285,12 +279,13 @@ class LoadData:
             (<output_file_path-путь к файлу>, <name_field-название корневого элемента>, <cols_str-колонки из исходго файла>)
         ]
         '''
-        
+        logging.debug(f'start pack, by {key=}, {input_file=}, {output_files=}')
         key_cols = key.split(',')
         input_file_path,cols_str = input_file
         input_cols = cols_str.split(',')
         df_input = self.df_read(input_file_path)[input_cols]
 
+        logging.debug(f'{df_input.shape=}')
         df_result = df_input
         
         #проходимся по каждому источнику и собираем все поля в записи в json строку.
@@ -300,8 +295,9 @@ class LoadData:
             output_cols = cols_str.split(',')
             
             df_output = self.df_read(output_file_path)[[*key_cols,*output_cols]]
+            logging.debug(f'{df_output.shape=}')
             df_output_j = df_output[output_cols].to_json(orient='records')
-            df_output[result_field] = [json.dumps(j) for j in json.loads(df_output_j)]
+            df_output[result_field] = [json.dumps(j,ensure_ascii=False) for j in json.loads(df_output_j)]
             
             #строки, которые повторяются по ключу, нужно объединить в один массив
             df_output = df_output.groupby(key_cols).apply(self.combine_lines_to_array_str,result_field).reset_index()
@@ -315,7 +311,7 @@ class LoadData:
         df_result['schema_version'] = SCHEMA_VERSION
         df_result['update_dttm'] = datetime.datetime.now()
         
-        return df_result[[*input_cols,'data','schema_version']]
+        return df_result[[*input_cols,'data','schema_version','update_dttm']]
 
     def combine_lines_to_array_str(self,row,field_name):
         compact_data = f"[{','.join(row[field_name])}]"
@@ -353,7 +349,7 @@ class LoadData:
             index_result += 1
         
         
-        return json.dumps(result_data)
+        return json.dumps(result_data, ensure_ascii=False)
         
 
 import argparse
