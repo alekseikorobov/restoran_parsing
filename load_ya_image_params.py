@@ -101,6 +101,7 @@ class LoadYaImageParams:
             headers['Cookie'] = '; '.join(
               [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
             )
+            logging.debug(f"{headers['Cookie']=}")
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
           if response.status_code == 200:
             html_result = response.text
