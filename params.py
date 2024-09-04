@@ -156,6 +156,10 @@ class Params:
     is_ya_using_cookies_rating:bool = False
     '''Флаг, который указывает, нужно ли брать Cookie из ya_parser_cookies_features, для того чтобы сделать запрос через selenium в скрипте ya_parser\load_ya_rating.py. Если False, тогда куки будут использовать по умолчанию, и в DEBUG логах запишется значение этих куки, для дальнейшей отладки'''
 
+    is_ya_cookies_feature_fix_time:bool = True
+    '''Исправление в куках feature времени timestamp, прибавляет к текущей дате +10 дней, чтобы сдвинуть время expiry в будущее '''
+    
+    
     load_from_trip:bool = False
     '''делать парсинг по trip advisor или нет. На данный момент отключено (False)
     '''

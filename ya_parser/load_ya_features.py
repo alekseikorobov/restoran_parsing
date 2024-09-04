@@ -45,6 +45,7 @@ from enum import Enum
 class StatusCheckHtml(Enum):
     OK = 'OK'
     ERROR_CAPCHA = 'Требуется ввод капчи'
+    ERROR_AUTORITY = 'Ошибка авторизации' #Авторизация не удалась
     EMPTY = ''
 
 class LoadYaFeatures:
@@ -143,9 +144,14 @@ class LoadYaFeatures:
         html_result = ''
         if http_client == 'requests':
             if self.params.is_ya_using_cookies_feature:
+              
+                ya_parser_cookies_features = common.get_cookies_fix_time(self.params.ya_parser_cookies_features,
+                                                                         self.params.is_ya_cookies_feature_fix_time)
+              
                 headers['Cookie'] = '; '.join(
-                  [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
+                  [f"{c['name']}={c['value']}" for c in ya_parser_cookies_features]
                 )
+                logging.debug(f"{headers['Cookie']=}")
             res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
             logging.debug(res.status_code)
             html_result = res.text
@@ -252,6 +258,9 @@ class LoadYaFeatures:
         
         if 'Подтвердите, что запросы отправляли вы, а не робот' in html_str or 'checkcaptcha' in html_str:
           return StatusCheckHtml.ERROR_CAPCHA
+        
+        if '<title>Авторизация</title>' in html_str and 'Авторизация не' in html_str:
+          return StatusCheckHtml.ERROR_AUTORITY
                 
         return StatusCheckHtml.OK
       
@@ -266,7 +275,8 @@ class LoadYaFeatures:
             status = self.check_html_features(html)
             logging.debug(f'check_html_features - {status}')
             
-            if status == StatusCheckHtml.ERROR_CAPCHA:
+            if status in [StatusCheckHtml.ERROR_CAPCHA,
+                          StatusCheckHtml.ERROR_AUTORITY]:
               raise(Exception(status.value))
             
             if status == StatusCheckHtml.EMPTY:
