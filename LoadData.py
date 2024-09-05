@@ -338,7 +338,7 @@ class LoadData:
         df_result['data'] = df_result.apply(self.combine_json_fields, axis=1)
         
         df_result['schema_version'] = SCHEMA_VERSION
-        df_result['update_dttm'] = datetime.datetime.now()
+        df_result['update_dttm'] = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         
         return df_result[[*input_cols,'data','schema_version','update_dttm']]
 
