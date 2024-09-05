@@ -88,7 +88,7 @@ class LoadData:
         if ext == '.pik':
             df.to_pickle(path_file)
         elif ext == '.parquet':
-            df.to_parquet(path_file)
+            df.to_parquet(path_file,index=False)
         elif ext == '.csv':
             df.to_csv(path_file,index=False)
         elif ext == '.xlsx':
