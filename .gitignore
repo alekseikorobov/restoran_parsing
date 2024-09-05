@@ -13,3 +13,4 @@ set_env.bat
 params_prod.json
 test.html
 result.html
+venv
