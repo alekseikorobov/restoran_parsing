@@ -22,8 +22,11 @@ from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from string import Template
+
 from params import Params
 
+from datetime import datetime, timezone, timedelta
 
 def get_global_driver(params) -> WebDriver:
     _driver = None 
@@ -99,13 +102,43 @@ def cookies_str_to_dict(cookies_str):
         cookies_dict[k] = v
     return cookies_dict
 
+def get_now(day:int):
+    d = datetime.now()
+    return d + timedelta(days=day)
+
 def get_id_from_ya_image_url(url:str):
     if is_nan(url): return url
     urls = url.split('/')
     parts = urls[-3:-1]
     return '_'.join(parts)
 
-from datetime import datetime, timezone, timedelta
+def get_cookies_fix_time(ya_parser_cookies:list,fix_time:bool):
+    _expiry = 1759513924
+    _time_stamp = 1724953924
+    _time_stamp_full = 1724953924650
+    
+    if fix_time:
+        _time_stamp = from_date_to_unix_timestamp(get_now(10))
+        _time_stamp_full = _time_stamp * 1000
+        _expiry = from_date_to_unix_timestamp(get_now(365))
+        
+        _time = from_unix_timestamp_to_date(_time_stamp)
+        _expiry_time = from_unix_timestamp_to_date(_expiry)
+        
+        logging.debug(f'update time for cookies {_time=}, {_expiry_time=}')
+    
+    cookies_dict = []
+    for cookie in ya_parser_cookies:
+        _cookie_new = cookie.copy() #копируем чтобы не изменять источник
+        
+        _cookie_new['value'] = Template(_cookie_new['value']).substitute({
+            'time_stamp_full': _time_stamp_full,
+            'time_stamp_short': _time_stamp,
+        })
+        _cookie_new['expiry'] = _expiry
+        cookies_dict.append(_cookie_new)
+    
+    return cookies_dict
 
 def from_unix_timestamp_to_date(timestamp:int):
     dt = datetime.fromtimestamp(timestamp, tz=timezone(timedelta(hours=3)))

@@ -10,6 +10,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+from string import Template
+
 import time,random
 
 class Struct:
@@ -24,9 +26,11 @@ ya_id = '44285147668'
 #full_url = f'https://yandex.ru/maps/org/svoya_kompaniya/{ya_id}/?tab=features'
 #full_url = f'https://yandex.ru/maps/org/svoya_kompaniya/{ya_id}/features/'
 #full_url = 'https://yandex.ru/maps/org/svoya_kompaniya/1094622728/'
-full_url = 'https://yandex.ru/maps/org/boho_chic/1004067747/'
 
-full_url_g = 'https://yandex.ru/maps/org/svoya_kompaniya/1094622728/gallery/'
+test_url_dict = {
+  '1':'https://yandex.ru/maps/org/boho_chic/1004067747/features/',
+  '2':'https://yandex.ru/maps/org/svoya_kompaniya/1094622728/gallery/'
+}
 
 # 1094622728 - ok
 # 1004067747 - error
@@ -42,13 +46,16 @@ def get_random_second():
 
 http_client = 'selenium'
 
-available_commands = ['help','save','set','go','map','home','exit','del','html','run','req']
+available_commands = ['help','save','set','go','map','home','exit','del','html','run','req','test']
 
 def cookies_dict_by_params(params):
   cookies_dict = None
   if params[0] == 'fp':
     if len(params) != 2:
-      raise(AttributeError(f'not correct params {params=}'))
+      if len(params) == 1:
+        params.append('params.json')
+      else:
+        raise(AttributeError(f'not correct params {params=}'))
     if not os.path.isfile(params[1]):
       raise(AttributeError(f'file not exists from params {params[1]=}'))
     path_for_param = params[1]
@@ -72,11 +79,50 @@ def cookies_dict_by_params(params):
     file_name = f'session_{params[0]}.json'
     cookies_dict = json.load(open(file_name,'r'))
     print(f'set cookies from file {file_name}')
+  
+  time_stamp = common.from_date_to_unix_timestamp(common.get_now(10))
+  time_stamp_year = common.from_date_to_unix_timestamp(common.get_now(365))
+  expiry = time_stamp_year #1759513924
+  time_stamp_short = time_stamp
+  time_stamp_old = 1724953924
+  time_stamp_full_old = 1724953924650
+  print(f'{time_stamp=}')
+  print(f'{time_stamp_old=}')
+  
+  time_stamp_full = time_stamp*1000
+  ## обновление с учетом подстановки
+  rep = ['_Session_id']
+  #'Session_id','L','zen_session_id','domain_sid','sessionid2','ymex']
+
+  for cookie in cookies_dict:
+    _time_stamp_full = time_stamp_full
+    _time_stamp_short = time_stamp_short
+    if cookie['name'] not in rep:
+      _time_stamp_full = time_stamp_full_old
+      _time_stamp_short = time_stamp_old
+    cookie['value'] = Template(cookie['value']).substitute({
+      'time_stamp_full': _time_stamp_full,
+      'time_stamp_short': _time_stamp_short,
+    })
+    cookie['expiry'] = expiry
+    
   return cookies_dict
 
-if http_client == 'selenium':    
+args = [
+  'run',
+  'set fp',
+  'go',
+  'req fp'
+]
+
+if http_client == 'selenium':
+    selected_type = '1'
     while True:
-      i = input('>')
+      i = ''
+      if len(args)>0:
+        i = args.pop(0)
+      else:
+        i = input('>')
       if i.strip() == '': continue
       i += ' '
       i,params = [a.strip() for a in i.split(' ',1)]
@@ -86,6 +132,17 @@ if http_client == 'selenium':
       if i == 'help':
         print('тут должна быть справка, но долго писать, поэтому смотри код')
         print(f'вот все команды {available_commands}')
+      elif i == 'test':
+          if params[0] == '':
+            print(f'нужен хотя бы один параметр, доступные параметры {test_url_dict.keys()}')
+            continue
+          result_url = test_url_dict.get(params[0],None)
+          if result_url is None:
+            print(f'неверный параметр {params[0]}, доступные параметры {test_url_dict.keys()}')
+            continue
+          selected_type = params[0]
+          print(f'выбран для теста {test_url_dict[selected_type]=}')
+            
       elif i == 'run':
         interaction = params[0] == '0'
         driver = common.get_global_driver(Struct( **{
@@ -116,14 +173,19 @@ if http_client == 'selenium':
         else:
           print('not set cookies')
       elif i == 'go':
-        if params[0] == '':
-          driver.get(full_url)
+          driver.get(test_url_dict[selected_type])
           html_result = driver.page_source
-          status = _load_ya_features.check_html_features(html_result)
-          print(f'{status=}')
-        elif params[0] == 'g':
-          driver.get(full_url_g)
-          html_result = driver.page_source
+          if selected_type == '1':
+            status = _load_ya_features.check_html_features(html_result)
+            print(f'{status=}')
+          else:
+            if not 'orgpage-header-view__header' in html_result:
+              print('not found orgpage-header-view__header')
+            else:
+              print('OK! found orgpage-header-view__header')
+          
+            # if 'passport.yandex.ru' in html_result:
+            #   print('need pass')
       elif i == 'map':
         driver.get('https://yandex.ru/maps')
       elif i == 'home':
@@ -144,21 +206,22 @@ if http_client == 'selenium':
         else:
           print('not set cookies')
         
-        res = requests.get(full_url_g, headers=headers, verify=False, timeout=5)
+        res = requests.get(test_url_dict[selected_type], headers=headers, verify=False, timeout=5)
         #get_random_second()
         print(res.status_code)
         html_result = res.text
-        if not 'orgpage-header-view__header' in html_result:
-          print('not found orgpage-header-view__header')
-        else:
-          print('OK! found orgpage-header-view__header')
-        
-        if 'passport.yandex.ru' in html_result:
-          print('need pass')
-        # status = _load_ya_features.check_html_features(html_result)
+        if selected_type == '1': #features
+          status = _load_ya_features.check_html_features(html_result)
+          print(f'{status=}')
+        else:          
+          if not 'orgpage-header-view__header' in html_result:
+            print('not found orgpage-header-view__header')
+          else:
+            print('OK! found orgpage-header-view__header')
+          
+          if 'passport.yandex.ru' in html_result:
+            print('need pass')
 
-        # print(f'{status.value=}')
-        
       elif i == 'del':        
         driver.delete_all_cookies()
         print('delete all cookies')

@@ -29,6 +29,17 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+from enum import Enum
+
+
+class StatusCheckHtml(Enum):
+    OK = 'OK'
+    ERROR_CAPCHA = 'Требуется ввод капчи'
+    ERROR_AUTORITY = 'Ошибка авторизации' #Авторизация не удалась
+    EMPTY = 'Пустой html'
+    NOT_FOUND_HEADER = 'Не найден заголовок'
+    NOT_FOUND_STATE = 'Не найден класс state-view'
+
 class LoadYaImageParams:
     def __init__(self, params: Params) -> None:
         self.params = params
@@ -79,6 +90,29 @@ class LoadYaImageParams:
       time.sleep(random.choice([1,2])) #,3,4
 
 
+    def check_html_features(self, html_str)->StatusCheckHtml:
+      
+      if html_str == '':
+        return StatusCheckHtml.EMPTY
+      
+      if 'Подтвердите, что запросы отправляли вы, а не робот' in html_str or 'checkcaptcha' in html_str:
+        return StatusCheckHtml.ERROR_CAPCHA
+        
+      if '<title>Авторизация</title>' in html_str and 'Авторизация не' in html_str:
+        return StatusCheckHtml.ERROR_AUTORITY
+      
+      if not 'orgpage-header-view__header' in html_str:
+        return StatusCheckHtml.NOT_FOUND_HEADER
+      
+      soup = BeautifulSoup(html_str,"html.parser")
+      state_view_element = soup.find(class_ = 'state-view')
+      if state_view_element is None:
+        return StatusCheckHtml.NOT_FOUND_STATE
+
+      return StatusCheckHtml.OK
+        
+        
+
     def get_gallery_html_by_org(self, url, city_code, ya_id):
       path = common.get_folder(self.params.cache_data_folder.rstrip('/\\') + '/yandex_r', city_code,'gallery_html')
       full_name = f'{path}/{ya_id}.html'
@@ -98,9 +132,21 @@ class LoadYaImageParams:
 
         if http_client == 'requests':
           if self.params.is_ya_using_cookies_gallery:
+            
+            ya_parser_cookies_features = common.get_cookies_fix_time(self.params.ya_parser_cookies_features,
+                                                                     self.params.is_ya_cookies_feature_fix_time)
+
             headers['Cookie'] = '; '.join(
-              [f"{c['name']}={c['value']}" for c in self.params.ya_parser_cookies_features]
+              [f"{c['name']}={c['value']}" for c in ya_parser_cookies_features]
             )
+            logging.debug(f"{headers['Cookie']=}")
+          else:
+            cookie = ''
+            if 'Cookie' in headers:
+              cookie = headers['Cookie']
+            if 'cookie' in headers:
+              cookie = headers['cookie']              
+            logging.debug(f"is_ya_using_cookies_gallery false, { cookie=}")
           response = requests.get(url,headers=headers, verify=False, proxies=proxies, timeout=timeout)
           if response.status_code == 200:
             html_result = response.text
@@ -191,9 +237,19 @@ class LoadYaImageParams:
       session_id = None
       if self.params.is_ya_param_g_replace_json_request or not os.path.isfile(full_name):
         html_result = self.get_gallery_html_by_org(url,city_code, ya_id)
-        if html_result == '':
-          logging.warning('not exists html')
+        
+        status = self.check_html_features(html_result)
+        
+        logging.debug(f'{status=}')
+        
+        if status == StatusCheckHtml.EMPTY:
+          logging.warning(status.value)
           return session_id, system_links
+        
+        if status in [StatusCheckHtml.ERROR_CAPCHA,StatusCheckHtml.NOT_FOUND_STATE,
+                      StatusCheckHtml.ERROR_AUTORITY,StatusCheckHtml.NOT_FOUND_HEADER]:
+          raise(Exception(status.value))
+        
         json_result  = self.get_full_json_from_gallery(html_result)
         logging.debug(f'write - {full_name}')
         with open(full_name,'w',encoding='UTF-8') as f:

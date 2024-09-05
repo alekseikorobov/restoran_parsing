@@ -118,6 +118,8 @@ class LoadYaFeaturesTest(unittest.TestCase):
     html_files = [
       ('data_unit_test/yandex_features/html/1004067747.html',load_ya_features.StatusCheckHtml.ERROR_CAPCHA),
       ('data_unit_test/yandex_features/html/1051904212.html',load_ya_features.StatusCheckHtml.OK),
+      ('data_unit_test/yandex_features/html/44285147668.html',load_ya_features.StatusCheckHtml.ERROR_AUTORITY),
+      
     ]
     
     for html_file, expect_status in html_files:
@@ -126,7 +128,7 @@ class LoadYaFeaturesTest(unittest.TestCase):
         
         fact_status = _load_ya_features.check_html_features(html_str)
         
-        assert fact_status == expect_status
+        assert fact_status == expect_status,f'{fact_status=}, {expect_status=} by {html_file=}'
   
   def test_get_headers_from_line(self):
     _load_ya_features = load_ya_features.LoadYaFeatures({})

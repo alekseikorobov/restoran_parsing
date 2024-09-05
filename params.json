@@ -24,7 +24,7 @@
   "is_ya_param_g_replace_html_request": true,
   "is_ya_rating_replace_html_request": true,
   "is_ya_using_cookies_feature": true,
-  "is_ya_using_cookies_gallery": false,
+  "is_ya_using_cookies_gallery": true,
   "is_ya_using_cookies_rating": false,
   "load_from_trip": false,
   "load_from_zoon": false,
@@ -765,7 +765,7 @@
   "ya_parser_cookies_features": [
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513924,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "yp",
       "path": "/",
@@ -775,7 +775,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513924,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "sessar",
       "path": "/",
@@ -785,7 +785,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513926,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "bh",
       "path": "/",
@@ -795,7 +795,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513765,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "_yasc",
       "path": "/",
@@ -805,17 +805,17 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513924,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "Session_id",
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:1724953924|3:10294491.662294.nTHIeUS5ibrUYA1Df3_SLb8VpoI"
+      "value": "3:${time_stamp_short}.5.0.${time_stamp_full}:EFOsTw:1daa.1.2:1|1939183520.0.2.3:${time_stamp_short}|3:10294491.662294.nTHIeUS5ibrUYA1Df3_SLb8VpoI"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "zen_gid",
       "path": "/",
@@ -825,7 +825,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1724964281,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "zen_sso_checked",
       "path": "/",
@@ -835,7 +835,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756457081,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "_ym_uid",
       "path": "/",
@@ -845,7 +845,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007481,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "zen_vk_sso_checked",
       "path": "/",
@@ -855,7 +855,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007534,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "is_online_stat",
       "path": "/",
@@ -865,17 +865,17 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513924,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "L",
       "path": "/",
       "sameSite": "Lax",
       "secure": false,
-      "value": "AFkAe2BqUUpEcWRfZ0dlX34DUgdRBwFWJiQsHTUEOl0sBDRYAzMHZVF4RlA=.1724953924.15868.388231.0958e1166491a05ab27691c1a06331f3"
+      "value": "AFkAe2BqUUpEcWRfZ0dlX34DUgdRBwFWJiQsHTUEOl0sBDRYAzMHZVF4RlA=.${time_stamp_short}.15868.388231.0958e1166491a05ab27691c1a06331f3"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007534,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "is_auth_through_phone",
       "path": "/",
@@ -885,7 +885,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1753692334,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "tmr_lvid",
       "path": "/",
@@ -895,7 +895,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "vid",
       "path": "/",
@@ -905,7 +905,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007537,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "tmr_detect",
       "path": "/",
@@ -915,7 +915,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1740473083,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "rec-tech",
       "path": "/",
@@ -925,7 +925,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481081,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "zencookie",
       "path": "/",
@@ -935,7 +935,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007534,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "front_fpid",
       "path": "/",
@@ -945,7 +945,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756489924,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "yandex_login",
       "path": "/",
@@ -955,7 +955,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1724993081,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "_ym_isad",
       "path": "/",
@@ -965,7 +965,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756025082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "stable_city",
       "path": "/",
@@ -975,7 +975,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "Zen-User-Data",
       "path": "/",
@@ -985,27 +985,27 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756457132,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "zen_session_id",
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "m5t2lJCkxRA4qqqueIoE7sH0bvgWWTrTb5x.1724921132819"
+      "value": "m5t2lJCkxRA4qqqueIoE7sH0bvgWWTrTb5x.${time_stamp_full}"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725525934,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "domain_sid",
       "path": "/",
       "sameSite": "Lax",
       "secure": true,
-      "value": "5cZ4pA6xFZVLZeaaRHN22%3A1724921134245"
+      "value": "5cZ4pA6xFZVLZeaaRHN22%3A${time_stamp_full}"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1724955664,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "_ym_visorc",
       "path": "/",
@@ -1015,7 +1015,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725558619,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "yabs-vdrf",
       "path": "/",
@@ -1025,17 +1025,17 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513924,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "sessionid2",
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "3:1724953924.5.0.1724953924650:EFOsTw:1daa.1.2:1|1939183520.0.2.3:1724953924|3:10294491.662294.fakesign0000000000000000000"
+      "value": "3:${time_stamp_short}.5.0.${time_stamp_full}:EFOsTw:1daa.1.2:1|1939183520.0.2.3:${time_stamp_short}|3:10294491.662294.fakesign0000000000000000000"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481132,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "mda2_beacon",
       "path": "/",
@@ -1045,7 +1045,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513746,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "is_gdpr_b",
       "path": "/",
@@ -1055,7 +1055,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007482,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "has_stable_city",
       "path": "/",
@@ -1065,7 +1065,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756489926,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "gdpr",
       "path": "/",
@@ -1075,7 +1075,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756457081,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "_ym_d",
       "path": "/",
@@ -1085,7 +1085,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "zen_vk_gid",
       "path": "/",
@@ -1095,7 +1095,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759481082,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "ys",
       "path": "/",
@@ -1105,7 +1105,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756489926,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "receive-cookie-deprecation",
       "path": "/",
@@ -1115,7 +1115,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513730,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "is_gdpr",
       "path": "/",
@@ -1125,7 +1125,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725007483,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "one_day_socdem",
       "path": "/",
@@ -1135,7 +1135,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1725525883,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "zen_ms_socdem_pixels",
       "path": "/",
@@ -1145,17 +1145,17 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756489716,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "ymex",
       "path": "/",
       "sameSite": "None",
       "secure": true,
-      "value": "2040313716.yrts.1724953716"
+      "value": "2040313716.yrts.${time_stamp_short}"
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1753692334,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "tmr_lvidTS",
       "path": "/",
@@ -1165,7 +1165,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1756489716,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "yashr",
       "path": "/",
@@ -1175,7 +1175,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513716,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "yuidss",
       "path": "/",
@@ -1185,7 +1185,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513763,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "yandexuid",
       "path": "/",
@@ -1195,7 +1195,7 @@
     },
     {
       "domain": ".yandex.ru",
-      "expiry": 1759513715,
+      "expiry": 1725947700,
       "httpOnly": true,
       "name": "i",
       "path": "/",
@@ -1205,7 +1205,7 @@
     },
     {
       "domain": "yandex.ru",
-      "expiry": 1730137850,
+      "expiry": 1725947700,
       "httpOnly": false,
       "name": "maps_los",
       "path": "/maps",
