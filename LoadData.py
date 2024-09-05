@@ -320,6 +320,10 @@ class LoadData:
             output_cols = cols_str.split(',')
             
             df_output = self.df_read(output_file_path)[[*key_cols,*output_cols]]
+            
+            for column in key_cols:
+                df_output[column] = df_input[column].astype(df_input[column].dtype)
+
             logging.debug(f'{df_output.shape=}')
             df_output_j = df_output[output_cols].to_json(orient='records')
             df_output[result_field] = [json.dumps(j,ensure_ascii=False) for j in json.loads(df_output_j)]
