@@ -119,7 +119,7 @@ class LoadYaFeaturesTest(unittest.TestCase):
       ('data_unit_test/yandex_features/html/1004067747.html',load_ya_features.StatusCheckHtml.ERROR_CAPCHA),
       ('data_unit_test/yandex_features/html/1051904212.html',load_ya_features.StatusCheckHtml.OK),
       ('data_unit_test/yandex_features/html/44285147668.html',load_ya_features.StatusCheckHtml.ERROR_AUTORITY),
-      
+      ('data_unit_test/yandex_features/html/1038599331_403.html',load_ya_features.StatusCheckHtml.ERROR_403),
     ]
     
     for html_file, expect_status in html_files:

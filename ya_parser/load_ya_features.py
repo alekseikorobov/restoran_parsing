@@ -46,6 +46,7 @@ class StatusCheckHtml(Enum):
     OK = 'OK'
     ERROR_CAPCHA = 'Требуется ввод капчи'
     ERROR_AUTORITY = 'Ошибка авторизации' #Авторизация не удалась
+    ERROR_403 = 'Ошибка авторизации 403'
     EMPTY = ''
 
 class LoadYaFeatures:
@@ -153,9 +154,12 @@ class LoadYaFeatures:
                 )
                 logging.debug(f"{headers['Cookie']=}")
             res = requests.get(full_url, headers=headers, verify=False, proxies=proxies, timeout=timeout)
-            logging.debug(res.status_code)
-            html_result = res.text
-            self.get_random_second()
+            if res.status_code == 200:
+              html_result = res.text
+              logging.debug(f'{res.headers=}')
+              self.get_random_second()
+            else:
+              raise(Exception(f'not get - {res.status_code}, {res.text}, {res.headers}'))
         elif http_client == 'selenium':
             self.driver.get(full_url)
             try:
@@ -261,6 +265,9 @@ class LoadYaFeatures:
         
         if '<title>Авторизация</title>' in html_str and 'Авторизация не' in html_str:
           return StatusCheckHtml.ERROR_AUTORITY
+
+        if 'Access to&nbsp;our service has been temporarily blocked.' in html_str:
+          return StatusCheckHtml.ERROR_403
                 
         return StatusCheckHtml.OK
       
@@ -276,7 +283,8 @@ class LoadYaFeatures:
             logging.debug(f'check_html_features - {status}')
             
             if status in [StatusCheckHtml.ERROR_CAPCHA,
-                          StatusCheckHtml.ERROR_AUTORITY]:
+                          StatusCheckHtml.ERROR_AUTORITY,
+                          StatusCheckHtml.ERROR_403]:
               raise(Exception(status.value))
             
             if status == StatusCheckHtml.EMPTY:
