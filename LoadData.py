@@ -23,7 +23,9 @@ from params import Params
 import datetime
 from string import Template
 
-VERSION = '0.2.10'
+from packaging import version
+
+VERSION = '0.2.11'
 
 #версия схемы упаковщика данных в json
 #эта версия должна быть согласована с ДАГом, который разбирает данные
@@ -168,19 +170,30 @@ class LoadData:
         except BaseException as ex:
             logging.error(f'ERROR',exc_info=True)
 
-    def show_package(self):
+    def check_package(self):
         try:
             from pip._internal.operations import freeze
         except ImportError:
             from pip.operations import freeze
-        
+        need_package = {
+            'urllib3': version.parse('2.2.2')
+        }
         pkgs = freeze.freeze()
         for pkg in pkgs:
+
+            package_name,curr_version = pkg.split('==')
+            curr_version = version.parse(curr_version)
+
+            need_version = need_package.get(package_name,curr_version)
+
+            if curr_version < need_version:
+                raise(Exception(f'for package {package_name} need version >= {need_version}, now version {curr_version}'))
+
             logging.debug(pkg)
 
     def __start_load__(self):
         
-        self.show_package()
+        self.check_package()
 
         logging.debug(f'Начало обработки')
         using_ip = self.get_ip(self.params.proxy)
