@@ -12,6 +12,7 @@ from params import Params
 from bs4 import BeautifulSoup, NavigableString, PageElement, Tag
 import json
 import pandas as pd
+import numpy as np
 
 #from datetime import datetime, timezone, timedelta
 import datetime
@@ -539,6 +540,54 @@ class MyTest(unittest.TestCase):
             ]
 
             result_df = _load_data.packing_data_to_output(key,input_file,output_files)
+
+            result_df.to_excel('data_unit_test/result_df.xlsx')
+        finally:
+            os.remove(test_input_file)
+            os.remove(test_output_file1)
+            os.remove(test_output_file2)
+    
+    def test_LoadData_packing_data_to_output_2(sefl):
+        _load_data = LoadData({},is_test=True)
+
+        test_input_file = 'data_unit_test/test_input_file.parquet'
+        test_output_file1 = 'data_unit_test/test_output_file1.xlsx'
+        test_output_file2 = 'data_unit_test/test_output_file2.xlsx'
+        try:
+            df_test_input_file = pd.DataFrame([
+                    {'key1':"20045584161",'key2':2,'key3':3,'f1':'f1_1','f2':'f2_1'},
+                    {'key1':"20045584161",'key2':2,'key3':4,'f1':'f1_2','f2':'f2_2'},
+            ])
+            print(df_test_input_file.info())
+            _load_data.df_write(df_test_input_file,test_input_file)
+            #df_test_input_file.to_csv(test_input_file,index=False)
+            
+            df_test_output_file1 = pd.DataFrame([
+                    {'key1':np.int64(20045584161),'key2':2,'key3':3,'f3':'f3_11','f4':'f4_11'},
+                    {'key1':np.int64(20045584161),'key2':2,'key3':3,'f3':'f3_12','f4':'f4_12'},
+                    {'key1':np.int64(20045584161),'key2':2,'key3':4,'f3':'f3_2','f4':'f4_2'},
+            ])
+            print(df_test_output_file1.info())
+            #df_test_output_file1.to_csv(test_output_file1,index=False)
+            _load_data.df_write(df_test_output_file1, test_output_file1)
+            
+            df_test_output_file2 = pd.DataFrame([
+                    {'key1':np.int64(20045584161),'key2':2,'key3':3,'f5':'f5_1','f6':'f6_1'},
+                    {'key1':np.int64(20045584161),'key2':2,'key3':4,'f5':'f5_2','f6':'f6_2'},
+            ])
+            #df_test_output_file2.to_csv(test_output_file2,index=False)
+            _load_data.df_write(df_test_output_file2, test_output_file2)
+
+            key = "key1,key2,key3"
+            input_file = (test_input_file,"key1,key2,key3,f1")
+            output_files = [
+                (test_output_file1,"data1","f3,f4"),
+                (test_output_file2,"data1","f5,f6"),
+            ]
+
+            result_df = _load_data.packing_data_to_output(key,input_file,output_files)
+
+            print(result_df.info())
 
             result_df.to_excel('data_unit_test/result_df.xlsx')
         finally:
