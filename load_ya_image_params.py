@@ -259,11 +259,62 @@ class LoadYaImageParams:
         with open(full_name,'r',encoding='UTF-8') as f:
           json_result = json.load(f)
 
-      if 'photos' in json_result['stack'][0]['results']['items'][0]:
-        system_links = [item['urlTemplate'] for item in json_result['stack'][0]['results']['items'][0]['photos']['items']]
-        session_id = json_result['config']['counters']['analytics']['sessionId']
-
+      session_id, system_links = self.get_system_info_from_json(json_result)
+      
       return session_id, system_links
+
+    def get_system_info_from_json(self, json_result):
+      session_id=None
+      system_links = []
+
+      if 'stack' not in json_result:
+        logging.warn('json not correct. Not found element stack')
+        return session_id,system_links
+      
+      if len(json_result['stack']) == 0:
+        logging.warn('json not correct. Element stack empty')
+        return session_id,system_links
+      
+      if 'results' not in json_result['stack'][0]:
+        logging.warn('json not correct. Not found element results')
+        return session_id,system_links
+
+      if 'items' not in json_result['stack'][0]['results']:
+        logging.warn('json not correct. Not found element items')
+        return session_id,system_links
+
+      if len(json_result['stack'][0]['results']['items']) == 0:
+        logging.warn('json not correct. Element items empty')
+        return session_id,system_links
+
+      if 'photos' not in json_result['stack'][0]['results']['items'][0]:
+        logging.warn('json not correct. Not found element photos')
+        return session_id,system_links
+      
+      if 'items' not in json_result['stack'][0]['results']['items'][0]['photos']:
+        logging.warn('json not correct. Not found element photos/items')
+        return session_id,system_links
+
+      if 'config' not in json_result:
+        logging.warn('json not correct. Not found element config')
+        return session_id,system_links
+      
+      if 'counters' not in json_result['config']:
+        logging.warn('json not correct. Not found element counters')
+        return session_id,system_links
+      
+      if 'analytics' not in json_result['config']['counters']:
+        logging.warn('json not correct. Not found element counters')
+        return session_id,system_links
+      
+      if 'sessionId' not in json_result['config']['counters']['analytics']:
+        logging.warn('json not correct. Not found element sessionId')
+        return session_id,system_links
+
+      system_links = [item['urlTemplate'] for item in json_result['stack'][0]['results']['items'][0]['photos']['items']]
+      session_id = json_result['config']['counters']['analytics']['sessionId']
+
+      return session_id,system_links 
 
     def get_new_csrf_token(self):
       url = 'https://yandex.ru/maps/api/photos/getByBusinessId?ajax=1'
@@ -342,14 +393,15 @@ class LoadYaImageParams:
       full_name = f'{path}/{ya_id}.json'
       json_result = None
       if self.params.is_ya_param_replace_json_request or not os.path.isfile(full_name):
-        if ya_link_org == '' or ya_link_org is None:
-          raise(Exception(f'link not correct by id {ya_id}'))
+        if common.is_nan(ya_link_org):
+          logging.warning(f'link empty by id {ya_id}')
+          return None
         ya_link_org_gallery = ya_link_org.strip('/') + '/gallery/'
         logging.debug(f'get param from {ya_link_org_gallery=}')
         session_id, system_links = self.get_param_from_gallery(ya_link_org_gallery,city_code, ya_id)
         if session_id is None or len(system_links) == 0:
           logging.warning(f'NOT PHOTO BY {ya_id=}')
-          return
+          return None
         logging.debug(f'{session_id=} {len(system_links)=}')
         
         full_params = self.get_full_params(session_id, system_links, ya_id)
@@ -425,7 +477,8 @@ class LoadYaImageParams:
         ya_link_org = row['ya_link_org']
         logging.debug(f"{city_name=},{ya_id=}")
         json_result = self.load_param_image_by_id(city_name, ya_id, ya_link_org)
-
+        if json_result is None:
+          continue
         for data_json in self.get_obj_iterator(json_result, ya_id, city_name):
           data_json_list.append(data_json)
         

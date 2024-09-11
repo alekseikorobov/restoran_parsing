@@ -22,6 +22,24 @@ import load_ya_image_params
 
 class MyTest(unittest.TestCase):
 
+
+    def test_LoadYaImageParams_get_system_info_from_json(sefl):
+        _load_ya_image_params = load_ya_image_params.LoadYaImageParams({})
+
+        tast_cases = [
+            ('data_unit_test/yandex_r/msk/gallery_param_json/1232174044.json','1726035987135068-13071415604742812015-balancer-l7leveler-kubr-yp-sas-30-BAL',2),
+            ('data_unit_test/yandex_r/msk/gallery_param_json/91003940196.json',None,0),
+        ]
+        for full_name,session_id_expect,system_link_count_expect in tast_cases:
+            with open(full_name,'r',encoding='UTF-8') as f:
+                json_result = json.load(f)
+
+            session_id_fact, system_links = _load_ya_image_params.get_system_info_from_json(json_result)
+            system_link_count_fact = len(system_links)
+            assert session_id_fact == session_id_expect,f'{session_id_fact=}, {session_id_expect=}'
+            assert system_link_count_fact == system_link_count_expect,f'{system_link_count_fact=}, {system_link_count_expect=}'
+
+
     def test_replace_address_by_city(self):
         
         #from, to

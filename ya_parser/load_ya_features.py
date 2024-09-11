@@ -275,7 +275,9 @@ class LoadYaFeatures:
     
     def get_feature_from_ya_json(self,ya_link_org:str,ya_id:str):
         try:
-            if common.is_nan(ya_link_org): return ya_link_org
+            if common.is_nan(ya_link_org):
+              logging.warn(f'by {ya_id=} ya_link_org is null') 
+              return ya_link_org
             url = f'{ya_link_org}/features/'
             html = self.get_ya_features_html(url,ya_id)
             
@@ -298,6 +300,7 @@ class LoadYaFeatures:
 
 
     def extract_key(self,p_xpath:str,result):
+      #logging.debug(f'{p_xpath=},{type(result)=}')
       notes = p_xpath.split('/')
       element = result
       for node in notes:
@@ -364,9 +367,13 @@ class LoadYaFeatures:
     
     def get_feature_ya_rest(self,row):
       result = self.get_feature_from_ya_json(row['ya_link_org'],row['ya_id'])
+      
+      row['ya_f_avg_price'] = None
+      row['ya_f_cuisine'] = None
 
-      row['ya_f_avg_price'] = self.extract_key("Цены/other/@Средний счёт", result)
-      row['ya_f_cuisine'] = self.extract_key("Общая информация/other/@Кухня", result)
+      if not common.is_nan(result):
+        row['ya_f_avg_price'] = self.extract_key("Цены/other/@Средний счёт", result)
+        row['ya_f_cuisine'] = self.extract_key("Общая информация/other/@Кухня", result)
       
       return row
 

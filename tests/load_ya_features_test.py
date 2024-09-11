@@ -84,6 +84,7 @@ class LoadYaFeaturesTest(unittest.TestCase):
       'data_unit_test/yandex_features/html/test/44285147668.html',
       'data_unit_test/yandex_features/html/test/63055610828.html',
       'data_unit_test/yandex_features/html/test/196589415833.html',
+      'data_unit_test/yandex_features/html/190964525978.0.html',
     ]
     for html_file in html_files:
       with open(html_file,'r',encoding='UTF-8') as f:

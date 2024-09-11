@@ -25,7 +25,7 @@ from string import Template
 
 from packaging import version
 
-VERSION = '0.2.11'
+VERSION = '0.2.13'
 
 #версия схемы упаковщика данных в json
 #эта версия должна быть согласована с ДАГом, который разбирает данные
@@ -225,7 +225,7 @@ class LoadData:
                 if common.isfile(path):
                     os.remove(path)
 
-        df_yandex_data = pd.read_parquet(self.params.yandex_data_file)
+        df_yandex_data = self.df_read(self.params.yandex_data_file)
         df_yandex_data['transaction_info_norm'] = df_yandex_data['transaction_info'].apply(common.normalize_company_name)
         df_yandex_data['ya_company_name_norm'] = df_yandex_data['ya_company_name_norm'].apply(common.normalize_company_name)
         df_yandex_data['z_query'] = ''

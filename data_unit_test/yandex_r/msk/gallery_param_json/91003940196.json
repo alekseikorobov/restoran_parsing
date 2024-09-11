@@ -1,0 +1,3183 @@
+{
+  "config": {
+    "requestId": "1726035991302091-2275347394381507124-balancer-l7leveler-kubr-yp-sas-30-BAL",
+    "counters": {
+      "metrika": {
+        "maps": {
+          "id": 22227335
+        },
+        "metro": {
+          "id": 151356
+        },
+        "mapWidget": {
+          "id": 44120344
+        }
+      },
+      "analytics": {
+        "dtype": "bebr",
+        "pid": 30,
+        "url": "https://yandex.ru/clck/jclck/",
+        "sessionId": "1726035991302091-2275347394381507124-balancer-l7leveler-kubr-yp-sas-30-BAL"
+      }
+    },
+    "serviceIds": {
+      "geosuggest": "desktop-maps"
+    },
+    "hosts": {
+      "api": "https://api-maps.yandex.ru/",
+      "printerApi": "https://static-maps.yandex.ru/",
+      "maps": "https://yandex.ru/maps/",
+      "mapFrame": "https://yandex.ru/map-widget/",
+      "advertLoader": "https://yandex.ru/ads/system/context.js",
+      "advertMeta": "https://an.yandex.ru/meta",
+      "stvTiles": "https://0%d.core-stv-renderer.maps.yandex.net/2.x/tiles?l=stv&%c&v=%v&%l&format=png",
+      "stvTileRenderer": "https://vec0{{hostAlias}}.core-stv-renderer.maps.yandex.net/2.x/",
+      "staHotspotTiles": "https://core-stv-renderer.maps.yandex.net/2.x/tiles?l=stj&%c&v=%v&format=js",
+      "sprav": "https://yandex.ru/sprav/",
+      "phtRenderer": "https://core-pht-renderer.maps.yandex.net/3.x/",
+      "metro": "https://yandex.ru/metro/",
+      "nmaps": "https://n.maps.yandex.ru/",
+      "suggestApi": "https://suggest-maps.yandex.ru/",
+      "constructor": "https://yandex.ru/map-constructor/",
+      "apiPanoramaLocateService": "https://api-maps.yandex.ru/services/panoramas/",
+      "panoramasStaticApi": "https://static-pano.maps.yandex.ru/",
+      "panoramasTiles": "https://pano.maps.yandex.net/%s/%z.%x.%y",
+      "carparksTiles": "https://core-carparks-renderer-lots.maps.yandex.net/maps-rdr-carparks/tiles?l=carparks&%c&%l&v=%v",
+      "carparksTileRenderer": "https://core-carparks-renderer-lots.maps.yandex.net/",
+      "mapsUserAgreement": "https://yandex.ru/legal/maps_termsofuse/?lang={{lang}}",
+      "roadEventsRenderer": "https://core-road-events-renderer.maps.yandex.net/",
+      "passport": "https://passport.yandex.ru/",
+      "passportApi": "https://api.passport.yandex.ru/",
+      "photoUploadApi": "https://photo.upload.maps.yandex.ru/",
+      "qrApi": "https://qr2.yandex.net/",
+      "mapTiles": "https://core-renderer-tiles.maps.yandex.net/tiles?l=map&%c&%l",
+      "mapjTiles": "https://core-renderer-tiles.maps.yandex.net/tiles?l=mapj&%c&%l",
+      "skljTiles": "https://core-renderer-tiles.maps.yandex.net/tiles?l=sklj&%c&%l",
+      "satTiles": "https://sat0%d.maps.yandex.net/tiles?l=sat&%c&%l",
+      "sklTiles": "https://core-renderer-tiles.maps.yandex.net/tiles?l=skl&%c&%l",
+      "tilesApi": "https://tiles.api-maps.yandex.ru/",
+      "traffic": "https://core-jams-rdr-cache.maps.yandex.net/",
+      "trafficArchive": "https://core-jams-rdr-hist.maps.yandex.net/",
+      "trafficInfo": "https://core-jams-info.maps.yandex.net/",
+      "statCounter": "https://yandex.ru/clck/",
+      "mrcTiles": "https://core-nmaps-mrc-browser.maps.yandex.ru/tiles?l=mrce&%c",
+      "mrcpeTiles": "https://core-nmaps-mrc-browser.maps.yandex.ru/tiles?l=mrcpe&%c",
+      "mrcHotspotTiles": "https://core-nmaps-mrc-browser.maps.yandex.ru/features/hotspot?l=mrce&%c",
+      "mrcpeHotspotTiles": "https://core-nmaps-mrc-browser.maps.yandex.ru/features/hotspot?l=mrcpe&%c",
+      "mrcPlanner": "https://mrc-planner.maps.yandex-team.ru/",
+      "vectorTiles": "https://core-renderer-tiles.maps.yandex.net/vmap2/tiles?lang={{lang}}&x={{x}}&y={{y}}&z={{z}}&zmin={{zmin}}&zmax={{zmax}}&v={{version}}",
+      "vectorImages": "https://core-renderer-tiles.maps.yandex.net/vmap2/icons?id={{id}}&scale={{scale}}",
+      "vectorMeshes": "https://core-renderer-tiles.maps.yandex.net/vmap2/meshes?id={{id}}",
+      "vectorGlyphs": "https://core-renderer-tiles.maps.yandex.net/vmap2/glyphs?lang={{lang}}&font_id={{fontId}}&range={{range}}",
+      "vectorRichModels": "https://core-renderer-tiles.maps.yandex.net/vmap2/models?id={{id}}&format=glb",
+      "vectorIndoorTiles": "https://core-renderer-tiles.maps.yandex.net/indoor/tiles?lang={{lang}}&x={{x}}&y={{y}}&z={{z}}&zmin={{zmin}}&zmax={{zmax}}",
+      "vectorIndoorImages": "https://core-renderer-tiles.maps.yandex.net/indoor/icons?id={{id}}&scale={{scale}}",
+      "vectorIndoorMeshes": "https://core-renderer-tiles.maps.yandex.net/indoor/meshes?id={{id}}",
+      "vectorIndoorGlyphs": "https://core-renderer-tiles.maps.yandex.net/indoor/glyphs?lang={{lang}}&font_id={{fontId}}&range={{range}}",
+      "vectorIndoorPlans": "https://core-renderer-tiles.maps.yandex.net/indoor/plans?id={{id}}",
+      "vectorVmap3Tiles": "https://core-renderer-tiles.maps.yandex.net/vmap3/tiles?lang={{lang}}&x={{x}}&y={{y}}&z={{z}}&zmin={{zmin}}&zmax={{zmax}}&v={{version}}",
+      "vectorVmap3Glyphs": "https://core-renderer-tiles.maps.yandex.net/fonts/glyphs?lang={{lang}}&font_id={{fontId}}&range={{range}}&format=protobuf",
+      "vectorVmap3Images": "https://core-renderer-tiles.maps.yandex.net/vmap3/icons?id={{id}}&scale={{scale}}",
+      "vectorVmap3Meshes": "https://core-renderer-tiles.maps.yandex.net/vmap3/meshes?id={{id}}",
+      "vectorVmap3RichModels": "https://core-renderer-tiles.maps.yandex.net/vmap3/models?id={{id}}&format=glb",
+      "vectorVmap3IndoorPlans": "https://core-renderer-tiles.maps.yandex.net/vmap3/plans?id={{id}}",
+      "vectorVmap3Styles": "https://core-renderer-tiles.maps.yandex.net/vmap3/styles",
+      "vectorFontList": "https://core-renderer-tiles.maps.yandex.net/fonts/list?format=protobuf",
+      "vectorFontObjects": "https://core-renderer-tiles.maps.yandex.net/fonts/font?id={{fontId}}&format=ttf",
+      "ugcPhotosProxy": "https://core-pht-proxy.maps.yandex.ru/",
+      "mrcUgcApi": "https://core-nmaps-mrc-ugc-back.maps.yandex.ru/",
+      "panoramasUploader": "https://pano.maps.yandex.ru/",
+      "taxiAuthProxy": "https://ya-authproxy.taxi.yandex.ru/"
+    },
+    "locale": "ru_RU",
+    "lang": "ru",
+    "isRtl": false,
+    "domain": "yandex.ru",
+    "isYango": false,
+    "isSerpWebVerticals": false,
+    "query": {
+      "debug": [],
+      "sublanding": "gallery",
+      "tab": "gallery",
+      "masstransit": {
+        "stopId": "station__9858810"
+      },
+      "mode": "masstransit"
+    },
+    "baseUrl": "/maps",
+    "apiBaseUrl": "/maps",
+    "intentInfo": {
+      "baseUrl": "yandexmaps://",
+      "hostName": "maps.yandex.ru"
+    },
+    "originalUrl": "/maps/org/dobryninskaya/91003940196/gallery/",
+    "uatraits": {
+      "BrowserBase": "Chromium",
+      "BrowserBaseVersion": "128.0.0.0",
+      "BrowserEngine": "WebKit",
+      "BrowserEngineVersion": "537.36",
+      "BrowserName": "Chrome",
+      "BrowserVersion": "128.0.0.0",
+      "OSFamily": "Windows",
+      "OSName": "Windows 10",
+      "OSVersion": "10.0",
+      "isBrowser": true,
+      "isMobile": false,
+      "isTouch": false,
+      "x64": true,
+      "isPhone": false,
+      "isMessenger": false
+    },
+    "cspNonce": "347bd24e8e3946e495979fa41ff0e770",
+    "hostConfig": {},
+    "errorBooster": {
+      "sendErrors": true,
+      "sendMetrics": true,
+      "project": "maps"
+    },
+    "origin": "https://yandex.ru",
+    "csrfToken": "09f0b1ace2ad169dfdc24a6668bcaf559b72e1ba:1726035991",
+    "xscriptCsrfToken": "ycd484642864a297a858ba90f4994e580",
+    "isUserFromPortal": false,
+    "isUserFromGoogle": false,
+    "availableLangs": [
+      "ru"
+    ],
+    "currencyCode": "RUB",
+    "banner": {
+      "url": "//awaps.yandex.ru/0/9064/240400.js?ad=165485&pl=48685",
+      "blockIds": {
+        "home": {
+          "hd": "R-I-142300-221",
+          "sd": "R-I-142300-222"
+        },
+        "traffic": {
+          "hd": "R-I-142300-223",
+          "sd": "R-I-142300-224"
+        },
+        "comparison": "R-I-142300-58",
+        "auto": "R-I-142300-14",
+        "masstransit": "R-I-142300-15",
+        "pedestrian": "R-I-142300-16",
+        "taxi": "R-I-142300-37",
+        "bicycle": "R-I-142300-38",
+        "scooter": "R-I-142300-38",
+        "detailedRoute": "R-I-142300-17",
+        "orgpageUpperMiddle": "R-I-142300-493",
+        "orgpageMiddle": "R-I-142300-98",
+        "orgpageUpper": "R-I-265853-10",
+        "orgpageBottom": "R-I-265853-11",
+        "toponym": "R-I-142300-55",
+        "masstransitCard": {
+          "hd": "R-I-142300-225",
+          "sd": "R-I-142300-226"
+        },
+        "photoList": "R-I-142300-50",
+        "galleryPhoto": "R-I-142300-152",
+        "metroShort": "R-I-124536-4",
+        "metroLong": "R-I-124536-5",
+        "widget": "R-I-2141027-1",
+        "largeWidget": "R-I-2141027-2"
+      }
+    },
+    "staticHost": "//yastatic.net/s3/front-maps-static/maps-front-maps/",
+    "pageMode": "masstransit",
+    "appVersion": "v2.2304.0",
+    "serverTime": "2024-09-11T06:26:31.470Z",
+    "routesDistributionServices": [
+      "yandex",
+      "2gis"
+    ],
+    "environment": "production",
+    "bookmarks": {
+      "url": "https://yastatic.net/s3/front-maps-static/front-maps-bookmarks/8.4.7/build/yandex-maps-bookmarks.min.js"
+    },
+    "videos": {
+      "libUrl": "https://frontend.vh.yandex.ru/stable/player_version/player.js",
+      "playerListSdkUrl": "https://yastatic.net/yandex-video-player-iframe-api/js/list-sdk.js"
+    },
+    "fingerprint": {
+      "libUrl": "https://yandex.ru/captchapgrd"
+    },
+    "searchResultsCount": 25,
+    "enableTaxi": true,
+    "enableBooking": true,
+    "enableCollections": true,
+    "enableChatSupport": true,
+    "iframeCounter": false,
+    "tnsCounter": true,
+    "cloudApi": {
+      "url": "//cloud-api.yandex.ru/maps_common/"
+    },
+    "search": {
+      "snippets": [
+        "masstransit/2.x",
+        "panoramas/1.x",
+        "businessrating/1.x",
+        "businessimages/1.x",
+        "photos/2.x",
+        "videos/1.x",
+        "experimental/1.x",
+        "subtitle/1.x",
+        "visits_histogram/2.x",
+        "tycoon_owners_personal/1.x",
+        "tycoon_posts/1.x",
+        "related_adverts/1.x",
+        "related_adverts_1org/1.x",
+        "city_chains/1.x",
+        "route_point/1.x",
+        "topplaces/1.x",
+        "metrika_snippets/1.x",
+        "place_summary/1.x",
+        "online_snippets/1.x",
+        "provider_data/1.x",
+        "service_orgs_experimental/1.x",
+        "business_awards_experimental/1.x",
+        "business_filter/1.x",
+        "histogram/1.x",
+        "attractions/1.x",
+        "potential_company_owners:user",
+        "pin_info/1.x",
+        "lavka/1.x",
+        "bookings/1.x",
+        "bookings_personal/1.x",
+        "trust_features/1.x",
+        "plus_offers_experimental/1.x",
+        "discovery/1.x",
+        "toponym_discovery/1.x",
+        "relevant_discovery/1.x",
+        "visual_hints/1.x",
+        "matchedobjects/1.x",
+        "topobjects/1.x",
+        "org_offer/1.x",
+        "hotels_booking/1.x",
+        "ugc_friends_likes/1.x",
+        "fuel/1.x",
+        "realty_experimental/2.x",
+        "hot_water/1.x",
+        "neurosummary",
+        "mentioned_on_site/1.x",
+        "showtimes/1.x",
+        "afisha_json_geozen/1.x",
+        "encyclopedia/2.x/pb",
+        "stories_experimental/1.x",
+        "realty_buildings/1.x",
+        "media_flow_stories_content/1.x"
+      ],
+      "relatedSnippets": [
+        "photos/2.x",
+        "businessrating/1.x",
+        "related_places/1.x"
+      ]
+    },
+    "routes": {
+      "maxCount": 20,
+      "minCount": 2,
+      "maxB2BCount": 50,
+      "minOptimizeCount": 4
+    },
+    "feedback": {
+      "helpUrl": "//yandex.ru/support/maps/",
+      "panoramaHelpUrl": "//yandex.ru/support/maps/concept/panoramas.xml",
+      "geolocationHelpUrl": "//yandex.ru/support/common/browsers-settings/geolocation.xml",
+      "showForPoi": true,
+      "showConfidentialityComplaint": false,
+      "recipientEmail": "support@maps.yandex.ru",
+      "recipientEmailForDesign": "webmaps-revolution@yandex-team.ru",
+      "mobileRecipientEmail": "m-maps@support.yandex.ru",
+      "metroHelpUrl": "//yandex.ru/support/metro/",
+      "metroFeedbackUrl": "//yandex.ru/support/metro/troubleshooting/fb_metro.html",
+      "businessOwnerUrl": "//yandex.ru/business/priority-promo/web-maps-companies/"
+    },
+    "advert": {
+      "direct": {
+        "url": "//direct.yandex.ru/",
+        "searchParams": {
+          "add_type": "direct",
+          "direct_page_id": 670942
+        }
+      },
+      "distributionBlockId": "Y-A-290757-1"
+    },
+    "serviceName": "maps",
+    "bilet": {
+      "dealerUrl": "https://widget.tickets.yandex.ru/dealer/dealer.js",
+      "clientKey": "f9dc8480-b128-45b4-9f02-4bc980a0b9fe"
+    },
+    "share": {
+      "services": [
+        "vkontakte",
+        "ok",
+        "telegram"
+      ],
+      "discoveryServices": [
+        "telegram",
+        "ok",
+        "vkontakte"
+      ],
+      "imageSize": [
+        520,
+        440
+      ]
+    },
+    "mobile": {
+      "downloadAppLink": "https://4.redirect.appmetrica.yandex.com/?appmetrica_tracking_id=1179421268290593269",
+      "appsIds": {
+        "ios": 313877526,
+        "android": "ru.yandex.yandexmaps"
+      },
+      "url": "https://mobile.yandex.ru/apps/maps/"
+    },
+    "apiManual": {
+      "url": "https://tech.yandex.ru/maps/",
+      "mapsApiUrl": "https://tech.yandex.ru/maps/mapsapi"
+    },
+    "business": {
+      "businessLandingUrl": "//business.yandex.ru/",
+      "enableHotelsBooking": false,
+      "enableEdadeal": false,
+      "enableRealty": false,
+      "enableReview": true,
+      "enableAfisha": false
+    },
+    "passport": {
+      "url": "https://passport.yandex.ru"
+    },
+    "morda": {
+      "url": "https://yandex.ru"
+    },
+    "yaru": {
+      "url": "https://ya.ru"
+    },
+    "ruler": {
+      "maxCount": 50
+    },
+    "ugcCabinet": {
+      "url": "https://reviews.yandex.ru/ugcpub/cabinet"
+    },
+    "advertLandingUrl": "https://yandex.ru/business/priority-promo/web-maps-promo",
+    "businessLandingUrl": "https://business.yandex.ru/priority/landing_webview",
+    "advertLandingMetroUrl": "https://yandex.ru/adv/",
+    "becomeOwnerUrl": "https://yandex.ru/business/priority-promo/web-maps-company",
+    "agreementUrl": "https://yandex.ru/legal/maps_termsofuse/",
+    "confidentialPolicyUrl": "https://yandex.ru/legal/confidential/",
+    "metroAgreementUrl": "https://legal.yandex.ru/rules",
+    "rightHoldersUrl": "https://yandex.ru/legal/right_holders/",
+    "recommendationsLegalUrl": "https://yandex.ru/legal/recommendations/#index__geo",
+    "mrcLandingUrl": "//yandex.ru/promo/nmaps/get-app/?lang=ru",
+    "awardsUrl": {
+      "goodPlaceYear": "https://special.business.yandex/goodplace"
+    },
+    "enableRoutesB2B": true,
+    "enableRoutesCargo": true,
+    "routesB2BUrl": "https://yandex.ru/routing/lite?utm_source=yandex&utm_medium=banner&utm_campaign=maps",
+    "routesB2BCourierUrl": "https://yandex.ru/courier/lite?utm_source=yandex&utm_medium=banner&utm_campaign=maps",
+    "provideCarrierDataUrl": "https://yandex.ru/promo/maps/transportpartners",
+    "yandexForms": {
+      "userMapsReportUrl": "https://forms.yandex.ru/surveys/12910258.3a7e9ede62d0f6d65252709a5f2c09239021082d/?iframe=1&map-url={{map_url}}&answer_non_profile_email_43415879={{user_email}}&theme={{theme}}&lang={{lang}}",
+      "bookmarksReportUrl": "https://forms.yandex.ru/surveys/13455194.470df48a7da773c7d39403697689554988639321/?iframe=1&map-url={{map_url}}&service=maps&theme={{theme}}&lang={{lang}}"
+    },
+    "yandexId": {
+      "termsOfUseUrl": "https://yandex.ru/legal/id_termsofuse",
+      "url": "https://id.yandex.ru"
+    },
+    "enableMobileDistribution": true,
+    "businessOwnerLink": "https://ya.ru/sprav/",
+    "bannerLayout": {
+      "emptyBannerStyle": {
+        "selector": "j__feaaaba:empty",
+        "style": "display: none"
+      },
+      "containersStyle": {
+        "selector": "cjks__fadbffcea",
+        "style": "display: flex;flex-direction: column;"
+      },
+      "slots": [
+        {
+          "childrenClassNames": [
+            "werv__afbbafcc",
+            "dlw__bcfecccaadbefcf",
+            "kxys__afecadbbedbb"
+          ],
+          "style": {
+            "selector": "occx__aeebcabe",
+            "style": "order: 8;"
+          },
+          "type": "empty"
+        },
+        {
+          "beforeChildrenStyle": {
+            "selector": "j__feaaaba",
+            "style": "order: 3"
+          },
+          "afterChildrenStyle": {
+            "selector": "j__feaaaba",
+            "style": "order: 7"
+          },
+          "type": "banner"
+        },
+        {
+          "beforeBannerStyle": {
+            "selector": "ui__bcfdddabcfebbe",
+            "style": "order: 3"
+          },
+          "afterBannerStyle": {
+            "selector": "ui__bcfdddabcfebbe",
+            "style": "order: 9"
+          },
+          "type": "children"
+        }
+      ]
+    },
+    "bebrRootNodeName": "maps_www",
+    "extraHosts": {
+      "avatarsMds": "//avatars.mds.yandex.net/get-{namespace}/{uid}/{size}"
+    },
+    "hideAdverts": false,
+    "plusLandingUrl": "https://plus.yandex.ru/",
+    "businessOwnerVerificationLink": "https://yandex.ru/sprav/verification/byPermalink/%s_id?utm_source=webmaps&utm_medium=%s_source",
+    "businessSomeCompanyOwnerVerificationLink": "https://yandex.ru/sprav/add?is_iframe=1&utm_source=webmaps&utm_medium=%s_source",
+    "isStoriesEnabled": true,
+    "fines": {
+      "soglasieHostname": "https://autofill.yandex.ru",
+      "soglasieScriptUrl": "https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-provider-latest.js",
+      "pay": {
+        "merchant": {
+          "id": "72360794-5752-4570-aad8-543ed3d22834",
+          "name": "passport-bills"
+        },
+        "version": 2,
+        "gateway": "mobimoney",
+        "gatewayMerchantId": "oplatagosuslug",
+        "env": "PRODUCTION",
+        "countryCode": "RU",
+        "currencyCode": "RUB",
+        "scriptSrc": "https://pay.yandex.ru/sdk/v1/pay.js",
+        "requiredFields": {
+          "billingContact": {
+            "email": true,
+            "name": true
+          }
+        }
+      }
+    },
+    "taxi": {
+      "urlTemplate": "//taxi.yandex.{domain}/order?gfrom={startLat},{startLon}&gto={endLat},{endLon}&tariff={tariffClass}&lang={lang}",
+      "mobileUrlTemplate": "//3.redirect.appmetrica.yandex.com/route?start-lat={startLat}&start-lon={startLon}&end-lat={endLat}&end-lon={endLon}&tariffClass={tariffClass}&domain={domain}&lang={lang}&appmetrica_tracking_id=818150690466563560",
+      "domain": "ru",
+      "mobileRef": 2334708,
+      "desktopRef": 2334692
+    },
+    "autoRu": {
+      "termsOfUseUrl": "https://yandex.ru/legal/garage/"
+    },
+    "font": {
+      "family": "Yandex Sans Text",
+      "format": "woff",
+      "urls": {
+        "500": "https://yastatic.net/islands/_/SmqPmIMEXrW4lOY8QrhTUVDbrro.woff",
+        "normal": "https://yastatic.net/islands/_/bIx8jOfCEfR-mECoDUEZywDBuHA.woff",
+        "bold": "https://yastatic.net/islands/_/KtHQR1erf3spayoIM4M4ngg0e2E.woff"
+      }
+    },
+    "mapLocation": {
+      "center": [
+        37.622745,
+        55.728995
+      ],
+      "zoom": 16
+    },
+    "mapType": "map",
+    "userRegion": {
+      "id": 21651,
+      "center": [
+        37.850527,
+        55.66019
+      ],
+      "span": [
+        0.069179,
+        0.037994
+      ],
+      "zoom": 14
+    },
+    "theme": "light",
+    "useSystemTheme": false,
+    "experiments": {
+      "boxes": "912288,0,70;1068828,0,8;1081491,0,45;1097765,0,9;998603,0,23;663872,0,25;1106855,0,99",
+      "cryptedBoxes": "7GtYu-SasqRLd290d7atMmKJqxAAo-r7Y-Sy4G_E11RB6nfysZ3lGz4ZeT24tNkRc-Vx9P-TXe3lvRMwplNOqLNf7IDJcKzy3TnNXr3mVxS4yf_Y5T56NQ,,",
+      "configVersion": "17605",
+      "ui": {
+        "tile3dPing": true,
+        "centralBankCollaboration": true,
+        "flyoverAttractionsMskSpb": true,
+        "vectorRichModelsEnabled": true,
+        "businessDiscovery": true,
+        "vectorPpoiLoadingPriority": "high",
+        "vectorPpoiCollisionPriority": "high",
+        "poiRTContext": "poisearch",
+        "directPoi": true,
+        "directPpoiLoadingPriority": "high",
+        "directPpoiCollisionPriority": "low",
+        "directPoiBeltSize": "0",
+        "vectorRichPointsEnabled": true
+      },
+      "geoSearchParams": {
+        "experimental_business_show_exp_features": [
+          "cbrf",
+          "tinkoff"
+        ],
+        "experimental_experimental": [
+          "rearr=scheme_Local/Geo/MediaFlow/StoriesContentType=new_media_classifier"
+        ],
+        "add_snippet": [
+          "org_offer/1.x"
+        ]
+      },
+      "suggestParams": {},
+      "rendererParams": {
+        "experimental_ranking_mode_name": [
+          "default-web-ranking"
+        ],
+        "auction": [
+          "1"
+        ],
+        "experimental_enable_direct_info_logging": [
+          "1"
+        ],
+        "use_permalinks_for_direct_requests": [
+          "1"
+        ],
+        "experimental_data_hd": [
+          "vegetation_model_exp"
+        ],
+        "direct_density": [
+          "auction_v3"
+        ],
+        "experimental_data_poi": [
+          "postprocess_base_ranking_for_auction_v3"
+        ],
+        "collision_processing": [
+          "1"
+        ]
+      },
+      "routerParams": {},
+      "ugcFeedParams": {},
+      "menuParams": {}
+    },
+    "layers": {
+      "map": {
+        "version": "24.09.09-1-b240906182700",
+        "zoomRange": [
+          2,
+          21
+        ]
+      },
+      "sat": {
+        "version": "3.1290.0",
+        "zoomRange": [
+          2,
+          21
+        ]
+      },
+      "skl": {
+        "version": "24.09.09-1-b240906182700",
+        "zoomRange": [
+          2,
+          21
+        ]
+      },
+      "stv": {
+        "version": "2024.09.10.21.37-1_24.09.09-0-21299",
+        "zoomRange": [
+          6,
+          21
+        ]
+      },
+      "pht": {
+        "version": "2024.09.10.09.14.45.new",
+        "zoomRange": [
+          2,
+          21
+        ]
+      },
+      "trf": {
+        "version": "1726035900",
+        "zoomRange": [
+          1,
+          21
+        ]
+      },
+      "trfe": {
+        "version": "2024.09.11.06.25.00",
+        "zoomRange": [
+          1,
+          21
+        ]
+      },
+      "carparks": {
+        "version": "20240910-140000",
+        "zoomRange": [
+          14,
+          21
+        ]
+      },
+      "mrc": {
+        "version": "24.09.10-64801362",
+        "zoomRange": [
+          5,
+          22
+        ]
+      },
+      "mrcpe": {
+        "version": "24.09.10-64801362",
+        "zoomRange": [
+          5,
+          22
+        ]
+      },
+      "personalizedPoi": {
+        "zoomRange": [
+          13,
+          21
+        ],
+        "version": "1"
+      },
+      "directPoi": {
+        "zoomRange": [
+          15,
+          21
+        ],
+        "version": "1"
+      }
+    },
+    "isVectorEnabled": true,
+    "bunker": {
+      "disableSsr": false,
+      "disableVector": {
+        "mobile": false,
+        "desktop": false
+      },
+      "disableAdsMapTiles": false,
+      "disableBookmarksInt": false,
+      "disablePersonalizedPoi": false,
+      "disableGeoproductTopPhoto": false,
+      "disableBookingAdvertSplit": false,
+      "disableCoronaControl": true,
+      "disableUxFeedback": true,
+      "a11y": {
+        "disableFeatureFeedback": false,
+        "disableReviews": false,
+        "disablePhotos": false
+      },
+      "theme": {
+        "settingByCookie": true,
+        "settingBySystem": true
+      },
+      "disableDarkTheme": {
+        "mobile": false,
+        "desktop": false
+      },
+      "disabledBookingPlusWeb": true,
+      "enabledBookingPlusApps": {
+        "maps": {
+          "Android": "10.8.6",
+          "iOS": "13.8.8"
+        },
+        "navi": {
+          "Android": "6.89.999",
+          "iOS": "7.0.999"
+        }
+      },
+      "enabledBookingCalendarApps": {
+        "maps": {
+          "Android": "10.9.1"
+        }
+      },
+      "discoveryFeedTexts": {
+        "onboarding": {
+          "title": "\u0412\u0441\u0442\u0440\u0435\u0447\u0430\u0439\u0442\u0435 \u043b\u0435\u043d\u0442\u0443",
+          "text": "\u041b\u0435\u043d\u0442\u0430 \u2013 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u043f\u043e\u0441\u043e\u0431 \u043f\u043e\u0438\u0441\u043a\u0430 \u043c\u0435\u0441\u0442 \u0432 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0438. \u041b\u0435\u043d\u0442\u0430 \u043f\u0440\u0438\u0437\u0432\u0430\u043d\u0430 \u043e\u0431\u043b\u0435\u0433\u0447\u0438\u0442\u044c \u043f\u043e\u0438\u0441\u043a \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u044b\u0445 \u043c\u0435\u0441\u0442 \u0432 \u0433\u043e\u0440\u043e\u0434\u0435<br/><br/>\u0412\u044b \u0432 \u0447\u0438\u0441\u043b\u0435 \u0442\u0435\u0445, \u043a\u0442\u043e \u043f\u043e\u043b\u0443\u0447\u0438\u043b \u0434\u043e\u0441\u0442\u0443\u043f \u043a \u043d\u0435\u0439 \u043f\u0435\u0440\u0432\u044b\u043c. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u043d\u0430\u0439\u0442\u0438 \u0434\u043b\u044f \u0441\u0435\u0431\u044f \u0447\u0442\u043e-\u0442\u043e \u0438\u043d\u0442\u0435\u0440\u0435\u0441\u043d\u043e\u0435, \u0430 \u043c\u044b \u0431\u0443\u0434\u0435\u043c \u0440\u0430\u0434\u044b \u043e\u0431\u0440\u0430\u0442\u043d\u043e\u0439 \u0441\u0432\u044f\u0437\u0438",
+          "buttonText": "\u041e\u0433\u043e"
+        }
+      },
+      "routePriceTexts": {
+        "en": {
+          "title": "Toll road: {price}",
+          "content": "The price estimate is calculated for a car less than 2 meters high at the time of leaving the toll section without a transponder.<br />Tariff data provided by toll road operators",
+          "linkText": "Learn more about pricing plans",
+          "linkUrl": "https://yandex.com/"
+        },
+        "ru": {
+          "title": "\u041f\u043b\u0430\u0442\u043d\u0430\u044f \u0434\u043e\u0440\u043e\u0433\u0430: {price}",
+          "content": "\u0426\u0435\u043d\u0430 \u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u0434\u043b\u044f \u0430\u0432\u0442\u043e\u043c\u043e\u0431\u0438\u043b\u044f \u0432\u044b\u0441\u043e\u0442\u043e\u0439 \u043c\u0435\u043d\u0435\u0435 2 \u043c\u0435\u0442\u0440\u043e\u0432 \u0431\u0435\u0437 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u043d\u0434\u0435\u0440\u0430 \u043d\u0430 \u043c\u043e\u043c\u0435\u043d\u0442 \u0432\u044b\u0435\u0437\u0434\u0430 \u0441 \u043f\u043b\u0430\u0442\u043d\u043e\u0433\u043e \u0443\u0447\u0430\u0441\u0442\u043a\u0430.<br />\u0414\u0430\u043d\u043d\u044b\u0435 \u043e \u0442\u0430\u0440\u0438\u0444\u0430\u0445 \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u044b \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f\u043c\u0438-\u043e\u043f\u0435\u0440\u0430\u0442\u043e\u0440\u0430\u043c\u0438 \u043f\u043b\u0430\u0442\u043d\u044b\u0445 \u0434\u043e\u0440\u043e\u0433",
+          "linkText": "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435 \u043e \u0442\u0430\u0440\u0438\u0444\u0430\u0445",
+          "linkUrl": "https://ya.ru/"
+        }
+      },
+      "storytellingGptTexts": {
+        "ru": {
+          "text": "\u0421\u043e\u0437\u0434\u0430\u043d\u043e __yaGptIcon YandexGPT \u043d\u0430 \u043e\u0441\u043d\u043e\u0432\u0435 \u043e\u0442\u0437\u044b\u0432\u043e\u0432"
+        },
+        "en": {
+          "text": "Created by __yaGptIcon YandexGPT based on reviews"
+        }
+      },
+      "scooters": {
+        "action": {
+          "type": "story",
+          "id": "d7c0fb8e-1b81-48e1-b07d-14026944cb2e"
+        },
+        "text": "\u0421\u0430\u043c\u043e\u043a\u0430\u0442\u043d\u044b\u0439 \u044d\u0442\u0438\u043a\u0435\u0442: \u043a\u0430\u0442\u0430\u0435\u043c\u0441\u044f \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e",
+        "buttonText": "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435"
+      },
+      "businessCardMichelinUrl": "https://yandex.ru/promo/eda/michelin_guide",
+      "zapravkiPromo": {
+        "enabled": false,
+        "buttonContent": "\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435",
+        "trafficButtonContent": "\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c",
+        "text": "\u0417\u0430\u043f\u0440\u0430\u0432\u043b\u044f\u0439\u0442\u0435\u0441\u044c \u0432 \u041a\u0430\u0440\u0442\u0430\u0445 \u2014 \u043f\u0435\u0440\u0432\u044b\u0435 100 \u043b \u0441\u043e \u0441\u043a\u0438\u0434\u043a\u043e\u0439 2 \u20bd/\u043b",
+        "href": "https://yandex.ru/promo/maps/zapravki/index_action?utm_source=maps&utm_medium=distribution&utm_campaign=fuel_on_maps&utm_content=fuel_card_banner",
+        "iconUrl": ""
+      },
+      "routesPromo": {
+        "banner": {
+          "text": "\u0421\u043b\u0435\u0434\u0438\u0442\u0435 \u0437\u0430 \u043e\u0431\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u043c \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u043e\u043c \u0432 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0438 \u041a\u0430\u0440\u0442",
+          "buttonText": "\u0421\u043a\u0430\u0447\u0430\u0442\u044c",
+          "url": "https://4.redirect.appmetrica.yandex.com/build_route_on_map?appmetrica_tracking_id=748922429992101554&utm_medium=routesbanner&utm_content=main",
+          "target": "_blank"
+        }
+      },
+      "promoButtons": [
+        {
+          "id": "myslimonemyslimo-24",
+          "regionIds": [
+            1,
+            213,
+            6,
+            10693,
+            120852
+          ],
+          "config": {
+            "startDate": "2024-07-29",
+            "endDate": "2024-08-01",
+            "text": "\u041f\u0440\u0438\u0433\u043b\u0430\u0448\u0430\u0435\u043c \u0432 \u0430\u0440\u0442-\u043f\u0430\u0440\u043a",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/135516/ee392c7c96545749d31d52412f63e63cbfd5e7b7/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/135516/ee392c7c96545749d31d52412f63e63cbfd5e7b7/orig",
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.ru/project/maps/myslimonemyslimo",
+              "targetSame": "false"
+            },
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "showAlways": true
+          }
+        },
+        {
+          "id": "astana-3d-06-18",
+          "regionIds": [
+            163
+          ],
+          "config": {
+            "startDate": "2024-06-18",
+            "endDate": "2024-07-07",
+            "text": "\u0410\u0441\u0442\u0430\u043d\u0430 \u0432 3D",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/49769/9fba078337964e5faddb961cd37ae507a8c12011/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/49769/9fba078337964e5faddb961cd37ae507a8c12011/orig",
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.ru/maps/discovery/dostoprimechatelnosti-astani-v-3d",
+              "target": "_blank"
+            },
+            "showAlways": true
+          }
+        },
+        {
+          "id": "almaty-3d-06-18",
+          "regionIds": [
+            162
+          ],
+          "config": {
+            "startDate": "2024-06-18",
+            "endDate": "2024-07-07",
+            "text": "\u0410\u043b\u043c\u0430\u0442\u044b \u0432 3D",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/49769/6e72b74ff85f55dc6e4408aab3f193c75a682af3/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/49769/6e72b74ff85f55dc6e4408aab3f193c75a682af3/orig",
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.ru/maps/discovery/dostoprimechatelnosti-almati-v-3d",
+              "target": "_blank"
+            },
+            "showAlways": true
+          }
+        },
+        {
+          "id": "tbank-07-08",
+          "regionIds": [
+            1,
+            10645,
+            10650,
+            10658,
+            10672,
+            10687,
+            10693,
+            10699,
+            10705,
+            10712,
+            10772,
+            10776,
+            10795,
+            10802,
+            10819,
+            10832,
+            10841,
+            10174,
+            10176,
+            10842,
+            10853,
+            10857,
+            10897,
+            10904,
+            10926,
+            10933,
+            10939,
+            10946,
+            10950,
+            10995,
+            11004,
+            11015,
+            11029,
+            11070,
+            11077,
+            11079,
+            11084,
+            11095,
+            11108,
+            11111,
+            11117,
+            11119,
+            11131,
+            11146,
+            11148,
+            11153,
+            11156,
+            11158,
+            11162,
+            11176,
+            11193,
+            11225,
+            11232,
+            10231,
+            10233,
+            11235,
+            11266,
+            11282,
+            11309,
+            11316,
+            11318,
+            11340,
+            11353,
+            10243,
+            10251,
+            11330,
+            11375,
+            11398,
+            11403,
+            11409,
+            11443,
+            11450,
+            11457,
+            21949,
+            11010,
+            11012,
+            11013,
+            11020,
+            11021,
+            11024,
+            11069
+          ],
+          "config": {
+            "startDate": "2024-07-08",
+            "endDate": "2024-07-14",
+            "text": "\u041b\u0435\u0442\u043e \u0441 \u0422-\u0411\u0430\u043d\u043a\u043e\u043c",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/49769/b2aad226dd42102a0a835f9290ec3093c94b4746/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/49769/b2aad226dd42102a0a835f9290ec3093c94b4746/orig",
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.ru/project/maps/tbank/?utm_source=yandex_d",
+              "target": "_blank"
+            },
+            "showAlways": true
+          }
+        },
+        {
+          "id": "jetour-06-24",
+          "regionIds": [
+            1,
+            10645,
+            10650,
+            10658,
+            10672,
+            10687,
+            10693,
+            10699,
+            10705,
+            10712,
+            10772,
+            10776,
+            10795,
+            10802,
+            10819,
+            10832,
+            10841,
+            10174,
+            10176,
+            10842,
+            10853,
+            10857,
+            10897,
+            10904,
+            10926,
+            10933,
+            10939,
+            10946,
+            10950,
+            10995,
+            11004,
+            11015,
+            11029,
+            11070,
+            11077,
+            11079,
+            11084,
+            11095,
+            11108,
+            11111,
+            11117,
+            11119,
+            11131,
+            11146,
+            11148,
+            11153,
+            11156,
+            11158,
+            11162,
+            11176,
+            11193,
+            11225,
+            11232,
+            10231,
+            10233,
+            11235,
+            11266,
+            11282,
+            11309,
+            11316,
+            11318,
+            11340,
+            11353,
+            10243,
+            10251,
+            11330,
+            11375,
+            11398,
+            11403,
+            11409,
+            11443,
+            11450,
+            11457,
+            21949,
+            11010,
+            11012,
+            11013,
+            11020,
+            11021,
+            11024,
+            11069
+          ],
+          "config": {
+            "startDate": "2024-06-24",
+            "endDate": "2024-07-07",
+            "text": "\u0422\u0443\u0440 \u0441 Jetour",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/49769/cde01c295a2169b23ee21a105f6b51a614b686f4/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/49769/cde01c295a2169b23ee21a105f6b51a614b686f4/orig",
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.ru/project/navi/jetour/?utm_source=yandex_d",
+              "target": "_blank"
+            },
+            "showAlways": true
+          }
+        },
+        {
+          "id": "kz-ostanovki-ru",
+          "regionIds": [
+            162
+          ],
+          "config": {
+            "startDate": "2024-07-09",
+            "endDate": "2024-08-11",
+            "text": "\u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438",
+            "icon": "https://avatars.mds.yandex.net/get-bunker/61205/bd8efd71ec6fe0e988e6c6d7862c470547f0616e/orig",
+            "darkIcon": "https://avatars.mds.yandex.net/get-bunker/61205/bd8efd71ec6fe0e988e6c6d7862c470547f0616e/orig",
+            "background": {
+              "backgroundColor": "#fff",
+              "darkBackgroundColor": "#000",
+              "backgroundHoverColor": "#f6f6f6",
+              "darkBackgroundHoverColor": "#111",
+              "textColor": "#000",
+              "darkTextColor": "#ccc"
+            },
+            "action": {
+              "type": "externalLink",
+              "href": "https://yandex.kz/project/maps/stops/index",
+              "target": "_blank"
+            },
+            "showAlways": true
+          }
+        }
+      ],
+      "allowDesignFeedback": true,
+      "tooltipConfigs": {
+        "promo_public_settings": {
+          "priority": 1,
+          "maxCount": 1,
+          "oncePerSession": true
+        },
+        "promo": {
+          "priority": 5,
+          "maxCount": 999999,
+          "oncePerSession": false
+        },
+        "user-control-desktop": {
+          "priority": -1,
+          "maxCount": 3
+        },
+        "user-control-mobile": {
+          "priority": -1,
+          "maxCount": 3
+        },
+        "potential-owner": {
+          "priority": 3,
+          "maxCount": 999999,
+          "oncePerSession": false
+        },
+        "suggested-user": {
+          "priority": 2,
+          "maxCount": 999999,
+          "oncePerSession": false
+        },
+        "timeDependentNight": {
+          "priority": 1,
+          "maxCount": 2,
+          "oncePerSession": true
+        },
+        "promo_ugc_profile": {
+          "priority": 1,
+          "maxCount": 2,
+          "oncePerSession": true
+        },
+        "realty-tab": {
+          "priority": 1,
+          "maxCount": 3,
+          "oncePerSession": true
+        },
+        "tilt-rotate": {
+          "priority": 6,
+          "maxCount": 3,
+          "oncePerSession": false
+        }
+      },
+      "tooltipTexts": {
+        "darkThemeDesktop": {
+          "title": "\u0422\u0435\u043f\u0435\u0440\u044c \u043c\u043e\u0436\u043d\u043e \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0442\u0451\u043c\u043d\u0443\u044e \u0442\u0435\u043c\u0443",
+          "button": "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c"
+        },
+        "darkThemeTouchesSystem": {
+          "title": "\u0412\u043a\u043b\u044e\u0447\u0435\u043d\u0430 \u0442\u0451\u043c\u043d\u0430\u044f \u0442\u0435\u043c\u0430 \u2014 \u043a\u0430\u043a \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430",
+          "button": "\u0418\u0437\u043c\u0435\u043d\u0438\u0442\u044c \u0442\u0435\u043c\u0443"
+        },
+        "userControlDesktop": {
+          "title": "\u0417\u0430\u0439\u0434\u0438\u0442\u0435 \u0432 \u043f\u0440\u043e\u0444\u0438\u043b\u044c, \u0447\u0442\u043e\u0431\u044b \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u043c\u0435\u0441\u0442"
+        },
+        "userControlMobile": {
+          "title": "\u0417\u0430\u0439\u0434\u0438\u0442\u0435 \u0432 \u043f\u0440\u043e\u0444\u0438\u043b\u044c, \u0447\u0442\u043e\u0431\u044b \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u043c\u0435\u0441\u0442"
+        },
+        "realtyTab": {
+          "title": "\u0411\u043e\u043b\u044c\u0448\u0435 \u043f\u043e\u0434\u0440\u043e\u0431\u043d\u043e\u0441\u0442\u0435\u0439",
+          "text": "\u0423\u0437\u043d\u0430\u0439\u0442\u0435, \u043a\u0430\u043a \u0432\u044b\u0433\u043b\u044f\u0434\u044f\u0442 \u043a\u0432\u0430\u0440\u0442\u0438\u0440\u044b \u0438 \u0447\u0442\u043e \u0435\u0449\u0451 \u0435\u0441\u0442\u044c \u0432 \u0436\u0438\u043b\u043e\u043c \u043a\u043e\u043c\u043f\u043b\u0435\u043a\u0441\u0435"
+        },
+        "publicProfileTitle": {
+          "title": "\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u044e, \u0447\u0442\u043e\u0431\u044b \u043d\u0430\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u043f\u0443\u0431\u043b\u0438\u0447\u043d\u043e\u0441\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044f"
+        }
+      },
+      "bookingTexts": {
+        "plusPoints": "__amount \u0431\u0430\u043b\u043b\u043e\u0432 \u041f\u043b\u044e\u0441\u0430",
+        "plusGiveFirstBooking": "\u041f\u0440\u0438\u0434\u0443\u0442 \u0437\u0430 \u043f\u0435\u0440\u0432\u0443\u044e \u0437\u0430\u043f\u0438\u0441\u044c \u0432\u00a0\u041a\u0430\u0440\u0442\u0430\u0445",
+        "beginWithPlus": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u0441 \u041f\u043b\u044e\u0441\u0430",
+        "giveFirstBooking": "\u0418 \u043c\u044b \u043d\u0430\u0447\u0438\u0441\u043b\u0438\u043c __amount\u00a0\u0431\u0430\u043b\u043b\u043e\u0432 \u0437\u0430\u00a0\u043f\u0435\u0440\u0432\u0443\u044e \u0437\u0430\u043f\u0438\u0441\u044c",
+        "backToPlus": "\u0412\u0435\u0440\u043d\u0451\u0442\u0441\u044f \u043d\u0430 \u041f\u043b\u044e\u0441",
+        "nPoints": "__amount \u0431\u0430\u043b\u043b\u043e\u0432\u00a0",
+        "givePlusTop": " \u041f\u043b\u044e\u0441\u0430 \u043d\u0430\u0447\u0438\u0441\u043b\u0438\u043c",
+        "givePlusBottom": "\u043f\u043e\u0441\u043b\u0435\u00a0\u043f\u043e\u0441\u0435\u0449\u0435\u043d\u0438\u044f",
+        "subscribePlus": "\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0438\u0442\u0435 \u041f\u043b\u044e\u0441 \u0438 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 __amount \u0431\u0430\u043b\u043b\u043e\u0432 \u0437\u0430\u00a0\u043f\u0435\u0440\u0432\u0443\u044e \u0437\u0430\u043f\u0438\u0441\u044c",
+        "personalOffer": "",
+        "terms": "\u0423\u0441\u043b\u043e\u0432\u0438\u044f \u00ab\u042f\u043d\u0434\u0435\u043a\u0441\u00a0\u041f\u043b\u044e\u0441\u00a0\u041a\u0435\u0448\u0431\u044d\u043a\u00bb"
+      },
+      "flyoverTexts": {
+        "control": "\u041e\u0431\u0437\u043e\u0440 360&deg;",
+        "tooltip": "\u0412\u0437\u0433\u043b\u044f\u043d\u0438\u0442\u0435 \u043d\u0430 \u0416\u041a<br />\u0441 \u0440\u0430\u0437\u043d\u044b\u0445 \u0441\u0442\u043e\u0440\u043e\u043d",
+        "disclaimer": "\u0420\u0435\u043a\u043b\u0430\u043c\u0430. \u0412\u0438\u0437\u0443\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044f \u0441\u043e\u0437\u0434\u0430\u043d\u0430 \u043d\u0430 \u043e\u0441\u043d\u043e\u0432\u0435 \u043f\u0440\u043e\u0435\u043a\u0442\u043d\u044b\u0445 \u0434\u0430\u043d\u043d\u044b\u0445<br/>\u0437\u0430\u0441\u0442\u0440\u043e\u0439\u0449\u0438\u043a\u0430 \u0438 \u043c\u043e\u0436\u0435\u0442 \u043e\u0442\u043b\u0438\u0447\u0430\u0442\u044c\u0441\u044f \u043e\u0442 \u0433\u043e\u0442\u043e\u0432\u043e\u0439 \u043f\u043e\u0441\u0442\u0440\u043e\u0439\u043a\u0438.",
+        "backButton": "\u041d\u0430\u0437\u0430\u0434 \u043a\u043e \u0432\u0441\u0435\u043c \u043a\u043e\u0440\u043f\u0443\u0441\u0430\u043c",
+        "badge": "3D \u043c\u0430\u043a\u0435\u0442"
+      }
+    },
+    "landing": {
+      "id": "stop",
+      "region": {
+        "regionId": 213,
+        "seoname": "moscow"
+      },
+      "stopId": "station__9858810"
+    },
+    "promo": null,
+    "mapRegion": {
+      "id": 213,
+      "type": 6,
+      "capitalId": 0,
+      "hierarchy": [
+        225,
+        1,
+        213
+      ],
+      "seoname": "moscow",
+      "bounds": [
+        [
+          37.0354885,
+          55.31406179935764
+        ],
+        [
+          38.1999115,
+          56.192715799357636
+        ]
+      ],
+      "longitude": 37.6177,
+      "latitude": 55.755863,
+      "zoom": 10,
+      "names": {
+        "ablative": "",
+        "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+        "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+        "directional": "",
+        "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+        "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+        "locative": "",
+        "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+        "preposition": "\u0432",
+        "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+      }
+    },
+    "direct": null,
+    "masstransitStop": {
+      "id": "station__9858810",
+      "coordinates": [
+        37.622745,
+        55.728995
+      ],
+      "currentTime": 1726035991416,
+      "tzOffset": 10800,
+      "type": "underground",
+      "region": {
+        "id": 213,
+        "type": 6,
+        "capitalId": 0,
+        "hierarchy": [
+          225,
+          1,
+          213
+        ],
+        "seoname": "moscow",
+        "bounds": [
+          [
+            37.0354885,
+            55.31406179935764
+          ],
+          [
+            38.1999115,
+            56.192715799357636
+          ]
+        ],
+        "longitude": 37.6177,
+        "latitude": 55.755863,
+        "zoom": 10,
+        "names": {
+          "ablative": "",
+          "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+          "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+          "directional": "",
+          "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+          "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+          "locative": "",
+          "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+          "preposition": "\u0432",
+          "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+        }
+      },
+      "transports": [
+        {
+          "lineId": "100000088",
+          "name": "\u041a\u043e\u043b\u044c\u0446\u0435\u0432\u0430\u044f \u043b\u0438\u043d\u0438\u044f",
+          "Style": {
+            "color": "#805139"
+          },
+          "Types": [
+            "underground"
+          ],
+          "type": "underground",
+          "threads": [
+            {
+              "threadId": "1660680981",
+              "noBoarding": false,
+              "EssentialStops": [
+                {
+                  "id": "station__9858874",
+                  "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                  "compositeName": {
+                    "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                    "additionalName": ""
+                  }
+                }
+              ],
+              "BriefSchedule": {
+                "Events": [],
+                "Frequencies": [
+                  {
+                    "text": "2\u00a0\u043c\u0438\u043d",
+                    "value": 120,
+                    "begin": {
+                      "value": "1726027430",
+                      "tzOffset": 10800,
+                      "text": "07:03"
+                    },
+                    "end": {
+                      "value": "1726038230",
+                      "tzOffset": 10800,
+                      "text": "10:03"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "threadId": "1660684541",
+              "noBoarding": false,
+              "EssentialStops": [
+                {
+                  "id": "station__9858874",
+                  "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                  "compositeName": {
+                    "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                    "additionalName": ""
+                  }
+                }
+              ],
+              "BriefSchedule": {
+                "Events": [],
+                "Frequencies": [
+                  {
+                    "text": "2\u00a0\u043c\u0438\u043d",
+                    "value": 120,
+                    "begin": {
+                      "value": "1726028735",
+                      "tzOffset": 10800,
+                      "text": "07:25"
+                    },
+                    "end": {
+                      "value": "1726039535",
+                      "tzOffset": 10800,
+                      "text": "10:25"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "uri": "ymapsbm1://transit/line?id=100000088&ll=37.611386%2C55.759826&name=%D0%9A%D0%BE%D0%BB%D1%8C%D1%86%D0%B5%D0%B2%D0%B0%D1%8F+%D0%BB%D0%B8%D0%BD%D0%B8%D1%8F&r=3237&type=underground",
+          "seoname": "Kolcevaya_liniya",
+          "transportSystemId": "moscow_metro",
+          "shortName": "5",
+          "description": ""
+        }
+      ],
+      "links": [
+        {
+          "type": "underground",
+          "href": "https://yandex.ru/metro/?ll=37.622745,55.728995"
+        }
+      ],
+      "features": {
+        "cooled": false,
+        "heated": false
+      },
+      "contours": [],
+      "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+      "compositeName": {
+        "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+        "additionalName": ""
+      },
+      "breadcrumbs": [
+        {
+          "name": "\u041a\u0430\u0440\u0442\u044b",
+          "type": "root",
+          "url": "https://yandex.ru/maps/"
+        },
+        {
+          "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+          "type": "region",
+          "url": "https://yandex.ru/maps/213/moscow/",
+          "region": {
+            "center": [
+              37.6177,
+              55.755863
+            ],
+            "zoom": 10
+          }
+        },
+        {
+          "name": "\u041e\u0431\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442",
+          "type": "masstransit-home",
+          "url": "https://yandex.ru/maps/213/moscow/transport/"
+        },
+        {
+          "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+          "type": "search",
+          "url": "https://yandex.ru/maps/213/moscow/stops/station__9858810/",
+          "currentPage": true
+        }
+      ],
+      "searchResult": {
+        "type": "business",
+        "requestId": "1726035991413757-235668805-addrs-upper-yp-9",
+        "index": 0,
+        "analyticsId": "0",
+        "title": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+        "description": "\u0443\u043b. \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410, \u041c\u043e\u0441\u043a\u0432\u0430",
+        "address": "\u0443\u043b. \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410, \u041c\u043e\u0441\u043a\u0432\u0430",
+        "coordinates": [
+          37.622521,
+          55.72901
+        ],
+        "displayCoordinates": [
+          37.622521,
+          55.72901
+        ],
+        "bounds": [
+          [
+            37.614518,
+            55.724353
+          ],
+          [
+            37.630975,
+            55.73364
+          ]
+        ],
+        "uri": "ymapsbm1://transit/stop?id=station__9858810",
+        "logId": "dHlwZT1iaXpmaW5kZXI7aWQ9OTEwMDM5NDAxOTY=",
+        "id": "91003940196",
+        "metro": [
+          {
+            "id": "station__9858810",
+            "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "distance": "18\u00a0\u043c",
+            "distanceValue": 18.5118,
+            "coordinates": [
+              37.622814899,
+              55.728998232
+            ],
+            "type": "metro",
+            "color": "#805139"
+          },
+          {
+            "id": "station__9858903",
+            "name": "\u0421\u0435\u0440\u043f\u0443\u0445\u043e\u0432\u0441\u043a\u0430\u044f",
+            "distance": "400\u00a0\u043c",
+            "distanceValue": 403.294,
+            "coordinates": [
+              37.62482967,
+              55.726866944
+            ],
+            "type": "metro",
+            "color": "#999999"
+          },
+          {
+            "id": "station__9858865",
+            "name": "\u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f",
+            "distance": "910\u00a0\u043c",
+            "distanceValue": 912,
+            "coordinates": [
+              37.612604068,
+              55.731309349
+            ],
+            "type": "metro",
+            "color": "#f28b24"
+          }
+        ],
+        "stops": [
+          {
+            "id": "stop__9642240",
+            "name": "\u041c\u0435\u0442\u0440\u043e \u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "distance": "93\u00a0\u043c",
+            "distanceValue": 93.9149,
+            "coordinates": [
+              37.623172195,
+              55.728520725
+            ],
+            "type": "common"
+          },
+          {
+            "id": "stop__9642231",
+            "name": "\u0421\u0435\u0440\u043f\u0443\u0445\u043e\u0432\u0441\u043a\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c",
+            "distance": "270\u00a0\u043c",
+            "distanceValue": 270.386,
+            "coordinates": [
+              37.62465732,
+              55.729987499
+            ],
+            "type": "common"
+          },
+          {
+            "id": "2046384370",
+            "name": "\u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b",
+            "distance": "370\u00a0\u043c",
+            "distanceValue": 371.21,
+            "coordinates": [
+              37.617573039,
+              55.729004566
+            ],
+            "type": "common"
+          },
+          {
+            "id": "stop__9645293",
+            "name": "\u041a\u0430\u043b\u0443\u0436\u0441\u043a\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c",
+            "distance": "630\u00a0\u043c",
+            "distanceValue": 628.024,
+            "coordinates": [
+              37.614638349,
+              55.728273051
+            ],
+            "type": "common"
+          },
+          {
+            "id": "stop__9641513",
+            "name": "\u041c\u0435\u0442\u0440\u043e \u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f",
+            "distance": "840\u00a0\u043c",
+            "distanceValue": 841.076,
+            "coordinates": [
+              37.611293887,
+              55.728132473
+            ],
+            "type": "common"
+          }
+        ],
+        "photos": {
+          "count": 56,
+          "urlTemplate": "https://avatars.mds.yandex.net/get-altay/777564/2a00000188c538a2b945121dce5c1455aaa1/%s",
+          "items": [
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/777564/2a00000188c538a2b945121dce5c1455aaa1/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/10534734/2a0000018ff24a64149022bf25c08ce54bed/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11400692/2a0000018ff24afb1ca0791e5911026b0f15/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/1974402/2a00000176654d8717f3c26f12be4e0ed251/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13061180/2a0000018ecd256cf70ca7d3ba14b450c56c/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11400839/2a0000018ca7fdd7a2f23acfb6daf8e17d45/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13054604/2a0000018ff24a642d31d28ca339ca7aa016/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/2424821/2a00000176654d8729e3c59c8030742b7d3f/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11444509/2a0000018ecd2561f465a41ee9bd89ddd5ea/%s"
+            },
+            {
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13458328/2a0000018ecd2561418967603c090767e7ed/%s"
+            }
+          ]
+        },
+        "entrances": [
+          {
+            "coordinates": [
+              37.622815,
+              55.728998
+            ],
+            "azimuth": 0,
+            "tilt": 0
+          }
+        ],
+        "routePoint": {
+          "context": "djJ8ChQKEgmoOuRmuM9CQBG5bHTOT91LQA,,"
+        },
+        "panorama": {
+          "id": "1298174487_673487146_23_1689488167",
+          "direction": [
+            -83.1,
+            10
+          ],
+          "point": {
+            "type": "Point",
+            "coordinates": [
+              37.6234571391,
+              55.7289464581
+            ]
+          },
+          "preview": "https://static-pano.maps.yandex.ru/v1/?panoid=1298174487_673487146_23_1689488167&size=500%2C240&azimuth=-83.1&tilt=10&api_key=maps&signature=yVEmpLbj6qQei1RoY7RHPvoG3xivYrdSlJMUxX8XUWU="
+        },
+        "shortTitle": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+        "fullAddress": "\u041c\u043e\u0441\u043a\u0432\u0430, \u0443\u043b\u0438\u0446\u0430 \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410",
+        "country": "\u0420\u043e\u0441\u0441\u0438\u044f",
+        "postalCode": "119049",
+        "chain": {
+          "id": "183645500800",
+          "name": "\u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439 \u043c\u0435\u0442\u0440\u043e\u043f\u043e\u043b\u0438\u0442\u0435\u043d",
+          "seoname": "moskovskiy_metropoliten",
+          "quantityInCity": 351
+        },
+        "status": "open",
+        "businessLinks": [],
+        "ratingData": {
+          "ratingCount": 99,
+          "ratingValue": 0,
+          "reviewCount": 30
+        },
+        "sources": [
+          {
+            "id": "yandex",
+            "name": "\u042f\u043d\u0434\u0435\u043a\u0441",
+            "href": "https://ya.ru/"
+          }
+        ],
+        "categories": [
+          {
+            "id": "244903403206",
+            "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+            "class": "metro",
+            "seoname": "metro_station",
+            "pluralName": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+            "shortName": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e"
+          }
+        ],
+        "phones": [
+          {
+            "number": "+7 (495) 539-54-54",
+            "type": "phone",
+            "value": "+74955395454"
+          },
+          {
+            "number": "3210",
+            "type": "phone"
+          }
+        ],
+        "features": [],
+        "mediaOrderTemplate": "p,v,p,v,v,p,v*,p*",
+        "featureGroups": [],
+        "businessProperties": {
+          "has_verified_owner": false,
+          "sensitive": true
+        },
+        "seoname": "dobryninskaya",
+        "geoId": 20510,
+        "compositeAddress": {
+          "country": "\u0420\u043e\u0441\u0441\u0438\u044f",
+          "locality": "\u041c\u043e\u0441\u043a\u0432\u0430",
+          "street": "\u0443\u043b\u0438\u0446\u0430 \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b",
+          "house": "\u043a1\u0410"
+        },
+        "distance": {
+          "value": 17000,
+          "text": "17\u00a0\u043a\u043c"
+        },
+        "modularCard": {
+          "showClaimOrganization": true,
+          "showTaxiButton": true,
+          "showFeedbackButton": true,
+          "showReviews": true,
+          "showAddPhotoButton": true,
+          "showCompetitors": true,
+          "showDirectBanner": true,
+          "showAdditionalAds": true,
+          "showWorkHours": true,
+          "showContacts": true,
+          "showFriendsLiked": false,
+          "showVisualPricesTab": false
+        },
+        "modularPin": {
+          "subtitleHints": [
+            {
+              "text": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+              "type": "SIMPLE_TEXT",
+              "properties": null
+            }
+          ],
+          "allowMultilineSubtitle": false
+        },
+        "modularSnippet": {
+          "showNeurosummary": true,
+          "showMentionedOnSite": false,
+          "showTitle": "SHORT_TITLE",
+          "showAddress": "NO_ADDRESS",
+          "showCategory": "SINGLE_CATEGORY",
+          "showRating": "NO_RATING",
+          "showPhoto": "SINGLE_PHOTO",
+          "showWorkHours": true,
+          "showVerified": false,
+          "showDistanceFromTransit": false,
+          "showBookmark": true,
+          "showEta": true,
+          "showGeoproductOffer": true,
+          "subtitleHint": [],
+          "galleryButton": [],
+          "shownGoodsNumber": 3,
+          "showDescription": false,
+          "showCollectionBadge": true,
+          "showFriendsLiked": false,
+          "infoBlock": [],
+          "serpActionButtons": [
+            1,
+            3,
+            5,
+            0
+          ],
+          "awards": []
+        },
+        "tzOffset": 10800,
+        "workingTimeText": "\u0435\u0436\u0435\u0434\u043d\u0435\u0432\u043d\u043e, 05:30\u201301:00",
+        "workingTime": [
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ],
+          [
+            {
+              "from": {
+                "hours": 5,
+                "minutes": 30
+              },
+              "to": {
+                "hours": 1,
+                "minutes": 0
+              }
+            }
+          ]
+        ],
+        "currentWorkingStatus": {
+          "isOpenNow": true,
+          "text": "\u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0434\u043e 01:00",
+          "shortText": "\u0414\u043e 01:00",
+          "tag": []
+        },
+        "socialLinks": [
+          {
+            "type": "vkontakte",
+            "href": "http://vk.com/officialmosmetro"
+          },
+          {
+            "type": "telegram",
+            "href": "https://t.me/moscowmetropolitan"
+          },
+          {
+            "type": "vkontakte",
+            "href": "https://vk.com/mosmetro"
+          }
+        ],
+        "urls": [
+          "http://mosmetro.ru/"
+        ],
+        "businessImages": {
+          "logo": {
+            "urlTemplate": "https://avatars.mds.yandex.net/get-altay/1348156/2a0000016677deb0f6b8e1be6bfaa3ae2435/%s",
+            "id": "107806962"
+          }
+        },
+        "references": [
+          {
+            "id": "100078880",
+            "scope": "nyak"
+          }
+        ],
+        "subtitleItems": [
+          {
+            "type": "working_hours",
+            "text": "\u0414\u043e 01:00",
+            "property": [
+              {
+                "key": "is_open",
+                "value": "1"
+              },
+              {
+                "key": "short_text",
+                "value": "\u0414\u043e 01:00"
+              },
+              {
+                "key": "text",
+                "value": "\u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0434\u043e 01:00"
+              }
+            ]
+          }
+        ],
+        "metrika": {
+          "counter": 59076958,
+          "goals": {
+            "call": "make-call",
+            "cta": "cta-button",
+            "route": "make-route"
+          }
+        },
+        "hasStories": false,
+        "houseEncodedCoordinates": "Z04YcAViT0YHQFtvfXtzeH1rbQ==",
+        "videos": {
+          "items": [
+            {
+              "id": "vrVWKG1Gt_lY",
+              "videoUrl": "https://frontend.vh.yandex.ru/player/vrVWKG1Gt_lY",
+              "thumbnailUrl": "https://avatars.mds.yandex.net/get-vh/6118719/2a0000018dabe977ad437819791437e302a0/orig",
+              "tags": [
+                {
+                  "id": "hardcoded-video",
+                  "name": "\u0412\u0438\u0434\u0435\u043e"
+                }
+              ],
+              "height": 1920,
+              "width": 1080
+            },
+            {
+              "id": "vcWbiEJme1io",
+              "videoUrl": "https://frontend.vh.yandex.ru/player/vcWbiEJme1io",
+              "thumbnailUrl": "https://avatars.mds.yandex.net/get-vh/4361455/2a0000018dabe7e3f7ad13e4c4fe82771cfb/orig",
+              "tags": [
+                {
+                  "id": "hardcoded-video",
+                  "name": "\u0412\u0438\u0434\u0435\u043e"
+                }
+              ],
+              "height": 1920,
+              "width": 1080
+            }
+          ]
+        },
+        "region": {
+          "id": 213,
+          "type": 6,
+          "capitalId": 0,
+          "hierarchy": [
+            225,
+            1,
+            213
+          ],
+          "seoname": "moscow",
+          "bounds": [
+            [
+              37.0354885,
+              55.31406179935764
+            ],
+            [
+              38.1999115,
+              56.192715799357636
+            ]
+          ],
+          "longitude": 37.6177,
+          "latitude": 55.755863,
+          "zoom": 10,
+          "names": {
+            "ablative": "",
+            "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+            "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+            "directional": "",
+            "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+            "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+            "locative": "",
+            "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+            "preposition": "\u0432",
+            "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+          }
+        },
+        "breadcrumbs": [
+          {
+            "name": "\u041a\u0430\u0440\u0442\u044b",
+            "type": "root",
+            "url": "https://yandex.ru/maps/"
+          },
+          {
+            "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+            "type": "region",
+            "url": "https://yandex.ru/maps/213/moscow/",
+            "region": {
+              "center": [
+                37.6177,
+                55.755863
+              ],
+              "zoom": 10
+            }
+          },
+          {
+            "category": {
+              "id": "244903403206",
+              "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+              "class": "metro",
+              "seoname": "metro_station",
+              "pluralName": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+              "shortName": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e"
+            },
+            "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+            "type": "category",
+            "url": "https://yandex.ru/maps/213/moscow/category/metro_station/244903403206/"
+          },
+          {
+            "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "type": "search",
+            "url": "https://yandex.ru/maps/org/dobryninskaya/91003940196/"
+          }
+        ],
+        "events": [],
+        "geoWhere": {
+          "id": "1724225590",
+          "seoname": "ulitsa_koroviy_val_k1a",
+          "kind": "house",
+          "coordinates": [
+            37.62263,
+            55.729189
+          ],
+          "displayCoordinates": [
+            37.62263,
+            55.729189
+          ],
+          "encodedCoordinates": "Z04YcAViT0YHQFtvfXtzeH1rbQ=="
+        }
+      }
+    },
+    "events": {
+      "mapEvents": {
+        "meta": {
+          "bounds": [
+            [
+              -180,
+              -90
+            ],
+            [
+              180,
+              90
+            ]
+          ],
+          "zoomRange": {
+            "min": 0,
+            "max": 23
+          }
+        },
+        "events": []
+      }
+    },
+    "meta": {
+      "title": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e \u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f \u0432 \u041c\u043e\u0441\u043a\u0432\u0435 \u2014 \u042f\u043d\u0434\u0435\u043a\u0441\u00a0\u041a\u0430\u0440\u0442\u044b",
+      "h1": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e \u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+      "breadcrumbs": [
+        {
+          "name": "\u041a\u0430\u0440\u0442\u044b",
+          "type": "root",
+          "url": "https://yandex.ru/maps/"
+        },
+        {
+          "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+          "type": "region",
+          "url": "https://yandex.ru/maps/213/moscow/",
+          "region": {
+            "center": [
+              37.6177,
+              55.755863
+            ],
+            "zoom": 10
+          }
+        },
+        {
+          "name": "\u041e\u0431\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442",
+          "type": "masstransit-home",
+          "url": "https://yandex.ru/maps/213/moscow/transport/"
+        },
+        {
+          "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+          "type": "search",
+          "url": "https://yandex.ru/maps/213/moscow/stops/station__9858810/",
+          "currentPage": true
+        }
+      ]
+    },
+    "advertsOnMapConfig": {
+      "groups": []
+    },
+    "myBusiness": {
+      "eventsCount": {
+        "count": 0
+      }
+    },
+    "mobileTechInfo": {}
+  },
+  "stack": [
+    {
+      "mode": "masstransit",
+      "stops": {
+        "hasError": false,
+        "data": {
+          "id": "station__9858810",
+          "coordinates": [
+            37.622745,
+            55.728995
+          ],
+          "currentTime": 1726035991416,
+          "tzOffset": 10800,
+          "type": "underground",
+          "region": {
+            "id": 213,
+            "type": 6,
+            "capitalId": 0,
+            "hierarchy": [
+              225,
+              1,
+              213
+            ],
+            "seoname": "moscow",
+            "bounds": [
+              [
+                37.0354885,
+                55.31406179935764
+              ],
+              [
+                38.1999115,
+                56.192715799357636
+              ]
+            ],
+            "longitude": 37.6177,
+            "latitude": 55.755863,
+            "zoom": 10,
+            "names": {
+              "ablative": "",
+              "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+              "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+              "directional": "",
+              "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+              "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+              "locative": "",
+              "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+              "preposition": "\u0432",
+              "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+            }
+          },
+          "transports": [
+            {
+              "lineId": "100000088",
+              "name": "\u041a\u043e\u043b\u044c\u0446\u0435\u0432\u0430\u044f \u043b\u0438\u043d\u0438\u044f",
+              "Style": {
+                "color": "#805139"
+              },
+              "Types": [
+                "underground"
+              ],
+              "type": "underground",
+              "threads": [
+                {
+                  "threadId": "1660680981",
+                  "noBoarding": false,
+                  "EssentialStops": [
+                    {
+                      "id": "station__9858874",
+                      "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                      "compositeName": {
+                        "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                        "additionalName": ""
+                      }
+                    }
+                  ],
+                  "BriefSchedule": {
+                    "Events": [],
+                    "Frequencies": [
+                      {
+                        "text": "2\u00a0\u043c\u0438\u043d",
+                        "value": 120,
+                        "begin": {
+                          "value": "1726027430",
+                          "tzOffset": 10800,
+                          "text": "07:03"
+                        },
+                        "end": {
+                          "value": "1726038230",
+                          "tzOffset": 10800,
+                          "text": "10:03"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "threadId": "1660684541",
+                  "noBoarding": false,
+                  "EssentialStops": [
+                    {
+                      "id": "station__9858874",
+                      "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                      "compositeName": {
+                        "name": "\u041f\u0430\u0440\u043a \u043a\u0443\u043b\u044c\u0442\u0443\u0440\u044b",
+                        "additionalName": ""
+                      }
+                    }
+                  ],
+                  "BriefSchedule": {
+                    "Events": [],
+                    "Frequencies": [
+                      {
+                        "text": "2\u00a0\u043c\u0438\u043d",
+                        "value": 120,
+                        "begin": {
+                          "value": "1726028735",
+                          "tzOffset": 10800,
+                          "text": "07:25"
+                        },
+                        "end": {
+                          "value": "1726039535",
+                          "tzOffset": 10800,
+                          "text": "10:25"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "uri": "ymapsbm1://transit/line?id=100000088&ll=37.611386%2C55.759826&name=%D0%9A%D0%BE%D0%BB%D1%8C%D1%86%D0%B5%D0%B2%D0%B0%D1%8F+%D0%BB%D0%B8%D0%BD%D0%B8%D1%8F&r=3237&type=underground",
+              "seoname": "Kolcevaya_liniya",
+              "transportSystemId": "moscow_metro",
+              "shortName": "5",
+              "description": ""
+            }
+          ],
+          "links": [
+            {
+              "type": "underground",
+              "href": "https://yandex.ru/metro/?ll=37.622745,55.728995"
+            }
+          ],
+          "features": {
+            "cooled": false,
+            "heated": false
+          },
+          "contours": [],
+          "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+          "compositeName": {
+            "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "additionalName": ""
+          },
+          "breadcrumbs": [
+            {
+              "name": "\u041a\u0430\u0440\u0442\u044b",
+              "type": "root",
+              "url": "https://yandex.ru/maps/"
+            },
+            {
+              "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+              "type": "region",
+              "url": "https://yandex.ru/maps/213/moscow/",
+              "region": {
+                "center": [
+                  37.6177,
+                  55.755863
+                ],
+                "zoom": 10
+              }
+            },
+            {
+              "name": "\u041e\u0431\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442",
+              "type": "masstransit-home",
+              "url": "https://yandex.ru/maps/213/moscow/transport/"
+            },
+            {
+              "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+              "type": "search",
+              "url": "https://yandex.ru/maps/213/moscow/stops/station__9858810/",
+              "currentPage": true
+            }
+          ],
+          "searchResult": {
+            "type": "business",
+            "requestId": "1726035991413757-235668805-addrs-upper-yp-9",
+            "index": 0,
+            "analyticsId": "0",
+            "title": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "description": "\u0443\u043b. \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410, \u041c\u043e\u0441\u043a\u0432\u0430",
+            "address": "\u0443\u043b. \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410, \u041c\u043e\u0441\u043a\u0432\u0430",
+            "coordinates": [
+              37.622521,
+              55.72901
+            ],
+            "displayCoordinates": [
+              37.622521,
+              55.72901
+            ],
+            "bounds": [
+              [
+                37.614518,
+                55.724353
+              ],
+              [
+                37.630975,
+                55.73364
+              ]
+            ],
+            "uri": "ymapsbm1://transit/stop?id=station__9858810",
+            "logId": "dHlwZT1iaXpmaW5kZXI7aWQ9OTEwMDM5NDAxOTY=",
+            "id": "91003940196",
+            "metro": [
+              {
+                "id": "station__9858810",
+                "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+                "distance": "18\u00a0\u043c",
+                "distanceValue": 18.5118,
+                "coordinates": [
+                  37.622814899,
+                  55.728998232
+                ],
+                "type": "metro",
+                "color": "#805139"
+              },
+              {
+                "id": "station__9858903",
+                "name": "\u0421\u0435\u0440\u043f\u0443\u0445\u043e\u0432\u0441\u043a\u0430\u044f",
+                "distance": "400\u00a0\u043c",
+                "distanceValue": 403.294,
+                "coordinates": [
+                  37.62482967,
+                  55.726866944
+                ],
+                "type": "metro",
+                "color": "#999999"
+              },
+              {
+                "id": "station__9858865",
+                "name": "\u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f",
+                "distance": "910\u00a0\u043c",
+                "distanceValue": 912,
+                "coordinates": [
+                  37.612604068,
+                  55.731309349
+                ],
+                "type": "metro",
+                "color": "#f28b24"
+              }
+            ],
+            "stops": [
+              {
+                "id": "stop__9642240",
+                "name": "\u041c\u0435\u0442\u0440\u043e \u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+                "distance": "93\u00a0\u043c",
+                "distanceValue": 93.9149,
+                "coordinates": [
+                  37.623172195,
+                  55.728520725
+                ],
+                "type": "common"
+              },
+              {
+                "id": "stop__9642231",
+                "name": "\u0421\u0435\u0440\u043f\u0443\u0445\u043e\u0432\u0441\u043a\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c",
+                "distance": "270\u00a0\u043c",
+                "distanceValue": 270.386,
+                "coordinates": [
+                  37.62465732,
+                  55.729987499
+                ],
+                "type": "common"
+              },
+              {
+                "id": "2046384370",
+                "name": "\u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b",
+                "distance": "370\u00a0\u043c",
+                "distanceValue": 371.21,
+                "coordinates": [
+                  37.617573039,
+                  55.729004566
+                ],
+                "type": "common"
+              },
+              {
+                "id": "stop__9645293",
+                "name": "\u041a\u0430\u043b\u0443\u0436\u0441\u043a\u0430\u044f \u043f\u043b\u043e\u0449\u0430\u0434\u044c",
+                "distance": "630\u00a0\u043c",
+                "distanceValue": 628.024,
+                "coordinates": [
+                  37.614638349,
+                  55.728273051
+                ],
+                "type": "common"
+              },
+              {
+                "id": "stop__9641513",
+                "name": "\u041c\u0435\u0442\u0440\u043e \u041e\u043a\u0442\u044f\u0431\u0440\u044c\u0441\u043a\u0430\u044f",
+                "distance": "840\u00a0\u043c",
+                "distanceValue": 841.076,
+                "coordinates": [
+                  37.611293887,
+                  55.728132473
+                ],
+                "type": "common"
+              }
+            ],
+            "photos": {
+              "count": 56,
+              "urlTemplate": "https://avatars.mds.yandex.net/get-altay/777564/2a00000188c538a2b945121dce5c1455aaa1/%s",
+              "items": [
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/777564/2a00000188c538a2b945121dce5c1455aaa1/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/10534734/2a0000018ff24a64149022bf25c08ce54bed/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11400692/2a0000018ff24afb1ca0791e5911026b0f15/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/1974402/2a00000176654d8717f3c26f12be4e0ed251/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13061180/2a0000018ecd256cf70ca7d3ba14b450c56c/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11400839/2a0000018ca7fdd7a2f23acfb6daf8e17d45/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13054604/2a0000018ff24a642d31d28ca339ca7aa016/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/2424821/2a00000176654d8729e3c59c8030742b7d3f/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/11444509/2a0000018ecd2561f465a41ee9bd89ddd5ea/%s"
+                },
+                {
+                  "urlTemplate": "https://avatars.mds.yandex.net/get-altay/13458328/2a0000018ecd2561418967603c090767e7ed/%s"
+                }
+              ]
+            },
+            "entrances": [
+              {
+                "coordinates": [
+                  37.622815,
+                  55.728998
+                ],
+                "azimuth": 0,
+                "tilt": 0
+              }
+            ],
+            "routePoint": {
+              "context": "djJ8ChQKEgmoOuRmuM9CQBG5bHTOT91LQA,,"
+            },
+            "panorama": {
+              "id": "1298174487_673487146_23_1689488167",
+              "direction": [
+                -83.1,
+                10
+              ],
+              "point": {
+                "type": "Point",
+                "coordinates": [
+                  37.6234571391,
+                  55.7289464581
+                ]
+              },
+              "preview": "https://static-pano.maps.yandex.ru/v1/?panoid=1298174487_673487146_23_1689488167&size=500%2C240&azimuth=-83.1&tilt=10&api_key=maps&signature=yVEmpLbj6qQei1RoY7RHPvoG3xivYrdSlJMUxX8XUWU="
+            },
+            "shortTitle": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+            "fullAddress": "\u041c\u043e\u0441\u043a\u0432\u0430, \u0443\u043b\u0438\u0446\u0430 \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b, \u043a1\u0410",
+            "country": "\u0420\u043e\u0441\u0441\u0438\u044f",
+            "postalCode": "119049",
+            "chain": {
+              "id": "183645500800",
+              "name": "\u041c\u043e\u0441\u043a\u043e\u0432\u0441\u043a\u0438\u0439 \u043c\u0435\u0442\u0440\u043e\u043f\u043e\u043b\u0438\u0442\u0435\u043d",
+              "seoname": "moskovskiy_metropoliten",
+              "quantityInCity": 351
+            },
+            "status": "open",
+            "businessLinks": [],
+            "ratingData": {
+              "ratingCount": 99,
+              "ratingValue": 0,
+              "reviewCount": 30
+            },
+            "sources": [
+              {
+                "id": "yandex",
+                "name": "\u042f\u043d\u0434\u0435\u043a\u0441",
+                "href": "https://ya.ru/"
+              }
+            ],
+            "categories": [
+              {
+                "id": "244903403206",
+                "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+                "class": "metro",
+                "seoname": "metro_station",
+                "pluralName": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+                "shortName": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e"
+              }
+            ],
+            "phones": [
+              {
+                "number": "+7 (495) 539-54-54",
+                "type": "phone",
+                "value": "+74955395454"
+              },
+              {
+                "number": "3210",
+                "type": "phone"
+              }
+            ],
+            "features": [],
+            "mediaOrderTemplate": "p,v,p,v,v,p,v*,p*",
+            "featureGroups": [],
+            "businessProperties": {
+              "has_verified_owner": false,
+              "sensitive": true
+            },
+            "seoname": "dobryninskaya",
+            "geoId": 20510,
+            "compositeAddress": {
+              "country": "\u0420\u043e\u0441\u0441\u0438\u044f",
+              "locality": "\u041c\u043e\u0441\u043a\u0432\u0430",
+              "street": "\u0443\u043b\u0438\u0446\u0430 \u041a\u043e\u0440\u043e\u0432\u0438\u0439 \u0412\u0430\u043b",
+              "house": "\u043a1\u0410"
+            },
+            "distance": {
+              "value": 17000,
+              "text": "17\u00a0\u043a\u043c"
+            },
+            "modularCard": {
+              "showClaimOrganization": true,
+              "showTaxiButton": true,
+              "showFeedbackButton": true,
+              "showReviews": true,
+              "showAddPhotoButton": true,
+              "showCompetitors": true,
+              "showDirectBanner": true,
+              "showAdditionalAds": true,
+              "showWorkHours": true,
+              "showContacts": true,
+              "showFriendsLiked": false,
+              "showVisualPricesTab": false
+            },
+            "modularPin": {
+              "subtitleHints": [
+                {
+                  "text": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+                  "type": "SIMPLE_TEXT",
+                  "properties": null
+                }
+              ],
+              "allowMultilineSubtitle": false
+            },
+            "modularSnippet": {
+              "showNeurosummary": true,
+              "showMentionedOnSite": false,
+              "showTitle": "SHORT_TITLE",
+              "showAddress": "NO_ADDRESS",
+              "showCategory": "SINGLE_CATEGORY",
+              "showRating": "NO_RATING",
+              "showPhoto": "SINGLE_PHOTO",
+              "showWorkHours": true,
+              "showVerified": false,
+              "showDistanceFromTransit": false,
+              "showBookmark": true,
+              "showEta": true,
+              "showGeoproductOffer": true,
+              "subtitleHint": [],
+              "galleryButton": [],
+              "shownGoodsNumber": 3,
+              "showDescription": false,
+              "showCollectionBadge": true,
+              "showFriendsLiked": false,
+              "infoBlock": [],
+              "serpActionButtons": [
+                1,
+                3,
+                5,
+                0
+              ],
+              "awards": []
+            },
+            "tzOffset": 10800,
+            "workingTimeText": "\u0435\u0436\u0435\u0434\u043d\u0435\u0432\u043d\u043e, 05:30\u201301:00",
+            "workingTime": [
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ],
+              [
+                {
+                  "from": {
+                    "hours": 5,
+                    "minutes": 30
+                  },
+                  "to": {
+                    "hours": 1,
+                    "minutes": 0
+                  }
+                }
+              ]
+            ],
+            "currentWorkingStatus": {
+              "isOpenNow": true,
+              "text": "\u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0434\u043e 01:00",
+              "shortText": "\u0414\u043e 01:00",
+              "tag": []
+            },
+            "socialLinks": [
+              {
+                "type": "vkontakte",
+                "href": "http://vk.com/officialmosmetro"
+              },
+              {
+                "type": "telegram",
+                "href": "https://t.me/moscowmetropolitan"
+              },
+              {
+                "type": "vkontakte",
+                "href": "https://vk.com/mosmetro"
+              }
+            ],
+            "urls": [
+              "http://mosmetro.ru/"
+            ],
+            "businessImages": {
+              "logo": {
+                "urlTemplate": "https://avatars.mds.yandex.net/get-altay/1348156/2a0000016677deb0f6b8e1be6bfaa3ae2435/%s",
+                "id": "107806962"
+              }
+            },
+            "references": [
+              {
+                "id": "100078880",
+                "scope": "nyak"
+              }
+            ],
+            "subtitleItems": [
+              {
+                "type": "working_hours",
+                "text": "\u0414\u043e 01:00",
+                "property": [
+                  {
+                    "key": "is_open",
+                    "value": "1"
+                  },
+                  {
+                    "key": "short_text",
+                    "value": "\u0414\u043e 01:00"
+                  },
+                  {
+                    "key": "text",
+                    "value": "\u041e\u0442\u043a\u0440\u044b\u0442\u043e \u0434\u043e 01:00"
+                  }
+                ]
+              }
+            ],
+            "metrika": {
+              "counter": 59076958,
+              "goals": {
+                "call": "make-call",
+                "cta": "cta-button",
+                "route": "make-route"
+              }
+            },
+            "hasStories": false,
+            "houseEncodedCoordinates": "Z04YcAViT0YHQFtvfXtzeH1rbQ==",
+            "videos": {
+              "items": [
+                {
+                  "id": "vrVWKG1Gt_lY",
+                  "videoUrl": "https://frontend.vh.yandex.ru/player/vrVWKG1Gt_lY",
+                  "thumbnailUrl": "https://avatars.mds.yandex.net/get-vh/6118719/2a0000018dabe977ad437819791437e302a0/orig",
+                  "tags": [
+                    {
+                      "id": "hardcoded-video",
+                      "name": "\u0412\u0438\u0434\u0435\u043e"
+                    }
+                  ],
+                  "height": 1920,
+                  "width": 1080
+                },
+                {
+                  "id": "vcWbiEJme1io",
+                  "videoUrl": "https://frontend.vh.yandex.ru/player/vcWbiEJme1io",
+                  "thumbnailUrl": "https://avatars.mds.yandex.net/get-vh/4361455/2a0000018dabe7e3f7ad13e4c4fe82771cfb/orig",
+                  "tags": [
+                    {
+                      "id": "hardcoded-video",
+                      "name": "\u0412\u0438\u0434\u0435\u043e"
+                    }
+                  ],
+                  "height": 1920,
+                  "width": 1080
+                }
+              ]
+            },
+            "region": {
+              "id": 213,
+              "type": 6,
+              "capitalId": 0,
+              "hierarchy": [
+                225,
+                1,
+                213
+              ],
+              "seoname": "moscow",
+              "bounds": [
+                [
+                  37.0354885,
+                  55.31406179935764
+                ],
+                [
+                  38.1999115,
+                  56.192715799357636
+                ]
+              ],
+              "longitude": 37.6177,
+              "latitude": 55.755863,
+              "zoom": 10,
+              "names": {
+                "ablative": "",
+                "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+                "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+                "directional": "",
+                "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+                "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+                "locative": "",
+                "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+                "preposition": "\u0432",
+                "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+              }
+            },
+            "breadcrumbs": [
+              {
+                "name": "\u041a\u0430\u0440\u0442\u044b",
+                "type": "root",
+                "url": "https://yandex.ru/maps/"
+              },
+              {
+                "name": "\u041c\u043e\u0441\u043a\u0432\u0430",
+                "type": "region",
+                "url": "https://yandex.ru/maps/213/moscow/",
+                "region": {
+                  "center": [
+                    37.6177,
+                    55.755863
+                  ],
+                  "zoom": 10
+                }
+              },
+              {
+                "category": {
+                  "id": "244903403206",
+                  "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e",
+                  "class": "metro",
+                  "seoname": "metro_station",
+                  "pluralName": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+                  "shortName": "\u0421\u0442\u0430\u043d\u0446\u0438\u044f \u043c\u0435\u0442\u0440\u043e"
+                },
+                "name": "\u0421\u0442\u0430\u043d\u0446\u0438\u0438 \u043c\u0435\u0442\u0440\u043e",
+                "type": "category",
+                "url": "https://yandex.ru/maps/213/moscow/category/metro_station/244903403206/"
+              },
+              {
+                "name": "\u0414\u043e\u0431\u0440\u044b\u043d\u0438\u043d\u0441\u043a\u0430\u044f",
+                "type": "search",
+                "url": "https://yandex.ru/maps/org/dobryninskaya/91003940196/"
+              }
+            ],
+            "events": [],
+            "geoWhere": {
+              "id": "1724225590",
+              "seoname": "ulitsa_koroviy_val_k1a",
+              "kind": "house",
+              "coordinates": [
+                37.62263,
+                55.729189
+              ],
+              "displayCoordinates": [
+                37.62263,
+                55.729189
+              ],
+              "encodedCoordinates": "Z04YcAViT0YHQFtvfXtzeH1rbQ=="
+            }
+          }
+        },
+        "tab": "gallery"
+      },
+      "line": {
+        "hasError": false,
+        "tab": "stops"
+      },
+      "masstransitMode": "stop",
+      "mobileViewState": "mini",
+      "tabletViewTop": {
+        "current": 0,
+        "delta": 0,
+        "start": 0,
+        "min": 0,
+        "expanded": 0,
+        "mini": 0,
+        "micro": 0,
+        "max": 0,
+        "offset": 0
+      },
+      "id": "2815420b-033f-4581-9f8f-f67ee2f2b6f5"
+    }
+  ],
+  "loadingErrors": [],
+  "map": {
+    "isEditing": false,
+    "isInAction": false,
+    "isHoverForceEnabled": false,
+    "isBlackout": false,
+    "effectiveZoomRounding": "snap",
+    "ready": false,
+    "fullReady": false,
+    "type": "map",
+    "mode": "raster",
+    "camera": {
+      "azimuth": 0,
+      "tilt": 0
+    },
+    "size": {
+      "width": 1120,
+      "height": 1080
+    },
+    "offset": {
+      "left": 800,
+      "top": 0,
+      "bottom": 0,
+      "right": 0
+    },
+    "location": {
+      "center": [
+        37.622745,
+        55.728995
+      ],
+      "zoom": 16,
+      "span": [
+        0.021886825561523438,
+        0.01162445463624806
+      ],
+      "bounds": [
+        [
+          37.61180158721925,
+          55.723182338194626
+        ],
+        [
+          37.63368841278077,
+          55.734806792830874
+        ]
+      ]
+    },
+    "margin": [
+      70,
+      50,
+      50,
+      50
+    ]
+  },
+  "homePanel": {
+    "isOpen": true,
+    "isLoading": false,
+    "types": [
+      "home"
+    ]
+  },
+  "search": {
+    "visitedBusinesses": [],
+    "businessesInside": {}
+  },
+  "reviews": {
+    "businessReviews": {},
+    "ranking": "by_relevance_org"
+  },
+  "form": {
+    "formType": {
+      "id": "common"
+    },
+    "text": ""
+  },
+  "whatsherePreview": null,
+  "ruler": {
+    "type": "ruler",
+    "isEnabled": false,
+    "points": []
+  },
+  "panoramas": {
+    "isLayerEnabled": false,
+    "isStreetLayerAvailable": true,
+    "isAirLayerAvailable": true,
+    "loadingPanorama": null
+  },
+  "photos": {
+    "isLayerEnabled": false
+  },
+  "mrc": {
+    "isLayerEnabled": false,
+    "isPlaying": false,
+    "graphType": "road",
+    "photoCache": {}
+  },
+  "addPhotos": {
+    "isOpen": false
+  },
+  "feedback": {
+    "isCommonFeedbackOpened": false
+  },
+  "ugcProfile": {
+    "assignments": {
+      "editOrganizationStatusAssignment": {
+        "isLoaded": false,
+        "isLoading": false,
+        "items": [],
+        "areAllLoaded": false,
+        "isReloadNeeded": false
+      },
+      "united": {
+        "isLoaded": false,
+        "isLoading": false,
+        "items": [],
+        "areAllLoaded": false,
+        "isReloadNeeded": false
+      }
+    },
+    "reviews": {
+      "isLoaded": false,
+      "isLoading": false,
+      "items": [],
+      "areAllLoaded": false,
+      "isReloadNeeded": false
+    },
+    "feedback": {
+      "isLoaded": false,
+      "isLoading": false,
+      "items": [],
+      "areAllLoaded": false,
+      "isReloadNeeded": false
+    },
+    "feedbackDrafts": {
+      "isInited": false,
+      "items": [],
+      "hasError": false
+    },
+    "photos": {
+      "account": {
+        "isLoaded": false,
+        "isLoading": false,
+        "items": [],
+        "areAllLoaded": false,
+        "isReloadNeeded": false
+      },
+      "organization": {
+        "isLoaded": false,
+        "isLoading": false,
+        "items": [],
+        "areAllLoaded": false,
+        "isReloadNeeded": false
+      },
+      "data": {
+        "tab": "organization"
+      }
+    },
+    "mrc": {
+      "isLoaded": false,
+      "isLoading": false,
+      "items": [],
+      "areAllLoaded": false,
+      "isReloadNeeded": false
+    },
+    "impressions": {
+      "isLoaded": false,
+      "isLoading": false,
+      "items": [],
+      "areAllLoaded": false,
+      "isReloadNeeded": false
+    },
+    "panoramas": {
+      "isLoaded": false,
+      "isLoading": false,
+      "items": [],
+      "areAllLoaded": false,
+      "isReloadNeeded": false
+    }
+  },
+  "loginDialog": {
+    "isOpen": false
+  },
+  "placemarks": {},
+  "geolocation": {
+    "isStarted": false,
+    "currentPosition": null,
+    "isAuto": false,
+    "isWatching": false,
+    "lastTimeUpdate": 1726035991470,
+    "error": null
+  },
+  "bodyIndents": null,
+  "mapRegion": {
+    "id": 213,
+    "type": 6,
+    "capitalId": 0,
+    "hierarchy": [
+      225,
+      1,
+      213
+    ],
+    "seoname": "moscow",
+    "bounds": [
+      [
+        37.0354885,
+        55.31406179935764
+      ],
+      [
+        38.1999115,
+        56.192715799357636
+      ]
+    ],
+    "longitude": 37.6177,
+    "latitude": 55.755863,
+    "zoom": 10,
+    "names": {
+      "ablative": "",
+      "accusative": "\u041c\u043e\u0441\u043a\u0432\u0443",
+      "dative": "\u041c\u043e\u0441\u043a\u0432\u0435",
+      "directional": "",
+      "genitive": "\u041c\u043e\u0441\u043a\u0432\u044b",
+      "instrumental": "\u041c\u043e\u0441\u043a\u0432\u043e\u0439",
+      "locative": "",
+      "nominative": "\u041c\u043e\u0441\u043a\u0432\u0430",
+      "preposition": "\u0432",
+      "prepositional": "\u041c\u043e\u0441\u043a\u0432\u0435"
+    }
+  },
+  "traffic": {
+    "isLayerEnabled": false,
+    "level": null,
+    "infoLayerShown": true,
+    "settings": {
+      "providerKey": "traffic#actual",
+      "state": null
+    },
+    "trafficEvents": null,
+    "currentTrafficEvent": null
+  },
+  "masstransit": {
+    "isFilterLayerEnabled": false,
+    "isLayerShown": false,
+    "isLayerEnabled": false,
+    "isLayerEnabledOnAnotherZoom": false,
+    "vehicles": []
+  },
+  "masstransitBookmarks": {
+    "hasInitError": false,
+    "highlightedStopId": null,
+    "actions": {},
+    "stops": null,
+    "lines": null
+  },
+  "bookmarks": {
+    "highlightedId": null,
+    "rootFolder": null,
+    "subscriptionLists": null,
+    "sharedLists": null,
+    "publicList": null,
+    "hasInitError": false,
+    "hasSyncListsError": false,
+    "hasPlacesInitError": false,
+    "hasActionError": false,
+    "currentAction": null,
+    "actions": {},
+    "searchResults": {},
+    "cachedCoordinates": {},
+    "isBanned": false
+  },
+  "parking": {
+    "isLayerShown": false,
+    "isLayerEnabled": true,
+    "center": null
+  },
+  "clearHistoryDialogOpened": false,
+  "clearHistorySuccessPopupShown": false,
+  "collapsedSidebar": false,
+  "defaultMobileViewState": "expanded",
+  "tabletViewTop": {
+    "current": 0,
+    "delta": 0,
+    "start": 0,
+    "min": 0,
+    "expanded": 0,
+    "mini": 0,
+    "micro": 0,
+    "max": 0,
+    "offset": 0
+  },
+  "isHeaderFocused": false,
+  "shouldForceOpenSuggest": false,
+  "isHeaderShown": true,
+  "hotelsBooking": {
+    "dates": {
+      "from": {
+        "@@date": "2024-09-12T06:26:31.470Z"
+      },
+      "to": {
+        "@@date": "2024-09-13T06:26:31.470Z"
+      }
+    },
+    "guests": {
+      "adults": 1,
+      "childrenAges": []
+    },
+    "breakfast": false,
+    "freeCancellation": false
+  },
+  "posts": {
+    "byBusinessId": {},
+    "byId": {}
+  },
+  "routes": {
+    "isMrcPlayerHidden": false,
+    "isRoutePointDragging": false,
+    "defaults": {
+      "cargo": {
+        "presets": [],
+        "activeId": null
+      }
+    }
+  },
+  "promoType": "daas",
+  "stackActionsCount": 0,
+  "metro": {
+    "isSchemeReady": false
+  },
+  "closedNotifications": [],
+  "indoor": {
+    "levelId": null,
+    "plans": null
+  },
+  "stories": {
+    "storyCache": {},
+    "businessCache": {}
+  },
+  "share": {
+    "isExpanded": false
+  },
+  "timeContext": {
+    "hydrationPhaseTime": {
+      "@@date": "2024-09-11T06:26:31.470Z"
+    }
+  },
+  "mapControlsState": {
+    "isMobileControlsHidden": false,
+    "savedPanoramasPhotosLayer": "panorama"
+  },
+  "storiesVisitedCache": {},
+  "tabs": {},
+  "nightOverlay": {
+    "isShown": false
+  },
+  "fines": {},
+  "communication": {
+    "hint": {
+      "items": [],
+      "shownHintIds": []
+    },
+    "notification": {
+      "items": []
+    }
+  }
+}
